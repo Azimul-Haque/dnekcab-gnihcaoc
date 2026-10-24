@@ -10,7 +10,7 @@ use App\Models\Exam;
 use App\Models\Examcategory;
 use App\Models\Examquestion;
 use App\Models\Question;
-use App\Models\Questionimage;
+// use App\Models\Questionimage;
 use App\Models\Questionexplanation;
 use App\Models\Meritlist;
 use App\Models\Message;
