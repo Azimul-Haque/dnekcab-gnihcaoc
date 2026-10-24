@@ -304,7 +304,6 @@ class ExamController extends Controller
                 
                 // যদি প্রশ্ন বা অপশন ১ ফাঁকা থাকে, তবে সেই রো স্কিপ করবে
                 if (empty($row['question']) || empty($row['option1'])) {
-                    return redirect()->back()->with('success', 'এক্সেল ফাইল থেকে প্রশ্নসমূহ সফলভাবে আপলোড এবং যুক্ত করা হয়েছে।');
                     return null;
                 }
 
