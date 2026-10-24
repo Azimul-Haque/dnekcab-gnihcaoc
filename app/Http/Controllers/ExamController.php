@@ -288,7 +288,7 @@ class ExamController extends Controller
         return redirect()->route('dashboard.exams');
     }
 
-    public function storeExamExcelQuestion(Request $request, $id)
+    public function storeExamExcelQuestion(Request $request, $exam_id)
     {
         // ১. ফাইল ভ্যালিডেশন
         $request->validate([
@@ -299,8 +299,10 @@ class ExamController extends Controller
             // ট্রানজেকশন শুরু (যাতে কোনো এরর হলে অর্ধেক ডাটা সেভ হয়ে না থাকে)
             DB::beginTransaction();
 
+            
+
             // ২. FastExcel দিয়ে ফাইল রিড করা
-            $questions = (new FastExcel)->import($request->file('file'), function ($row) use ($id) {
+            $questions = (new FastExcel)->import($request->file('file'), function ($row) use ($exam_id) {
                 
                 // যদি প্রশ্ন বা অপশন ১ ফাঁকা থাকে, তবে সেই রো স্কিপ করবে
                 if (empty($row['question']) || empty($row['option1'])) {
