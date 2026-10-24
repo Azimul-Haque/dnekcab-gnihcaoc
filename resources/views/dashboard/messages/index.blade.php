@@ -80,11 +80,11 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         <span class="badge-package badge-sm">
                                             <i class="fas fa-shopping-bag mr-1"></i> {{ $message->user->payments->count() ? bangla($message->user->payments->count()) : 0 }} বার প্যাকেজ কিনেছেন
                                         </span>
-                                    </td>
+                                    </td> --}}
                                     <td>
                                         <div class="p-2 bg-light rounded text-dark" style="font-size: 14px; max-height: 80px; overflow-y: auto;">
                                             {{ $message->message }}
