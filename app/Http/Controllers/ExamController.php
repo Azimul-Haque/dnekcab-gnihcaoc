@@ -296,12 +296,11 @@ class ExamController extends Controller
         ]);
 
         try {
-            // ট্রানজেকশন শুরু (যাতে কোনো এরর হলে অর্ধেক ডাটা সেভ হয়ে না থাকে)
             DB::beginTransaction();
 
-            // ২. FastExcel দিয়ে ফাইল রিড করা
+            // ২. FastExcel দিয়ে ফাইল রিড করা
             $questions = (new FastExcel)->import($request->file('file'), function ($row) use ($exam_id) {
-
+                
                 // কি-গুলোকে নরমালইজ করা (সব স্মল লেটার ও স্পেস/ব্র্যাকেট ফিক্সড করা)
                 $cleanRow = [];
                 foreach ($row as $key => $value) {
@@ -309,29 +308,40 @@ class ExamController extends Controller
                     $cleanKey = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', trim($key)));
                     $cleanRow[$cleanKey] = is_string($value) ? trim($value) : $value;
                 }
-                
-                // যদি প্রশ্ন বা অপশন ১ ফাঁকা থাকে, তবে সেই রো স্কিপ করবে
-                if (empty($row['question']) || empty($row['option1'])) {
-                    return null;
+
+                // প্রশ্ন এবং অপশন ১ চেক করা
+                $questionText = $cleanRow['question'] ?? null;
+                $option1      = $cleanRow['option1'] ?? null;
+
+                if (empty($questionText) || empty($option1)) {
+                    return null; // ফাঁকা রো থাকলে স্কিপ করবে
                 }
+
+                // অন্যান্য মানসমূহ ফেচ করা
+                $option2     = $cleanRow['option2'] ?? '';
+                $option3     = $cleanRow['option3'] ?? '';
+                $option4     = $cleanRow['option4'] ?? '';
+                $answer      = $cleanRow['answer14'] ?? $cleanRow['answer'] ?? 1;
+                $topicId     = $cleanRow['topicid'] ?? $cleanRow['topic_id'] ?? null;
+                $explanation = $cleanRow['explanation'] ?? null;
 
                 // Question টেবিলে ইনসার্ট
                 $question = Question::create([
-                    'topic_id'   => !empty($row['topic_id']) ? $row['topic_id'] : null,
-                    'question'   => $row['question'],
-                    'option1'    => $row['option1'],
-                    'option2'    => $row['option2'],
-                    'option3'    => $row['option3'],
-                    'option4'    => $row['option4'],
-                    'answer'     => $row['answer'],
-                    'difficulty' => 1, // যেহেতু এক্সেল থেকে বাদ দিয়েছি, ডিফল্ট ১
+                    'topic_id'   => !empty($topicId) ? (int)$topicId : null,
+                    'question'   => $questionText,
+                    'option1'    => $option1,
+                    'option2'    => $option2,
+                    'option3'    => $option3,
+                    'option4'    => $option4,
+                    'answer'     => (int)$answer,
+                    'difficulty' => 1,
                 ]);
 
                 // Explanation থাকলে ইনসার্ট
-                if (!empty($row['explanation'])) {
+                if (!empty($explanation)) {
                     Questionexplanation::create([
                         'question_id' => $question->id,
-                        'explanation' => $row['explanation'],
+                        'explanation' => $explanation,
                     ]);
                 }
 
@@ -344,13 +354,13 @@ class ExamController extends Controller
                 return $question;
             });
 
-            DB::commit(); // সব ঠিক থাকলে ডাটাবেজে সেভ কনফার্ম করবে
+            DB::commit();
 
             return redirect()->back()->with('success', 'এক্সেল ফাইল থেকে প্রশ্নসমূহ সফলভাবে আপলোড এবং যুক্ত করা হয়েছে।');
             
         } catch (\Exception $e) {
-            DB::rollBack(); // কোনো এরর হলে আগের সব ইনসার্ট বাতিল করে দিবে
-            return redirect()->back()->with('error', 'ফাইল আপলোডে সমস্যা হয়েছে। Error: ' . $e->getMessage());
+            DB::rollBack();
+            return redirect()->back()->with('error', 'ফাইল আপলোডে সমস্যা হয়েছে। Error: ' . $e->getMessage());
         }
     }
 
