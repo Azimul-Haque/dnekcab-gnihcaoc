@@ -461,7 +461,7 @@
                       <div class="col-md-6 mb-3">
                           <label class="font-weight-bold text-dark small mb-1">প্রতি প্রশ্নের মান</label>
                           <div class="input-group">
-                              <input type="number" name="qsweight" value="1" min="1" class="form-control" placeholder="যেমন: ১" required>
+                              <input type="number" name="qsweight" value="1" min="1" class="form-control" placeholder="যেমন: 1" required>
                               <div class="input-group-append">
                                   <div class="input-group-text"><span class="fas fa-sort-amount-up-alt"></span></div>
                               </div>
