@@ -33,7 +33,11 @@
 </li>
 @endif --}}
 
-আপাতত দেখাব না
+{{-- আপাতত দেখাব না --}}
+{{-- আপাতত দেখাব না --}}
+{{-- আপাতত দেখাব না --}}
+{{-- আপাতত দেখাব না --}}
+{{-- আপাতত দেখাব না --}}
 {{-- @if(Auth::user()->role == 'admin' || Auth::user()->role == 'manager')
 <li class="nav-item">
     <a href="{{ route('dashboard.questions') }}" class="nav-link {{ Request::is('dashboard/questions') ? 'active' : '' }} {{ Request::is('dashboard/questions/*') ? 'active' : '' }}">
