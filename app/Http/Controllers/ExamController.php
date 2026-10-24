@@ -307,7 +307,7 @@ class ExamController extends Controller
             }
 
             // ২. FastExcel দিয়ে ফাইল রিড করা
-            $questions = (new FastExcel)->import($request->file('file'), function ($row) use ($exam_id) {
+            $questions = (new FastExcel)->import($request->file('file'), function ($row) use ($id) {
                 
                 // যদি প্রশ্ন বা অপশন ১ ফাঁকা থাকে, তবে সেই রো স্কিপ করবে
                 if (empty($row['question']) || empty($row['option1'])) {
