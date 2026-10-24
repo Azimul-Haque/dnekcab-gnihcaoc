@@ -112,7 +112,7 @@
                                                     <i class="fas fa-user-times"></i>
                                                 </button>
                                             @else
-                                                <button type="submit" class="btn btn-outline-success btn-sm" title="অনুমোদন দিন" >
+                                                <button type="submit" class="btn btn-outline-success btn-sm" title="অনুমোদন দিন" rel="tooltip" title="" data-original-title="অনুমোদন দিন">
                                                     <i class="fas fa-user-check"></i>
                                                 </button>
                                             @endif
