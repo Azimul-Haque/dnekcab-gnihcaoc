@@ -286,7 +286,7 @@
                               <label class="custom-file-label" for="file">ফাইল খুঁজুন...</label>
                           </div>
                       </div>
-                      <small class="text-muted mt-2 d-block"><i class="fas fa-info-circle"></i> শুধুমাত্র সঠিক ডেমো ফরম্যাটের .xls, .xlsx বা .csv ফাইল সাপোর্ট করবে। <a href="" title="" download>ডেমো ডাউনলোড করতে ক্লিক করুন <i class="fas fa-info-circle"></i></a></small>
+                      <small class="text-muted mt-2 d-block"><i class="fas fa-info-circle"></i> শুধুমাত্র সঠিক ডেমো ফরম্যাটের .xls, .xlsx বা .csv ফাইল সাপোর্ট করবে। <a href="" title="" download>ডেমো ডাউনলোড করতে ক্লিক করুন <i class="fas fa-download-circle"></i></a></small>
                   </div>
               </div>
               <div class="modal-footer">
