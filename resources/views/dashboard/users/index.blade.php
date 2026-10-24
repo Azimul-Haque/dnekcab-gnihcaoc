@@ -118,7 +118,7 @@
                                             @endif
                                         </form>
                                         
-                                        <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#editUserModal{{ $user->id }}" title="Edit" rel="tooltip" title="" data-original-title="অনুমোদন দিন">
+                                        <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#editUserModal{{ $user->id }}" title="এডিট করুন" rel="tooltip" title="" data-original-title="অনুমোদন দিন">
                                             <i class="fas fa-user-edit"></i>
                                         </button>
                                         <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deleteUserModal{{ $user->id }}" title="Delete">
