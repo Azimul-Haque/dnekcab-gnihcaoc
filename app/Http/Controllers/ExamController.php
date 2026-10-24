@@ -182,11 +182,11 @@ class ExamController extends Controller
         $exam->available_to = Carbon::parse($request->available_to);
         $exam->syllabus = nl2br($request->syllabus);
         $exam->lecture_url =$request->lecture_url;
-        if($request->alltimeavailability) {
-            $exam->alltimeavailability = 1;
-        }else {
-            $exam->alltimeavailability = 0;
-        }
+        // if($request->alltimeavailability) {
+        //     $exam->alltimeavailability = 1;
+        // }else {
+        //     $exam->alltimeavailability = 0;
+        // }
         $exam->save();
         
         Session::flash('success', 'Exam created successfully!');
@@ -224,11 +224,11 @@ class ExamController extends Controller
         $exam->available_to = Carbon::parse($request->available_to);
         $exam->syllabus = nl2br($request->syllabus);
         $exam->lecture_url =$request->lecture_url;
-        if($request->alltimeavailability) {
-            $exam->alltimeavailability = 1;
-        } else {
-            $exam->alltimeavailability = 0;
-        }
+        // if($request->alltimeavailability) {
+        //     $exam->alltimeavailability = 1;
+        // } else {
+        //     $exam->alltimeavailability = 0;
+        // }
         $exam->save();
 
         Cache::forget('exam' . $id);
