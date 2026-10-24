@@ -124,7 +124,7 @@
                   </div>
             </div>
             <div class="col-md-3">
-                <div class="card">
+                {{-- <div class="card">
                     <div class="card-header">
                       <h3 class="card-title">স্বয়ংক্রিয় প্রশ্ন প্রণয়ন</h3>
           
@@ -163,7 +163,7 @@
                       </table>
                     </div>
                     <!-- /.card-body -->
-                  </div>   
+                  </div> --}}   
             </div>
         </div>
     </div>
