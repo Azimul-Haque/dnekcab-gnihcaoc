@@ -109,9 +109,9 @@
                                                     <select name="category" class="form-control" required>
                                                         <option selected="" disabled="" value="">কোর্স ক্যাটাগরি</option>
                                                         @foreach($examcategories as $category)
-
+                                                          <option value="1" @if($course->category == 1) selected @endif>বিসিএস</option>
                                                         @endforeach
-                                                        <option value="1" @if($course->category == 1) selected @endif>বিসিএস</option>
+                                                        
                                                         <option value="2" @if($course->category == 2) selected @endif>প্রাইমারি</option>
                                                         <option value="3" @if($course->category == 3) selected @endif>ব্যাংক</option>
                                                         <option value="4" @if($course->category == 4) selected @endif>NTRCA</option>
