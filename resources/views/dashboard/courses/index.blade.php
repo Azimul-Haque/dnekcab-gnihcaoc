@@ -66,20 +66,6 @@
                                     @if(in_array($course->category, $examcategories->pluck('id')->toArray()))
                                         {{ $examcategories->firstWhere('id', $course->category)->name }}
                                     @endif
-                                    
-                                      @if($course->category == 1)
-                                        HSC
-                                      @elseif($course->category == 2)
-                                        SSC
-                                      @elseif($course->category == 3)
-                                        মেডিকেল ভর্তি
-                                      @elseif($course->category == 4)
-                                        ঢাবি ক
-                                      @elseif($course->category == 5)
-                                        বুয়েট
-                                      @elseif($course->category == 6)
-                                        প্রশ্ন ব্যাংক
-                                      @endif
                                   </td>
                                   <td>
                                     মোট পরীক্ষাঃ {{ $course->courseexams->count() }} টি
