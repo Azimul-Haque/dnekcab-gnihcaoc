@@ -677,34 +677,6 @@ class ExamController extends Controller
         return redirect()->route('dashboard.exams.add.question', $exam_id);
     }
     
-    public function storeTagExamQuestion(Request $request)
-    {
-        $this->validate($request,array(
-            'exam_id'           => 'required',
-        ));
-
-        // dd($request->all());
-        $oldexamquestions = Examquestion::where('exam_id', $request->exam_id)->get();
-        if(count($oldexamquestions) > 0) {
-            foreach($oldexamquestions as $oldexamquestion) {
-                $oldexamquestion->delete();
-            }
-        }
-
-        $temptagquestions = [];
-        $quantitycheck = 0;
-        $temptagquestions = array_values(array_unique($temptagquestions, SORT_REGULAR));
-        
-        foreach($temptagquestions as $questionid) { 
-            $examquestion = new Examquestion;
-            $examquestion->exam_id = $request->exam_id;
-            $examquestion->question_id = $questionid;
-            $examquestion->save();
-        }
-        Session::flash('success', 'Question updated successfully!');
-        return redirect()->route('dashboard.exams.add.question', $request->exam_id);
-    }
-    
     public function automaticeExamQuestionSet(Request $request)
     {
         $this->validate($request,array(
