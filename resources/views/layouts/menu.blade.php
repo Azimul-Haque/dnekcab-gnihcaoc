@@ -66,7 +66,6 @@
 @endif
 
 
-
 @if(Auth::user()->role == 'admin')
 <li class="nav-item">
     <a href="{{ route('dashboard.messages') }}" class="nav-link {{ Request::is('dashboard/messages') ? 'active' : '' }} {{ Request::is('dashboard/messages/*') ? 'active' : '' }}">
