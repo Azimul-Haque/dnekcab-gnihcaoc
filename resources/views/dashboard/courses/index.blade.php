@@ -61,8 +61,9 @@
                                       @else
                                         <span class="badge badge-default">In-active</span>
                                       @endif
-                                  </td><td>
-                                      @if($course->category == 1 in_array($examcategories, $course->category))
+                                  </td>
+                                  <td>
+                                      @if($course->category == 1)
                                         HSC
                                       @elseif($course->category == 2)
                                         SSC
