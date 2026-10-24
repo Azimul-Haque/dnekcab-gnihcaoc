@@ -10,8 +10,8 @@ class Questionexplanation extends Model
     use HasFactory;
 
     protected $fillable = [
-        'question_id', // <--- এটি যুক্ত করুন
-        'explanation', // <--- এটি যুক্ত করুন
+        'question_id',
+        'explanation',
     ];
 
     public function qustion(){
