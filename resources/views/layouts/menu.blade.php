@@ -60,7 +60,7 @@
 </li>
 @endif
 
-@if(Auth::user()->role == 'admin' || Auth::user()->role == 'manager' || Auth::user()->role == 'volunteer')
+{{-- @if(Auth::user()->role == 'admin' || Auth::user()->role == 'manager' || Auth::user()->role == 'volunteer')
 <li class="nav-item">
     <a href="{{ route('dashboard.questions.reported') }}" class="nav-link {{ Request::is('dashboard/reported') ? 'active' : '' }} {{ Request::is('dashboard/reported/*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-flag"></i>
@@ -73,7 +73,7 @@
         <p>টপিক পরিবর্তন</p>
     </a>
 </li>
-@endif
+@endif --}}
 
 @if(Auth::user()->role == 'admin' || Auth::user()->role == 'manager')
 <li class="nav-item">
