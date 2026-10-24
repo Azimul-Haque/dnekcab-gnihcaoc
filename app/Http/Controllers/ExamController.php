@@ -296,15 +296,24 @@ class ExamController extends Controller
         ]);
 
         try {
+            $filePath = $request->file('file')->getRealPath();
+
+            // ২. FastExcel দিয়ে ১ম শিট (Sheet1) থেকে ডাটা রিড করা
+            $rows = (new FastExcel)->sheet(1)->import($filePath);
+
+            if ($rows->isEmpty()) {
+                return redirect()->back()->with('error', 'ফাইলে কোনো প্রশ্ন পাওয়া যায়নি।');
+            }
+
             DB::beginTransaction();
 
-            // ২. FastExcel দিয়ে ফাইল রিড করা
-            $questions = (new FastExcel)->import($request->file('file'), function ($row) use ($exam_id) {
+            $importedCount = 0;
+
+            foreach ($rows as $row) {
                 
-                // কি-গুলোকে নরমালইজ করা (সব স্মল লেটার ও স্পেস/ব্র্যাকেট ফিক্সড করা)
+                // কি (Key) গুলোকে নরমালইজ করা (স্মল লেটার ও স্পেস মুক্ত করা)
                 $cleanRow = [];
                 foreach ($row as $key => $value) {
-                    // যেমন: 'Option 1' -> 'option1', 'Answer (1-4)' -> 'answer14', 'Topic ID' -> 'topicid'
                     $cleanKey = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', trim($key)));
                     $cleanRow[$cleanKey] = is_string($value) ? trim($value) : $value;
                 }
@@ -313,11 +322,12 @@ class ExamController extends Controller
                 $questionText = $cleanRow['question'] ?? null;
                 $option1      = $cleanRow['option1'] ?? null;
 
+                // যদি প্রশ্ন বা অপশন ১ ফাঁকা হয় (যেমন ফাঁকা রো), তবে স্কিপ করবে
                 if (empty($questionText) || empty($option1)) {
-                    return null; // ফাঁকা রো থাকলে স্কিপ করবে
+                    continue;
                 }
 
-                // অন্যান্য মানসমূহ ফেচ করা
+                // মানসমূহ রিড করা
                 $option2     = $cleanRow['option2'] ?? '';
                 $option3     = $cleanRow['option3'] ?? '';
                 $option4     = $cleanRow['option4'] ?? '';
@@ -334,6 +344,7 @@ class ExamController extends Controller
                     'option3'    => $option3,
                     'option4'    => $option4,
                     'answer'     => (int)$answer,
+                    'difficulty' => 1,
                 ]);
 
                 // Explanation থাকলে ইনসার্ট
@@ -350,15 +361,19 @@ class ExamController extends Controller
                     'question_id' => $question->id,
                 ]);
 
-                return $question;
-            });
+                $importedCount++;
+            }
 
             DB::commit();
 
-            return redirect()->back()->with('success', 'এক্সেল ফাইল থেকে প্রশ্নসমূহ সফলভাবে আপলোড এবং যুক্ত করা হয়েছে।');
-            
-        } catch (\Exception $e) {
+            return redirect()->back()->with('success', "মোট {$importedCount} টি প্রশ্ন সফলভাবে আপলোড এবং যুক্ত করা হয়েছে।");
+
+        } catch (\Throwable $e) {
             DB::rollBack();
+
+            // এরর লগ করা হচ্ছে যাতে storage/logs/laravel.log এ চেক করা যায়
+            Log::error('Excel Import Error: ' . $e->getMessage());
+
             return redirect()->back()->with('error', 'ফাইল আপলোডে সমস্যা হয়েছে। Error: ' . $e->getMessage());
         }
     }
