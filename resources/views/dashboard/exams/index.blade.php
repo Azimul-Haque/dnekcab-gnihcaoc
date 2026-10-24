@@ -295,7 +295,7 @@
                     </div>
                   {{ $exams->links() }}
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="card">
                     <div class="card-header">
                       <h3 class="card-title">পরীক্ষার ক্যাটাগরি</h3>
