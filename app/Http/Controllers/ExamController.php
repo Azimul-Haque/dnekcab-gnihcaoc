@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Rap2hpoutre\FastExcel\FastExcel;
 
 use App\Models\Topic;
-use App\Models\Tag;
 use App\Models\Exam;
 use App\Models\Examcategory;
 use App\Models\Examquestion;
@@ -682,7 +681,6 @@ class ExamController extends Controller
     {
         $this->validate($request,array(
             'exam_id'           => 'required',
-            'tags_ids'          => 'required',
         ));
 
         // dd($request->all());
@@ -693,15 +691,8 @@ class ExamController extends Controller
             }
         }
 
-        $selectedtags = Tag::whereIn('id', $request->tags_ids)->get();
-        // dd($selectedtags);
         $temptagquestions = [];
         $quantitycheck = 0;
-        foreach($selectedtags as $tag) {
-            foreach($tag->questions as $question) {
-                $temptagquestions[] = $question->id;
-            }
-        }
         $temptagquestions = array_values(array_unique($temptagquestions, SORT_REGULAR));
         
         foreach($temptagquestions as $questionid) { 
