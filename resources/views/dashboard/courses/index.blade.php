@@ -152,59 +152,54 @@
                                         {{-- Change Exam Dates Modal Code --}}
                                         {{-- Change Exam Dates Modal Code --}}
                                         <!-- Modal -->
-                                        <div class="modal fade" id="changeExamDatesModal{{ $course->id }}" tabindex="-1" role="dialog" aria-labelledby="changeExamDatesModalLabel" aria-hidden="true" data-backdrop="static">
+                                        {{-- <div class="modal fade" id="changeExamDatesModal{{ $course->id }}" tabindex="-1" role="dialog" aria-labelledby="changeExamDatesModalLabel" aria-hidden="true" data-backdrop="static">
                                             <div class="modal-dialog modal-lg" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header bg-info">
-                                                  <h5 class="modal-title" id="changeExamDatesModalLabel">পরীক্ষার তথ্য পরিবর্তন</h5>
-                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                      <span aria-hidden="true">&times;</span>
-                                                  </button>
-                                                </div>
-                                                <form method="post" action="{{ route('dashboard.courses.exam.dates.update', $course->id) }}" enctype='multipart/form-data'>
-                                                  <div class="modal-body">
-                                                    @csrf
-                                                    <div class="input-group mb-3">
-                                                        <input type="text" name="available_from" id="available_from{{ $course->id }}" class="form-control" autocomplete="off" placeholder="প্রথম পরীক্ষাটি চালু হবে" required>
-                                                        <div class="input-group-append">
-                                                            <div class="input-group-text"><span class="fas fa-calendar-check"></span></div>
-                                                        </div>
-                                                    </div>
-                                                    {{-- <div class="input-group mb-3">
-                                                        <input type="number" name="gapbetween" class="form-control" placeholder="প্রতি দুই পরীক্ষায় যতদিন গ্যাপ থাকবে" required>
-                                                        <div class="input-group-append">
-                                                            <div class="input-group-text"><span class="fas fa-sort-amount-up"></span></div>
-                                                        </div>
-                                                    </div> --}}
-                                                    <div class="input-group mb-3">
-                                                        <input type="text" name="oldwordtoreplace" class="form-control" placeholder="পূর্বের যে শব্দটি রিপ্লেস করতে চান">
-                                                        <div class="input-group-append">
-                                                            <div class="input-group-text"><span class="fas fa-sort-amount-up"></span></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="input-group mb-3">
-                                                        <input type="text" name="newwordtoreplace" class="form-control" placeholder="যে শব্দ নতুন করে বসাতে চান">
-                                                        <div class="input-group-append">
-                                                            <div class="input-group-text"><span class="fas fa-sort-amount-up"></span></div>
-                                                        </div>
-                                                    </div>
+                                              <div class="modal-content">
+                                                  <div class="modal-header bg-info">
+                                                    <h5 class="modal-title" id="changeExamDatesModalLabel">পরীক্ষার তথ্য পরিবর্তন</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
                                                   </div>
-                                                  <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ফিরে যান</button>
-                                                    <button type="submit" class="btn btn-success">দাখিল করুন</button>
-                                                  </div>
-                                              </form>
+                                                  <form method="post" action="{{ route('dashboard.courses.exam.dates.update', $course->id) }}" enctype='multipart/form-data'>
+                                                    <div class="modal-body">
+                                                      @csrf
+                                                      <div class="input-group mb-3">
+                                                          <input type="text" name="available_from" id="available_from{{ $course->id }}" class="form-control" autocomplete="off" placeholder="প্রথম পরীক্ষাটি চালু হবে" required>
+                                                          <div class="input-group-append">
+                                                              <div class="input-group-text"><span class="fas fa-calendar-check"></span></div>
+                                                          </div>
+                                                      </div>
+                                                      
+                                                      <div class="input-group mb-3">
+                                                          <input type="text" name="oldwordtoreplace" class="form-control" placeholder="পূর্বের যে শব্দটি রিপ্লেস করতে চান">
+                                                          <div class="input-group-append">
+                                                              <div class="input-group-text"><span class="fas fa-sort-amount-up"></span></div>
+                                                          </div>
+                                                      </div>
+                                                      <div class="input-group mb-3">
+                                                          <input type="text" name="newwordtoreplace" class="form-control" placeholder="যে শব্দ নতুন করে বসাতে চান">
+                                                          <div class="input-group-append">
+                                                              <div class="input-group-text"><span class="fas fa-sort-amount-up"></span></div>
+                                                          </div>
+                                                      </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">ফিরে যান</button>
+                                                      <button type="submit" class="btn btn-success">দাখিল করুন</button>
+                                                    </div>
+                                                </form>
+                                              </div>
                                             </div>
-                                            </div>
-                                        </div>
-                                        <script>
+                                        </div> --}}
+                                        {{-- <script>
                                             $("#available_from{{ $course->id }}").datepicker({
                                               format: 'MM dd, yyyy',
                                               todayHighlight: true,
                                               autoclose: true,
                                               container:'#changeExamDatesModal{{ $course->id }}',
                                             });
-                                        </script>
+                                        </script> --}}
                                         {{-- Change Exam Dates Modal Code --}}
                                         {{-- Change Exam Dates Modal Code --}}
         
