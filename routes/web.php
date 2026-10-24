@@ -157,7 +157,7 @@ Route::get('/dashboard/exams/add/question/bank/topic/{topic_id}/{id}', 'ExamCont
 Route::get('/dashboard/exams/add/question/bank/search/{id}/{search}', 'ExamController@addQuestionToExamSearch')->name('dashboard.exams.add.question.search');
 Route::post('/dashboard/exams/add/question/store', 'ExamController@storeExamQuestion')->name('dashboard.exams.question.store');
 Route::get('/dashboard/exams/remove/question/{exam_id}/{question_id}', 'ExamController@removeExamQuestion')->name('dashboard.exams.question.remove');
-Route::post('/dashboard/exams/{id}/excel/store', 'ExamController@storeExcelQuestion')->name('dashboard.questions.excel.store');
+Route::post('/dashboard/exams/{id}/excel/store', 'ExamController@storeExcelQuestion')->name('dashboard.exams.questions.excel.store');
 
 
 Route::post('/dashboard/exams/add/question/tags', 'ExamController@storeTagExamQuestion')->name('dashboard.exams.question.tags');
