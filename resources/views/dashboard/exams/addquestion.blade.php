@@ -266,96 +266,30 @@
     {{-- Upload Excel Modal Code --}}
     {{-- Upload Excel Modal Code --}}
     <!-- Modal -->
-    <form method="post" action="{{ route('dashboard.courses.update', $course->id) }}" enctype="multipart/form-data">
-        @csrf
-        <div class="modal-body text-left">
-            
-            <!-- কোর্সের নাম -->
-            <div class="form-group mb-3">
-                <label class="font-weight-bold text-dark small mb-1">কোর্সের নাম</label>
-                <div class="input-group">
-                    <input type="text" name="name" class="form-control" value="{{ $course->name }}" placeholder="কোর্সের নাম লিখুন" required>
-                    <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-layer-group"></span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- স্ট্যাটাস (চলমান কোর্সসমূহ) -->
-            <div class="form-group mb-3">
-                <label class="font-weight-bold text-dark small mb-1">স্ট্যাটাস (চলমান কোর্সসমূহতে দেখাবে কি না)</label>
-                <div class="input-group">
-                    <select name="status" class="form-control" required>
-                        <option value="" disabled>স্ট্যাটাস নির্বাচন করুন</option>
-                        <option value="1" @if($course->status == 1) selected @endif>Active - হ্যাঁ</option>
-                        <option value="0" @if($course->status == 0) selected @endif>In-active - না</option>
-                    </select>
-                    <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-toggle-on"></span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- প্রায়োরিটি -->
-            <div class="form-group mb-3">
-                <label class="font-weight-bold text-dark small mb-1">প্রায়োরিটি (চলমান কোর্সসমূহতে দেখানোর ক্রমিক)</label>
-                <div class="input-group">
-                    <input type="number" name="priority" class="form-control" value="{{ $course->priority }}" placeholder="যেমন: ১, ২, ৩..." required>
-                    <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-sort-amount-up"></span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- কোর্স ক্যাটাগরি -->
-            <div class="form-group mb-3">
-                <label class="font-weight-bold text-dark small mb-1">কোর্স ক্যাটাগরি</label>
-                <div class="input-group">
-                    <select name="category" class="form-control" required>
-                        <option value="" disabled>ক্যাটাগরি নির্বাচন করুন</option>
-                        @foreach($examcategories as $category)
-                            <option value="{{ $category->id }}" @if($course->category == $category->id) selected @endif>{{ $category->name }}</option>
-                        @endforeach
-                    </select>
-                    <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-tag"></span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- লাইভ স্ট্যাটাস -->
-            <div class="form-group mb-3">
-                <label class="font-weight-bold text-dark small mb-1">লাইভ স্ট্যাটাস (ক্যাটাগরিভিত্তিক এর ভেতরে দেখাবে কি না)</label>
-                <div class="input-group">
-                    <select name="live" class="form-control" required>
-                        <option value="" disabled>লাইভ স্ট্যাটাস নির্বাচন করুন</option>
-                        <option value="1" @if($course->live == 1) selected @endif>Live - হ্যাঁ</option>
-                        <option value="0" @if($course->live == 0) selected @endif>Expired - না</option>
-                    </select>
-                    <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-satellite-dish"></span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- সিরিয়াল -->
-            <div class="form-group mb-3">
-                <label class="font-weight-bold text-dark small mb-1">সিরিয়াল (ক্যাটাগরিভিত্তিক এর ভেতরে দেখানোর ক্রমিক)</label>
-                <div class="input-group">
-                    <input type="number" name="serial" class="form-control" value="{{ $course->serial }}" placeholder="যেমন: ১, ২, ৩..." required>
-                    <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-sort-numeric-down"></span></div>
-                    </div>
-                </div>
-            </div>
-
+    <div class="modal fade" id="addExcelQuesitonModal" tabindex="-1" role="dialog" aria-labelledby="addExcelQuesitonModalLabel" aria-hidden="true" data-backdrop="static">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-warning">
+            <h5 class="modal-title" id="addExcelQuesitonModalLabel">Excel আপলোড</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          
+              <div class="modal-body">
+                <form method="post" action="{{ route('dashboard.exams.questions.excel.store', $exam->id) }}" enctype='multipart/form-data'>
+                    @csrf
+                    <label for="file">Excel ফাইল</label>
+                    <input type="file" id="file" name="file" class="form-control" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required><br/>
+                    <button type="submit" class="btn btn-warning">দাখিল করুন</button>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">ফিরে যান</button>
+              </div>
         </div>
-        
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">ফিরে যান</button>
-            <button type="submit" class="btn btn-success">আপডেট করুন</button>
-        </div>
-    </form>
+      </div>
+    </div>
     {{-- Upload Excel Modal Code --}}
     {{-- Upload Excel Modal Code --}}
 @endsection
