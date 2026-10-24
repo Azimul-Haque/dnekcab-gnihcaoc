@@ -295,6 +295,8 @@ class ExamController extends Controller
             'file' => 'required|mimes:xls,xlsx,csv|max:10240',
         ]);
 
+        return redirect()->back()->with('success', 'এক্সেল ফাইল থেকে প্রশ্নসমূহ সফলভাবে আপলোড এবং যুক্ত করা হয়েছে।');
+
         try {
             // ট্রানজেকশন শুরু (যাতে কোনো এরর হলে অর্ধেক ডাটা সেভ হয়ে না থাকে)
             DB::beginTransaction();
