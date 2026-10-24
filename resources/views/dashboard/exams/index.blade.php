@@ -14,7 +14,7 @@
     @section('page-header') পরীক্ষাসমূহ @endsection
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-10">
                 <div class="card">
                     <div class="card-header">
                       <h3 class="card-title">পরীক্ষাসমূহ</h3> <span style="margin-left: 5px;">(মোটঃ {{ $totalexams }} টি পরীক্ষা)</span>
