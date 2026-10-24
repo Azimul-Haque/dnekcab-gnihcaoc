@@ -83,7 +83,7 @@
                                               @endforeach
                                           </div>
                                       @else
-                                          {{-- <span class="text-muted small">কোনো কোর্সে যুক্ত নেই</span> --}}
+                                          <span class="text-muted small">কোনো কোর্সে যুক্ত নেই</span>
                                       @endif
                                   </td>
                                   <td><span class="fas fa-stopwatch"></span> {{ $exam->duration }} মিনিট</td>
