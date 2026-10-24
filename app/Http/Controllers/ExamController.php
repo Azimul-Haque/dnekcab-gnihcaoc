@@ -301,6 +301,14 @@ class ExamController extends Controller
 
             // ২. FastExcel দিয়ে ফাইল রিড করা
             $questions = (new FastExcel)->import($request->file('file'), function ($row) use ($exam_id) {
+
+                // কি-গুলোকে নরমালইজ করা (সব স্মল লেটার ও স্পেস/ব্র্যাকেট ফিক্সড করা)
+                $cleanRow = [];
+                foreach ($row as $key => $value) {
+                    // যেমন: 'Option 1' -> 'option1', 'Answer (1-4)' -> 'answer14', 'Topic ID' -> 'topicid'
+                    $cleanKey = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', trim($key)));
+                    $cleanRow[$cleanKey] = is_string($value) ? trim($value) : $value;
+                }
                 
                 // যদি প্রশ্ন বা অপশন ১ ফাঁকা থাকে, তবে সেই রো স্কিপ করবে
                 if (empty($row['question']) || empty($row['option1'])) {
