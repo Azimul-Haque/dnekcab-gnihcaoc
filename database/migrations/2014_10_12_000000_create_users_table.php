@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('role')->default('user');
             $table->string('mobile')->unique();
             $table->string('bkash');
-            $table->('is_approved');
+            $table->boolean('is_approved')->default(0);
             $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
