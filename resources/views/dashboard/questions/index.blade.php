@@ -73,9 +73,6 @@
                                       <span class="badge bg-success">{{ $question->topic->full_path }}</span>
                                       {{-- <span class="badge bg-info">{{ $question->difficulty == 1 ? 'সহজ' : ($question->difficulty == 2 ? 'মধ্যম' : 'কঠিন') }}</span> --}}
                                       {{-- <br/> --}}
-                                      @foreach($question->tags as $tag)
-                                        <span class="badge bg-primary">{{ $tag->name }}</span>
-                                      @endforeach
                                   </td>
                                   <td>{{ $question->answer }}</td>
                                   <td>{{ $question->option1 }}, {{ $question->option2 }}, {{ $question->option3 }}, {{ $question->option4 }}</td>
@@ -141,17 +138,7 @@
                                                           </div>
                                                         </div>
                                                         <div class="col-md-6">
-                                                          <select name="tags_ids[]" class="form-control multiple-select" multiple="multiple" data-placeholder="ট্যাগ">
-                                                            @php
-                                                              $tag_array = [];
-                                                              foreach($question->tags as $tag) {
-                                                                $tag_array[] = $tag->id;
-                                                              } 
-                                                            @endphp
-                                                            @foreach ($tags as $tag)
-                                                                <option value="{{ $tag->id }}" @if(in_array($tag->id, $tag_array)) selected @endif>{{ $tag->name }}</option>
-                                                            @endforeach
-                                                        </select>
+                                                          
                                                         </div>
                                                       </div>
                                                       <div class="row">
@@ -487,109 +474,6 @@
                     </div>
                     <!-- /.card-body -->
                   </div>
-
-                  <div class="card">
-                    <div class="card-header">
-                      <h3 class="card-title">ট্যাগসমূহ</h3>
-          
-                      <div class="card-tools">
-                          <button type="button" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#addTagModal">
-                              <i class="fas fa-plus-circle"></i> নতুন ট্যাগ
-                          </button>
-                      </div>
-                    </div>
-                    <!-- /.card-header -->
-                    <div class="card-body p-0">
-                      <table class="table">
-                          <thead>
-                              <tr>
-                                  <th>Tag</th>
-                                  <th>Action</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                          {{-- @foreach($tags as $tag)
-                              <tr>
-                                  <td>
-                                    <a href="{{ route('dashboard.questionstagbased', $tag->id) }}">
-                                      {{ $tag->name }} <small>({{ $tag->questions->count() }} টি প্রশ্ন)</small><br/>
-                                    </a>
-                                      
-                                  </td>
-                              
-                                  <td align="right" width="40%">
-                                      <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editTagModal{{ $tag->id }}">
-                                          <i class="far fa-edit"></i>
-                                      </button>
-                                      
-                                      <div class="modal fade" id="editTagModal{{ $tag->id }}" tabindex="-1" role="dialog" aria-labelledby="editTagModalLabel" aria-hidden="true" data-backdrop="static">
-                                          <div class="modal-dialog" role="document">
-                                          <div class="modal-content">
-                                              <div class="modal-header bg-warning">
-                                              <h5 class="modal-title" id="editTagModalLabel">টপিক হালনাগাদ</h5>
-                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                  <span aria-hidden="true">&times;</span>
-                                              </button>
-                                              </div>
-                                              <form method="post" action="{{ route('dashboard.questions.tag.update', $tag->id) }}">
-                                                  <div class="modal-body">
-                                                      @csrf
-                                                      <div class="input-group mb-3">
-                                                          <input type="text"
-                                                                  name="name"
-                                                                  class="form-control"
-                                                                  value="{{ $tag->name }}"
-                                                                  placeholder="নাম" required>
-                                                          <div class="input-group-append">
-                                                              <div class="input-group-text"><span class="far fa-bookmark"></span></div>
-                                                          </div>
-                                                      </div>
-                                                  </div>
-                                                  <div class="modal-footer">
-                                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">ফিরে যান</button>
-                                                  <button type="submit" class="btn btn-warning">দাখিল করুন</button>
-                                                  </div>
-                                              </form>
-                                          </div>
-                                          </div>
-                                      </div>
-                                      
-          
-                                      <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteTagModal{{ $tag->id }}" disabled>
-                                          <i class="far fa-trash-alt"></i>
-                                      </button>
-                                  </td>
-                                  
-                                  <div class="modal fade" id="deleteTagModal{{ $tag->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteTagModalLabel" aria-hidden="true" data-backdrop="static">
-                                      <div class="modal-dialog" role="document">
-                                      <div class="modal-content">
-                                          <div class="modal-header bg-danger">
-                                          <h5 class="modal-title" id="deleteTagModalLabel">ট্যাগ ডিলেট</h5>
-                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                              <span aria-hidden="true">&times;</span>
-                                          </button>
-                                          </div>
-                                          <div class="modal-body">
-                                          আপনি কি নিশ্চিতভাবে এই ট্যাগটি ডিলেট করতে চান?<br/>
-                                          <center>
-                                              <big><b>{{ $tag->name }}</b></big><br/>
-                                          </center>
-                                          </div>
-                                          <div class="modal-footer">
-                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">ফিরে যান</button>
-                                          <a href="{{ route('dashboard.questions.tag.delete', $tag->id) }}" class="btn btn-danger">ডিলেট করুন</a>
-                                          </div>
-                                      </div>
-                                      </div>
-                                  </div>
-                                  
-                              </tr>
-                          @endforeach --}}
-                          </tbody>
-                      </table>
-                    </div>
-                    <!-- /.card-body -->
-                  </div>
             </div>
         </div>
 
@@ -683,13 +567,6 @@
                             </div>
                         </div>    
                       </div>
-                      <div class="col-md-6">
-                          <select name="tags_ids[]" class="form-control multiple-select" multiple="multiple" data-placeholder="ট্যাগ">
-                              @foreach ($tags as $tag)
-                                  <option value="{{ $tag->id }}">{{ $tag->name }}</option>
-                              @endforeach
-                          </select>
-                      </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -781,42 +658,7 @@
   {{-- Add Topic Modal Code --}}
   {{-- Add Topic Modal Code --}}
 
-{{-- Add Tag Modal Code --}}
-{{-- Add Tag Modal Code --}}
-<!-- Modal -->
-<div class="modal fade" id="addTagModal" tabindex="-1" role="dialog" aria-labelledby="addTagModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header bg-warning">
-          <h5 class="modal-title" id="addQuesitonModalLabel">নতুন ট্যাগ যোগ</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form method="post" action="{{ route('dashboard.questions.tag.store') }}">
-            <div class="modal-body">
-                  @csrf
-                  <div class="input-group mb-3">
-                      <input type="text"
-                             name="name"
-                             class="form-control"
-                             value="{{ old('name') }}"
-                             placeholder="নাম" required>
-                      <div class="input-group-append">
-                          <div class="input-group-text"><span class="far fa-bookmark"></span></div>
-                      </div>
-                  </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">ফিরে যান</button>
-              <button type="submit" class="btn btn-warning">দাখিল করুন</button>
-            </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  {{-- Add Tag Modal Code --}}
-  {{-- Add Tag Modal Code --}}
+
 @endsection
 
 @section('third_party_scripts')
