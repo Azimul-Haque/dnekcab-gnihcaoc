@@ -64,7 +64,7 @@
                                         <i class="fas fa-calendar-check" style="color: green;" rel="tooltip" title="চলতি"></i>
                                     @endif
                                     <a href="{{ route('dashboard.exams.add.question', $exam->id) }}" rel="tooltip" title="প্রশ্ন যোগ করুন">{{ $exam->name }}</a><br/>
-                                    যে সকল কোর্সে আছে:
+                                    <small>যে সকল কোর্সে আছে:</small>
                                     @if($exam->courseexams->count() > 0)
                                         <div class="d-flex flex-wrap" style="gap: 5px;">
                                             @foreach($exam->courseexams as $index => $ce)
