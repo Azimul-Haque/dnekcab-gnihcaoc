@@ -291,6 +291,9 @@
                     <div class="input-group mb-3">
                       <select name="category" class="form-control" required>
                           <option selected="" disabled="" value="">কোর্স ক্যাটাগরি</option>
+                          @foreach($examcategories as $category)
+                            <option value="{{ $category->id }}" @if($course->category == $category->id) selected @endif>{{ $category->name }}</option>
+                          @endforeach
                           <option value="1">বিসিএস</option>
                           <option value="2">প্রাইমারি</option>
                           <option value="3">ব্যাংক</option>
