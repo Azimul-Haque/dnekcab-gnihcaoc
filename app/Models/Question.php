@@ -11,14 +11,13 @@ class Question extends Model
     use HasFactory;
 
     protected $fillable = [
-        'topic_id',   // <--- এটি যুক্ত করুন
+        'topic_id',
         'question',
         'option1',
         'option2',
         'option3',
         'option4',
         'answer',
-        'difficulty',
     ];
     
     public function topic(){
