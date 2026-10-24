@@ -83,7 +83,7 @@
                                     </small>
                                   </td>
                                   <td align="right">
-                                      <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editQuestionModal{{ $question->id }}">
+                                      <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editQuestionModal{{ $examquestion->id }}">
                                           <i class="far fa-edit"></i>
                                       </button>
                                       
