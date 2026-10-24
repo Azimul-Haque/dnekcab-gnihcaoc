@@ -9,6 +9,17 @@ use Illuminate\Support\Facades\Cache;
 class Question extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'topic_id',   // <--- এটি যুক্ত করুন
+        'question',
+        'option1',
+        'option2',
+        'option3',
+        'option4',
+        'answer',
+        'difficulty',
+    ];
     
     public function topic(){
         return $this->belongsTo('App\Models\Topic');
