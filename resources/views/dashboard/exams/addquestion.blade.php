@@ -279,7 +279,7 @@
               @csrf
               <div class="modal-body">
                   <div class="form-group mb-3">
-                      <label class="font-weight-bold text-dark small mb-1">Excel ফাইল নির্বাচন করুন</label>
+                      <label class="font-weight-bold text-dark small mb-1">Excel ফাইল নির্বাচন করুন (Max 10MB)</label>
                       <div class="input-group">
                           <div class="custom-file">
                               <input type="file" id="file" name="file" class="custom-file-input" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
