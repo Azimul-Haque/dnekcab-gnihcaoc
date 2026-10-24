@@ -299,8 +299,6 @@ class ExamController extends Controller
             // ট্রানজেকশন শুরু (যাতে কোনো এরর হলে অর্ধেক ডাটা সেভ হয়ে না থাকে)
             DB::beginTransaction();
 
-            
-
             // ২. FastExcel দিয়ে ফাইল রিড করা
             $questions = (new FastExcel)->import($request->file('file'), function ($row) use ($exam_id) {
                 
