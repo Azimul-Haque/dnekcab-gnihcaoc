@@ -66,7 +66,7 @@
                                     @endif
                                     <a href="{{ route('dashboard.exams.add.question', $exam->id) }}" rel="tooltip" title="প্রশ্ন যোগ করুন">{{ $exam->name }}</a><br/>
                                     <span class="badge bg-success">{{ $exam->examcategory->name }}</span>
-                                    <a href="{{ route('dashboard.exams.getmeritlist', $exam->id) }}" class="badge bg-primary" rel="tooltip" title="" data-original-title="মেধাতালিকা দেখুন"><i class="fas fa-bolt"></i> {{ $exam->participation }}</a>
+                                    <a href="{{ route('dashboard.exams.getmeritlist', $exam->id) }}" class="badge bg-primary" rel="tooltip" title="" data-original-title="মেধাতালিকা দেখুন">মেধাতালিকা <i class="fas fa-bolt"></i> {{ $exam->participation }}</a>
                                   </td>
                                   <td>
                                       @if($exam->courseexams->count() > 0)
