@@ -102,12 +102,12 @@
 
                                 <td class="text-right">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#smsModal{{ $user->id }}" title="SMS">
+                                        {{-- <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#smsModal{{ $user->id }}" title="SMS">
                                             <i class="fas fa-envelope"></i>
                                         </button>
                                         <button type="button" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#notifModal{{ $user->id }}" title="Push Notification">
                                             <i class="fas fa-bell"></i>
-                                        </button>
+                                        </button> --}}
 
                     
                                         
