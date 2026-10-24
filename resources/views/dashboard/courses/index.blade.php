@@ -63,6 +63,10 @@
                                       @endif
                                   </td>
                                   <td>
+                                    @if(in_array($course->category, $examcategories->pluck('id')->toArray()))
+                                        {{ $examcategories->firstWhere('id', $course->category)->name }}
+                                    @endif
+                                    
                                       @if($course->category == 1)
                                         HSC
                                       @elseif($course->category == 2)
