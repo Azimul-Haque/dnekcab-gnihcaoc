@@ -8,10 +8,10 @@ class Examquestion extends Model
 {
 
     protected $fillable = [
-        'exam_id',     // <--- এটি যুক্ত করুন
-        'question_id', // <--- এটি যুক্ত করুন
+        'exam_id',
+        'question_id',
     ];
-    
+
     public function exam(){
         return $this->belongsTo('App\Models\Exam');
     }
