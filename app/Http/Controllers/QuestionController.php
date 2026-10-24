@@ -109,38 +109,13 @@ class QuestionController extends Controller
                              ->cursorPaginate(10);
 
         $topics = Topic::where('parent_id', null)->orderBy('id', 'asc')->get();
-        $tags = Tag::orderBy('id', 'asc')->get();
 
         return view('dashboard.questions.index')
                     ->withQuestions($questions)
                     ->withTopics($topics)
-                    ->withTags($tags)
                     ->withTotalquestions($totalquestions);
     }
 
-    public function getQuestionsTagBased($id)
-    {
-        ini_set('memory_limit', '-1');
-        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'manager')) {
-            abort(403, 'Access Denied');
-        }
-        
-        $totalquestions = Tag::find($id)->questions()->orderBy('id', 'desc')->count();
-        $questions = Tag::find($id)->questions()->orderBy('id', 'desc')->cursorPaginate(10);
-
-         // Question::where('topic_id', $id)
-         //                     ->orderBy('id', 'desc')
-         //                     ->paginate(10);
-
-        $topics = Topic::where('parent_id', null)->orderBy('id', 'asc')->get();
-        $tags = Tag::orderBy('id', 'asc')->get();
-
-        return view('dashboard.questions.index')
-                    ->withQuestions($questions)
-                    ->withTopics($topics)
-                    ->withTags($tags)
-                    ->withTotalquestions($totalquestions);
-    }
 
     public function getChangeTopicQuestions()
     {
@@ -152,13 +127,11 @@ class QuestionController extends Controller
         $totalquestions = Question::count();
         $questions = Question::orderBy('id', 'desc')->cursorPaginate(10);
         $topics = Topic::where('parent_id', null)->orderBy('id', 'asc')->get();
-        // $tags = Tag::orderBy('id', 'asc')->get();
 
         // dd($questions);
         return view('dashboard.questions.changetopic')
                     ->withQuestions($questions)
                     ->withTopics($topics)
-                    // ->withTags($tags)
                     ->withTotalquestions($totalquestions);
     }
 
@@ -179,13 +152,11 @@ class QuestionController extends Controller
                              ->cursorPaginate(10);
 
         $topics = Topic::where('parent_id', null)->orderBy('id', 'asc')->get();
-        // $tags = Tag::orderBy('id', 'asc')->get();
 
         // dd($questions);
         return view('dashboard.questions.changetopic')
                     ->withQuestions($questions)
                     ->withTopics($topics)
-                    // ->withTags($tags)
                     ->withTotalquestions($totalquestions);
     }
 
@@ -217,12 +188,10 @@ class QuestionController extends Controller
                              ->cursorPaginate(10);
 
         $topics = Topic::where('parent_id', null)->orderBy('id', 'asc')->get();
-        // $tags = Tag::orderBy('id', 'asc')->get();
 
         return view('dashboard.questions.changetopic')
                     ->withQuestions($questions)
                     ->withTopics($topics)
-                    // ->withTags($tags)
                     ->withTotalquestions($totalquestions);
     }
 
@@ -266,43 +235,6 @@ class QuestionController extends Controller
         return redirect()->route('dashboard.questions');
     }
 
-    public function storeQuestionsTag(Request $request)
-    {
-        $this->validate($request,array(
-            'name'        => 'required|string|max:191|unique:tags,name',
-        ));
-
-        $tag = new Tag;
-        $tag->name = $request->name;
-        $tag->save();
-
-        Session::flash('success', 'Tag created successfully!');
-        return redirect()->route('dashboard.questions');
-    }
-
-    public function updateQuestionsTag(Request $request, $id)
-    {
-        $this->validate($request,array(
-            'name' => 'required|string|max:191|unique:tags,name,' . $id,
-        ));
-
-        $tag = Tag::find($id);;
-        $tag->name = $request->name;
-        $tag->save();
-
-        Session::flash('success', 'Tag updated successfully!');
-        return redirect()->route('dashboard.questions');
-    }
-
-    public function deleteQuestionsTag($id)
-    {
-        $tag = Tag::find($id);
-        $tag->delete();
-
-        Session::flash('success', 'Tag deleted successfully!');
-        return redirect()->route('dashboard.questions');
-    }
-
     public function storeQuestion(Request $request)
     {
         // dd($request->file('image'));
@@ -334,11 +266,6 @@ class QuestionController extends Controller
         if ($topic) {
             // This method triggers the fast, incremental update up the hierarchy.
             $topic->recalculateAggregatedQuestionCount(); 
-        }
-
-        
-        if(isset($request->tags_ids)){
-            $question->tags()->sync($request->tags_ids, false);
         }
 
         // image upload
@@ -396,12 +323,6 @@ class QuestionController extends Controller
                 $question->answer     = $collection['answer'];
                 $question->difficulty = 1;
                 $question->save();
-                
-
-                // APATOT KORA HOCCHE NA...
-                // if(isset($request->tags_ids)){
-                //     $question->tags()->sync($request->tags_ids, false);
-                // }
 
                 // APATOT KORA HOCCHE NA...
                 // if($request->hasFile('image')) {
@@ -428,27 +349,6 @@ class QuestionController extends Controller
                     $questionexplanation->question_id = $question->id;
                     $questionexplanation->explanation = $collection['explanation'];
                     $questionexplanation->save();
-                }
-
-                if($collection['tag'] != null) {
-                    $tagarray = explode(',', $collection['tag']);
-
-                    // dd($tagarray);
-                    $newquestiontags = [];
-                    for ($i=0; $i < count($tagarray); $i++) { 
-                        $checktag = Tag::where('name', $tagarray[$i])->first();
-                        if($checktag) {
-                            $newquestiontags[] = $checktag->id;
-                        } else {
-                            $tag = new Tag;
-                            $tag->name = $tagarray[$i];
-                            $tag->save();
-                            $newquestiontags[] = $tag->id;
-                            // dd($newquestiontags);
-                        }
-                    }
-
-                    $question->tags()->sync($newquestiontags, false);
                 }
 
                 DB::commit();
@@ -533,7 +433,6 @@ class QuestionController extends Controller
             'explanation' => 'sometimes|max:2048',
         ));
 
-        // dd($request->tags_ids);
 
         $question             = Question::findOrFail($id);
         $question->topic_id   = $request->topic_id;
@@ -545,10 +444,6 @@ class QuestionController extends Controller
         $question->answer     = $request->answer;
         $question->difficulty = $request->difficulty;
         $question->save();
-
-        if(isset($request->tags_ids)){
-            $question->tags()->sync($request->tags_ids, true);
-        }
 
         // image upload
         if($request->hasFile('image')) {
@@ -639,65 +534,6 @@ class QuestionController extends Controller
         // );
 
         Session::flash('success', 'Question sent in Notification successfully!');
-        return redirect()->back();
-    }
-
-    public function getReportedQuestions()
-    {
-        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'manager')) {
-            abort(403, 'Access Denied');
-        }
-
-        $reportedquestions = Reportedquestion::orderBy('created_at', 'desc')->where('status', 0)->cursorPaginate(10);
-
-        $totalreportedquestions  = Reportedquestion::where('status', 0)->count();
-        $topics = Topic::where('parent_id', null)->orderBy('id', 'asc')->get();
-        $tags = Tag::orderBy('id', 'asc')->get();
-        
-        return view('dashboard.questions.reported')
-                    ->withReportedquestions($reportedquestions)
-                    ->withTopics($topics)
-                    ->withTags($tags)
-                    ->withTotalreportedquestions($totalreportedquestions);
-    }
-
-    public function getReportedQuestionsSearch($search)
-    {
-        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'manager')) {
-            abort(403, 'Access Denied');
-        }
-
-        $reportedquestions = Reportedquestion::whereHas('Question', function($q) use ($search){
-                        $q->where('question', 'LIKE', "%$search%");
-                        $q->orWhere('option1', 'LIKE', "%$search%");
-                        $q->orWhere('option2', 'LIKE', "%$search%");
-                        $q->orWhere('option3', 'LIKE', "%$search%");
-                        $q->orWhere('option4', 'LIKE', "%$search%");
-                        $q->orderBy('id', 'desc');
-                    })->where('status', 0)->cursorPaginate(10);
-
-        $topics = Topic::where('parent_id', null)->orderBy('id', 'asc')->get();
-        $tags = Tag::orderBy('id', 'asc')->get();
-        
-        Session::flash('success', $reportedquestions->count() . ' টি রিপোর্টেড প্রশ্ন পাওয়া গিয়েছে!');
-        return view('dashboard.questions.reported')
-                    ->withReportedquestions($reportedquestions)
-                    ->withTopics($topics)
-                    ->withTags($tags)
-                    ->withTotalreportedquestions($reportedquestions->count());
-    }
-
-    public function deleteReportedQuestionsSearch($id)
-    {
-        if(!(Auth::user()->role == 'admin' || Auth::user()->role == 'manager')) {
-            abort(403, 'Access Denied');
-        }
-
-        $reportedquestion = Reportedquestion::findOrFail($id);
-        $reportedquestion->status = 1;
-        $reportedquestion->save();
-        
-        Session::flash('success', 'প্রশনটি সমাধান করা হয়েছে!');
         return redirect()->back();
     }
 
