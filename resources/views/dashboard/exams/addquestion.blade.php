@@ -124,7 +124,7 @@
                   </div>
             </div>
             <div class="col-md-3">
-                {{-- <div class="card">
+                <div class="card">
                     <div class="card-header">
                       <h3 class="card-title">স্বয়ংক্রিয় প্রশ্ন প্রণয়ন</h3>
           
@@ -134,7 +134,6 @@
                           </button>
                       </div>
                     </div>
-                    <!-- /.card-header -->
                     <div class="card-body">
                       বিষয়ভিত্তিক মান বণ্টন
                       <table class="table">
@@ -158,11 +157,10 @@
                                     @endphp
                                     <td>{{ $totalqs }}</td>
                                 </tr>
-                            @endforeach --}}
+                            @endforeach
                         </tbody>
                       </table>
                     </div>
-                    <!-- /.card-body -->
                   </div> --}}   
             </div>
         </div>
