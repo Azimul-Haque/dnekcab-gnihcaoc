@@ -120,17 +120,6 @@
                                                         <div class="input-group-text"><span class="fas fa-star-half-alt"></span></div>
                                                     </div>
                                                   </div>
-                                                  {{-- <div class="input-group mb-3">
-                                                    <select name="type" class="form-control" required>
-                                                        <option selected="" disabled="" value="">ক্লাসিকাল ধরন</option>
-                                                        <option value="1" @if($course->type == 1) selected @endif>সাধারণ কোর্স</option>
-                                                        <option value="4" @if($course->type == 4) selected @endif>ফ্রি মডেল টেস্ট</option>
-                                                        <option value="5" @if($course->type == 5) selected @endif>প্রশ্ন ব্যাংক</option>
-                                                    </select>
-                                                    <div class="input-group-append">
-                                                        <div class="input-group-text"><span class="fas fa-tag"></span></div>
-                                                    </div>
-                                                  </div> --}}
                                                   <div class="input-group mb-3">
                                                       <input type="number" name="priority" class="form-control" value="{{ $course->priority }}" placeholder="প্রায়োরিটি (চলমান কোর্সসমূহতে যে সিরিয়ালে অ্যাপে দেখাবে)" required>
                                                       <div class="input-group-append">
@@ -316,17 +305,6 @@
                             <div class="input-group-text"><span class="fas fa-star-half-alt"></span></div>
                         </div>
                     </div>
-                    {{-- <div class="input-group mb-3">
-                      <select name="type" class="form-control" required>
-                          <option selected="" disabled="" value="">ক্লাসিকাল ধরন</option>
-                          <option value="1">সাধারণ কোর্স</option>
-                          <option value="4">ফ্রি মডেল টেস্ট</option>
-                          <option value="5">প্রশ্ন ব্যাংক</option>
-                      </select>
-                      <div class="input-group-append">
-                          <div class="input-group-text"><span class="fas fa-tag"></span></div>
-                      </div>
-                    </div> --}}
                     <div class="input-group mb-3">
                         <input type="number" name="priority" class="form-control" value="{{ old('priority') }}" placeholder="প্রায়োরিটি (চলমান কোর্সসমূহতে যে সিরিয়ালে অ্যাপে দেখাবে)" required>
                         <div class="input-group-append">
