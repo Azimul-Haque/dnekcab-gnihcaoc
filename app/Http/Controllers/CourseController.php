@@ -72,7 +72,7 @@ class CourseController extends Controller
         $course->serial = $request->serial; // priority ব্যবহৃত হবে চলমান কোর্সসমূহ বার এ, serial ব্যবহৃত হবে কোর্স্ ক্যাটাগরিতে
         $course->save();
 
-        Cache::forget('courses' . $request->type);
+        Cache::forget('courses' . $request->category);
         Cache::forget('categorywisecourses' . $request->category);
         Session::flash('success', 'Course created successfully!');
         return redirect()->route('dashboard.courses');
