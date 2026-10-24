@@ -26,7 +26,7 @@ use Artisan;
 use OneSignal;
 use Cache;
 use View;
-use Log;
+use Illuminate\Support\Facades\Log;
 
 class ExamController extends Controller
 {
