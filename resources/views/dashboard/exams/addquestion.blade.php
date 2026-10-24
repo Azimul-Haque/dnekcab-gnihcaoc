@@ -54,9 +54,6 @@
                                       {!! $examquestion->question->question !!}<br/>
                                       {{-- <span class="badge bg-success">{{ $examquestion->question->topic->name }}</span> --}}
                                       <span class="badge bg-success">{{ $examquestion->question->topic->full_path }}</span>
-                                      @foreach($examquestion->question->tags as $tag)
-                                        <span class="badge bg-primary">{{ $tag->name }}</span>
-                                      @endforeach
                                   </td>
                                   <td>
                                     <small>
@@ -203,41 +200,6 @@
     {{-- Clear Questions Modal Code --}}
     {{-- Clear Questions Modal Code --}}
 
-    {{-- Add TAG Question Modal Code --}}
-    {{-- Add TAG Question Modal Code --}}
-    <!-- Modal -->
-    <div class="modal fade" id="addTAGQuestionModal" tabindex="-1" role="dialog" aria-labelledby="addTAGQuestionModalLabel" aria-hidden="true" data-backdrop="static">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-warning">
-                    <h5 class="modal-title" id="addTAGQuestionModalLabel">
-                        ট্যাগ থেকে প্রশ্ন হালনাগাদ (N.B: প্রশ্ন রিসেট হবে!)
-                        <span id="questionupdatingnumbertag"></span>
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form method="post" action="{{ route('dashboard.exams.question.tags') }}">
-                    <div class="modal-body">
-                        @csrf
-                        <input type="hidden" name="exam_id" value="{{ $exam->id }}">
-                        <select name="tags_ids[]" class="form-control multiple-select" multiple="multiple" data-placeholder="ট্যাগ" required>
-                            @foreach ($tags as $tag)
-                              <option value="{{ $tag->id }}">{{ $tag->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ফিরে যান</button>
-                        <button type="submit" class="btn btn-warning">দাখিল করুন</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    {{-- Add TAG Question Modal Code --}}
-    {{-- Add TAG Question Modal Code --}}
     
     {{-- Auto Question Set Modal Code --}}
     {{-- Auto Question Set Modal Code --}}
