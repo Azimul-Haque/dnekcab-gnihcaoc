@@ -74,9 +74,7 @@
                                         {!! $question->question !!}<br/>
                                         <span class="badge bg-success">{{ $question->topic->name }}</span>
                                         <span class="badge bg-info">{{ $question->difficulty == 1 ? 'সহজ' : ($question->difficulty == 2 ? 'মধ্যম' : 'কঠিন') }}</span>
-                                        @foreach($question->tags as $tag)
-                                          <span class="badge bg-primary">{{ $tag->name }}</span>
-                                        @endforeach
+                                        
                                     </td>
                                     <td>
                                       @if($question->answer == 1)
