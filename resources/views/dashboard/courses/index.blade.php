@@ -25,18 +25,6 @@
                           </button>
                       </div>
                     </div>
-
-                    @php
-                        // $examcategories = Examcategory::all(); // ব্যবহার করা যেতে পারে
-                        $categoryNames = [
-                            1 => 'HSC',
-                            2 => 'SSC',
-                            3 => 'মেডিকেল ভর্তি',
-                            4 => 'ঢাবি ক',
-                            5 => 'বুয়েট',
-                            6 => 'প্রশ্ন ব্যাংক'
-                        ];
-                    @endphp
                     <!-- /.card-header -->
                     <div class="card-body p-0">
                       <table class="table">
