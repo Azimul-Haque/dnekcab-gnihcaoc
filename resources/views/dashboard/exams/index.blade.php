@@ -252,14 +252,14 @@
                                                           </div>
 
                                                           <!-- সব সময় এভেইলএবল অপশন -->
-                                                          <div class="col-md-6 mb-3 d-flex align-items-center pt-3">
+                                                          {{-- <div class="col-md-6 mb-3 d-flex align-items-center pt-3">
                                                               <div class="icheck-primary d-inline">
                                                                   <input type="checkbox" name="alltimeavailability" id="alltimeavailability{{ $exam->id }}" value="1" @if($exam->alltimeavailability == 1) checked @endif>
                                                                   <label for="alltimeavailability{{ $exam->id }}" class="font-weight-bold text-dark small">
                                                                       সব সময় এভেইলএবল থাকবে
                                                                   </label>
                                                               </div>
-                                                          </div>
+                                                          </div> --}}
 
                                                           <!-- সিলেবাস -->
                                                           <div class="col-md-12 mb-3">
