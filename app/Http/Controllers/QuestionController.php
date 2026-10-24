@@ -9,7 +9,6 @@ use App\Models\Question;
 use App\Models\Questionimage;
 use App\Models\Questionexplanation;
 use App\Models\Topic;
-use App\Models\Tag;
 use App\Models\Reportedquestion;
 use App\Models\Message;
 
@@ -36,7 +35,7 @@ class QuestionController extends Controller
         View::share('unresolvedmessagecount', $unresolvedmessagecount);
 
         $this->middleware('auth');
-        $this->middleware(['admin'])->only('storeQuestionsTopic', 'storeQuestionsTag', 'deleteQuestion');
+        $this->middleware(['admin'])->only('storeQuestionsTopic', 'deleteQuestion');
         // $this->middleware(['manager'])->only();
     }
 
@@ -56,13 +55,11 @@ class QuestionController extends Controller
         );
         $questions = Question::orderBy('id', 'desc')->cursorPaginate(10);
         $topics = Topic::where('parent_id', null)->orderBy('id', 'asc')->get(); // EKAHNE KAAJ ACHE
-        $tags = Tag::orderBy('id', 'asc')->get();
 
         // dd($questions);
         return view('dashboard.questions.index')
                     ->withQuestions($questions)
                     ->withTopics($topics)
-                    ->withTags($tags)
                     ->withTotalquestions($totalquestions);
     }
 
@@ -91,13 +88,11 @@ class QuestionController extends Controller
         //                      ->cursorPaginate(10);
                              
         $topics = Topic::where('parent_id', null)->orderBy('id', 'asc')->get();
-        $tags = Tag::orderBy('id', 'asc')->get();
 
         Session::flash('success', $totalquestions . ' টি প্রশ্ন পাওয়া গিয়েছে!');
         return view('dashboard.questions.index')
                     ->withQuestions($questions)
                     ->withTopics($topics)
-                    ->withTags($tags)
                     ->withTotalquestions($totalquestions);
     }
 
