@@ -121,7 +121,7 @@
                                         <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#editUserModal{{ $user->id }}" title="এডিট করুন" rel="tooltip" title="" data-original-title="এডিট করুন">
                                             <i class="fas fa-user-edit"></i>
                                         </button>
-                                        <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deleteUserModal{{ $user->id }}" title="Delete">
+                                        <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#deleteUserModal{{ $user->id }}" title="ডিলেট করুন" rel="tooltip" title="" data-original-title="ডিলেট করুন">
                                             <i class="fas fa-user-minus"></i>
                                         </button>
                                     </div>
