@@ -143,8 +143,8 @@
                                                         </div>
                                                       </div>
                                                       <div class="row">
-                                                          {{-- <div class="col-md-6">
-                                                              <div class="input-group mb-3">
+                                                          <div class="col-md-6">
+                                                           {{--    <div class="input-group mb-3">
                                                                   <select name="difficulty" class="form-control" required>
                                                                       <option selected="" disabled="" value="">ডিফিকাল্টি লেভেল</option>
                                                                       <option value="1" @if($question->difficulty == 1) selected @endif>সহজ</option>
@@ -154,8 +154,8 @@
                                                                   <div class="input-group-append">
                                                                       <div class="input-group-text"><span class="fas fa-star-half-alt"></span></div>
                                                                   </div>
-                                                              </div>
-                                                          </div> --}}
+                                                              </div> --}}
+                                                          </div>
                                                           <div class="col-md-6">
                                                               <div class="input-group mb-3">
                                                                   <select name="topic_id" id="topic-select-{{ $question->id }}" data-saved-id="{{ $question->topic_id }}" data-saved-text="{{ $question->topic->full_path ?? '' }}" class="form-control topic-select-field" style="width: 100%;" required>
