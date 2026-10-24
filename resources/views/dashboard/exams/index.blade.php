@@ -68,6 +68,24 @@
                                     <span class="badge bg-success">{{ $exam->examcategory->name }}</span>
                                     <a href="{{ route('dashboard.exams.getmeritlist', $exam->id) }}" class="badge bg-primary" rel="tooltip" title="" data-original-title="মেধাতালিকা দেখুন"><i class="fas fa-bolt"></i> {{ $exam->participation }}</a>
                                   </td>
+                                  <td>
+                                      @if($exam->courseexams->count() > 0)
+                                          <div class="d-flex flex-wrap" style="gap: 5px;">
+                                              @foreach($exam->courseexams as $index => $ce)
+                                                  @if($ce->course != null)
+                                                      <span class="badge badge-warning shadow-sm">
+                                                          <i class="fas fa-book-open mr-1"></i>
+                                                          {{ $ce->course->name ?? 'N/A' }}
+                                                      </span>
+                                                      {{-- যদি কমাও রাখতে চান তবে নিচের কোডটি ব্যবহার করতে পারেন --}}
+                                                      {{-- @if(!$loop->last), @endif --}}
+                                                  @endif
+                                              @endforeach
+                                          </div>
+                                      @else
+                                          {{-- <span class="text-muted small">কোনো কোর্সে যুক্ত নেই</span> --}}
+                                      @endif
+                                  </td>
                                   <td><span class="fas fa-stopwatch"></span> {{ $exam->duration }} মিনিট</td>
                                   <td>
                                     <span class="badge bg-primary">{{ $exam->examquestions->count() }} টি প্রশ্ন</span><br/>
