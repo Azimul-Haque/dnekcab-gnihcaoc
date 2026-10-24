@@ -84,7 +84,6 @@ class CourseController extends Controller
         $this->validate($request,array(
             'name'   => 'required|string|max:191',
             'status' => 'required',
-            'type' => 'required',
             'category' => 'required',
             'live' => 'required',
             'serial' => 'required',
@@ -93,14 +92,13 @@ class CourseController extends Controller
         $course = Course::findOrFail($id);
         $course->name = $request->name;
         $course->status = $request->status;
-        $course->type = $request->type; // 1 = Course, 2 = BJS MT, 3 = Bar MT, 4 = Free MT, 5 = QB
         $course->priority = $request->priority;
         $course->category = $request->category; // 1 = BCS, 2 = Primary, 3 = Bank, 4 = NTRCS, 5 = NSI/DGFI and Others
         $course->live = $request->live; // live থাকলে কোর্স ক্যাটাগরির ভেতরে শো করবে
         $course->serial = $request->serial; // priority ব্যবহৃত হবে চলমান কোর্সসমূহ বার এ, serial ব্যবহৃত হবে কোর্স্ ক্যাটাগরিতে
         $course->save();
 
-        Cache::forget('courses' . $request->type);
+        Cache::forget('courses' . $request->category);
         Cache::forget('categorywisecourses' . $request->category);
         Session::flash('success', 'Course updated successfully!');
         return redirect()->back();
