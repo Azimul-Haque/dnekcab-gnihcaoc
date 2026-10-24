@@ -414,7 +414,140 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          
+          <form method="post" action="{{ route('dashboard.exams.store') }}" enctype="multipart/form-data">
+              <div class="modal-body text-left">
+                  @csrf
+                  <div class="row">
+                      
+                      <!-- পরীক্ষার ক্যাটাগরি -->
+                      <div class="col-md-6 mb-3">
+                          <label class="font-weight-bold text-dark small mb-1">পরীক্ষার ক্যাটাগরি</label>
+                          <div class="input-group">
+                              <select name="examcategory_id" class="form-control" required>
+                                  <option selected disabled value="">পরীক্ষার ক্যাটাগরি নির্বাচন করুন</option>
+                                  @foreach ($examcategories as $category)
+                                      <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                  @endforeach
+                              </select>
+                              <div class="input-group-append">
+                                  <div class="input-group-text"><span class="fas fa-bookmark"></span></div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <!-- পরীক্ষার নাম -->
+                      <div class="col-md-6 mb-3">
+                          <label class="font-weight-bold text-dark small mb-1">পরীক্ষার নাম</label>
+                          <div class="input-group">
+                              <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="পরীক্ষার নাম লিখুন" required>
+                              <div class="input-group-append">
+                                  <div class="input-group-text"><span class="far fa-clipboard"></span></div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <!-- সময়কাল (মিনিটে) -->
+                      <div class="col-md-6 mb-3">
+                          <label class="font-weight-bold text-dark small mb-1">সময়কাল (মিনিটে)</label>
+                          <div class="input-group">
+                              <input type="number" name="duration" value="{{ old('duration') }}" min="1" class="form-control" placeholder="যেমন: ৬০" required>
+                              <div class="input-group-append">
+                                  <div class="input-group-text"><span class="fas fa-stopwatch"></span></div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <!-- প্রতি প্রশ্নের মান -->
+                      <div class="col-md-6 mb-3">
+                          <label class="font-weight-bold text-dark small mb-1">প্রতি প্রশ্নের মান</label>
+                          <div class="input-group">
+                              <input type="number" name="qsweight" value="1" min="1" class="form-control" placeholder="যেমন: ১" required>
+                              <div class="input-group-append">
+                                  <div class="input-group-text"><span class="fas fa-sort-amount-up-alt"></span></div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <!-- নেগেটিভ মার্ক পারসেন্টেজ -->
+                      <div class="col-md-6 mb-3">
+                          <label class="font-weight-bold text-dark small mb-1">নেগেটিভ মার্কস (%)</label>
+                          <div class="input-group">
+                              <input type="number" name="negativepercentage" value="25" min="0" max="50" class="form-control" placeholder="যেমন: ২৫" required>
+                              <div class="input-group-append">
+                                  <div class="input-group-text"><span class="fas fa-percent"></span></div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <!-- কাটমার্কস -->
+                      <div class="col-md-6 mb-3">
+                          <label class="font-weight-bold text-dark small mb-1">কাটমার্কস</label>
+                          <div class="input-group">
+                              <input type="text" name="cutmark" class="form-control" value="0" placeholder="যেমন: ৫০" required>
+                              <div class="input-group-append">
+                                  <div class="input-group-text"><span class="fas fa-greater-than-equal"></span></div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <!-- চালু হবে (শুরুর তারিখ) -->
+                      <div class="col-md-6 mb-3">
+                          <label class="font-weight-bold text-dark small mb-1">চালু হবে (তারিখ)</label>
+                          <div class="input-group">
+                              <input type="text" name="available_from" id="available_from" value="{{ old('available_from') }}" class="form-control" autocomplete="off" placeholder="তারিখ নির্বাচন করুন" required>
+                              <div class="input-group-append">
+                                  <div class="input-group-text"><span class="fas fa-calendar-check"></span></div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <!-- চালু থাকবে (শেষ তারিখ) -->
+                      <div class="col-md-6 mb-3">
+                          <label class="font-weight-bold text-dark small mb-1">চালু থাকবে (পর্যন্ত)</label>
+                          <div class="input-group">
+                              <input type="text" name="available_to" id="available_to" value="{{ date('F d, Y') }}" class="form-control" autocomplete="off" placeholder="তারিখ নির্বাচন করুন" required>
+                              <div class="input-group-append">
+                                  <div class="input-group-text"><span class="fas fa-calendar-minus"></span></div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <!-- লেকচার PDF লিংক -->
+                      <div class="col-md-6 mb-3">
+                          <label class="font-weight-bold text-dark small mb-1">লেকচার PDF লিংক (ঐচ্ছিক)</label>
+                          <div class="input-group">
+                              <input type="text" name="lecture_url" id="lecture_url" value="{{ old('lecture_url') }}" class="form-control" placeholder="https://example.com/lecture.pdf">
+                              <div class="input-group-append">
+                                  <div class="input-group-text"><span class="fas fa-file-pdf"></span></div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <!-- সব সময় এভেইলএবল অপশন -->
+                      <div class="col-md-6 mb-3 d-flex align-items-center pt-3">
+                          <div class="icheck-primary d-inline">
+                              <input type="checkbox" name="alltimeavailability" id="alltimeavailability" value="1">
+                              <label for="alltimeavailability" class="font-weight-bold text-dark small">
+                                  সব সময় এভেইলএবল থাকবে
+                              </label>
+                          </div>
+                      </div>
+
+                      <!-- সিলেবাস -->
+                      <div class="col-md-12 mb-3">
+                          <label class="font-weight-bold text-dark small mb-1">সিলেবাস</label>
+                          <div class="input-group">
+                              <textarea class="form-control" name="syllabus" style="height: 120px;" placeholder="সিলেবাসের বিস্তারিত লিখুন (যদি থাকে)" required>N/A</textarea>
+                          </div>
+                      </div>
+
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">ফিরে যান</button>
+                  <button type="submit" class="btn btn-success">দাখিল করুন</button>
+              </div>
+          </form>
         </div>
       </div>
     </div>
