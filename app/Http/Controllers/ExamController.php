@@ -308,6 +308,8 @@ class ExamController extends Controller
 
             DB::beginTransaction();
 
+            Examquestion::where('exam_id', $exam_id)->delete();
+
             $importedCount = 0;
 
             foreach ($rows as $row) {
