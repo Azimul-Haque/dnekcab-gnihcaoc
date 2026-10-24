@@ -292,7 +292,7 @@
 	                		<option selected="" disabled="" value="">ধরন</option>
 	                		<option value="admin">এডমিন</option>
 							<option value="manager">ম্যানেজার</option>
-                            <option value="user">ব্যবহারকারী/ পরীক্ষার্থী</option>
+                            <option value="user" selected>ব্যবহারকারী/ পরীক্ষার্থী</option>
 							{{-- <option value="accountant">একাউন্টেন্ট</option> --}}
 	                	</select>
 	                    <div class="input-group-append">
