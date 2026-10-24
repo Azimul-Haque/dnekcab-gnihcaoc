@@ -245,7 +245,6 @@ class QuestionController extends Controller
             'option3'     => 'required|string|max:191',
             'option4'     => 'required|string|max:191',
             'answer'      => 'required',
-            'difficulty'  => 'required|string|max:191',
             'image'       => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg,webp|max:3000',
             'explanation' => 'sometimes|max:2048',
         ));
@@ -258,7 +257,6 @@ class QuestionController extends Controller
         $question->option3    = $request->option3;
         $question->option4    = $request->option4;
         $question->answer     = $request->answer;
-        $question->difficulty = $request->difficulty;
         $question->save();
 
         $topic = Topic::find($request->topic_id);
@@ -320,7 +318,6 @@ class QuestionController extends Controller
                 $question->option3    = $collection['option3'];
                 $question->option4    = $collection['option4'];
                 $question->answer     = $collection['answer'];
-                $question->difficulty = 1;
                 $question->save();
 
                 // APATOT KORA HOCCHE NA...
@@ -427,7 +424,6 @@ class QuestionController extends Controller
             'option3'     => 'required|string|max:191',
             'option4'     => 'required|string|max:191',
             'answer'      => 'required',
-            'difficulty'  => 'required|string|max:191',
             'image'       => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg,webp|max:3000',
             'explanation' => 'sometimes|max:2048',
         ));
@@ -441,7 +437,6 @@ class QuestionController extends Controller
         $question->option3    = $request->option3;
         $question->option4    = $request->option4;
         $question->answer     = $request->answer;
-        $question->difficulty = $request->difficulty;
         $question->save();
 
         // image upload
