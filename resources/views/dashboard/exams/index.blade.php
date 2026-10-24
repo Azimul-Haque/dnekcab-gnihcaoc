@@ -450,7 +450,7 @@
                       <div class="col-md-6 mb-3">
                           <label class="font-weight-bold text-dark small mb-1">সময়কাল (মিনিটে)</label>
                           <div class="input-group">
-                              <input type="number" name="duration" value="{{ old('duration') }}" min="1" class="form-control" placeholder="যেমন: ৬০" required>
+                              <input type="number" name="duration" value="{{ old('duration') }}" min="1" class="form-control" placeholder="যেমন: 60" required>
                               <div class="input-group-append">
                                   <div class="input-group-text"><span class="fas fa-stopwatch"></span></div>
                               </div>
