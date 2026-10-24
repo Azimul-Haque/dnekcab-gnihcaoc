@@ -288,7 +288,7 @@ class ExamController extends Controller
         return redirect()->route('dashboard.exams');
     }
 
-    public function storeExamExcelQuestion($id)
+    public function storeExamExcelQuestion(Request $request, $exam_id)
 
     public function addQuestionToExam($id)
     {
