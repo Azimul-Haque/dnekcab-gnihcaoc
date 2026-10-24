@@ -96,7 +96,7 @@
                                   {{-- Edit Question Modal Code --}}
                                   {{-- Edit Question Modal Code --}}
                                   <!-- Modal -->
-                                  <div class="modal fade" id="editQuestionModal{{ $examquestion->id }}" role="dialog" aria-labelledby="editQuestionModalLabel" aria-hidden="true" data-backdrop="static">
+                                  <div class="modal fade" id="editQuestionModal{{ $examquestion->question->id }}" role="dialog" aria-labelledby="editQuestionModalLabel" aria-hidden="true" data-backdrop="static">
                                       <div class="modal-dialog modal-xl" role="document">
                                       <div class="modal-content">
                                           <div class="modal-header bg-success">
@@ -105,28 +105,28 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                           </div>
-                                          <form method="post" action="{{ route('dashboard.questions.update', $examquestion->id) }}" enctype='multipart/form-data'>
+                                          <form method="post" action="{{ route('dashboard.questions.update', $examquestion->question->id) }}" enctype='multipart/form-data'>
                                             <div class="modal-body">
                                                   @csrf
-                                                  <textarea id="question{{ $examquestion->id }}" name="question">{!! $examquestion->question !!}</textarea><br/>
+                                                  <textarea id="question{{ $examquestion->question->id }}" name="question">{!! $examquestion->question->question !!}</textarea><br/>
                                                   {{-- <div class="input-group mb-3">
-                                                      <input type="text" name="question" class="form-control" value="{{ $examquestion->question }}" placeholder="প্রশ্ন" required>
+                                                      <input type="text" name="question" class="form-control" value="{{ $examquestion->question->question }}" placeholder="প্রশ্ন" required>
                                                       <div class="input-group-append">
                                                           <div class="input-group-text"><span class="far fa-question-circle"></span></div>
                                                       </div>
                                                   </div> --}}
                                                   <div class="row">
                                                       <div class="col-md-6">
-                                                          <input type="text" name="option1" value="{{ $examquestion->option1 }}" class="form-control mb-3" placeholder="অপশন ১" required>
+                                                          <input type="text" name="option1" value="{{ $examquestion->question->option1 }}" class="form-control mb-3" placeholder="অপশন ১" required>
                                                       </div>
                                                       <div class="col-md-6">
-                                                          <input type="text" name="option2" value="{{ $examquestion->option2 }}" class="form-control mb-3" placeholder="অপশন ২" required>
+                                                          <input type="text" name="option2" value="{{ $examquestion->question->option2 }}" class="form-control mb-3" placeholder="অপশন ২" required>
                                                       </div>
                                                       <div class="col-md-6">
-                                                          <input type="text" name="option3" value="{{ $examquestion->option3 }}" class="form-control mb-3" placeholder="অপশন ৩" required>
+                                                          <input type="text" name="option3" value="{{ $examquestion->question->option3 }}" class="form-control mb-3" placeholder="অপশন ৩" required>
                                                       </div>
                                                       <div class="col-md-6">
-                                                          <input type="text" name="option4" value="{{ $examquestion->option4 }}" class="form-control mb-3" placeholder="অপশন ৪" required>
+                                                          <input type="text" name="option4" value="{{ $examquestion->question->option4 }}" class="form-control mb-3" placeholder="অপশন ৪" required>
                                                       </div>
                                                   </div>
                                                   <div class="row">
@@ -134,10 +134,10 @@
                                                       <div class="input-group mb-3">
                                                           <select name="answer" class="form-control" required>
                                                               <option selected="" disabled="" value="">সঠিক উত্তর</option>
-                                                              <option value="1" @if($examquestion->answer == 1) selected @endif>অপশন ১</option>
-                                                              <option value="2" @if($examquestion->answer == 2) selected @endif>অপশন ২</option>
-                                                              <option value="3" @if($examquestion->answer == 3) selected @endif>অপশন ৩</option>
-                                                              <option value="4" @if($examquestion->answer == 4) selected @endif>অপশন ৪</option>
+                                                              <option value="1" @if($examquestion->question->answer == 1) selected @endif>অপশন ১</option>
+                                                              <option value="2" @if($examquestion->question->answer == 2) selected @endif>অপশন ২</option>
+                                                              <option value="3" @if($examquestion->question->answer == 3) selected @endif>অপশন ৩</option>
+                                                              <option value="4" @if($examquestion->question->answer == 4) selected @endif>অপশন ৪</option>
                                                           </select>
                                                           <div class="input-group-append">
                                                               <div class="input-group-text"><span class="far fa-check-circle"></span></div>
@@ -146,10 +146,10 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="input-group mb-3">
-                                                            <select name="topic_id" id="topic-select-{{ $examquestion->id }}" data-saved-id="{{ $examquestion->topic_id }}" data-saved-text="{{ $examquestion->topic->full_path ?? '' }}" class="form-control topic-select-field" style="width: 100%;" required>
+                                                            <select name="topic_id" id="topic-select-{{ $examquestion->question->id }}" data-saved-id="{{ $examquestion->question->topic_id }}" data-saved-text="{{ $examquestion->question->topic->full_path ?? '' }}" class="form-control topic-select-field" style="width: 100%;" required>
                                                                 {{-- <option selected="" disabled="" value="">টপিক (বিষয়)</option>
                                                                 @foreach ($topics as $topic)
-                                                                    <option value="{{ $topic->id }}" @if($examquestion->topic_id == $topic->id) selected @endif>{{ $topic->name }}</option>
+                                                                    <option value="{{ $topic->id }}" @if($examquestion->question->topic_id == $topic->id) selected @endif>{{ $topic->name }}</option>
                                                                 @endforeach --}}
                                                             </select>
                                                             <div class="input-group-append">
@@ -160,22 +160,22 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group ">
                                                             <label for="image">ছবি (প্রয়োজনে)</label>
-                                                            <input type="file" id="image{{ $examquestion->id }}" name="image" accept="image/*">
+                                                            <input type="file" id="image{{ $examquestion->question->id }}" name="image" accept="image/*">
                                                         </div>
                                                         <center>
                                                             <?php
-                                                              if($examquestion->questionimage) {
-                                                                  $currentimage = asset('images/questions/' . $examquestion->questionimage->image);
+                                                              if($examquestion->question->questionimage) {
+                                                                  $currentimage = asset('images/questions/' . $examquestion->question->questionimage->image);
                                                               } else {
                                                                   $currentimage = asset('images/placeholder.png');
                                                               }
                                                             ?>
-                                                            <img src="{{ $currentimage }}" id='img-upload{{ $examquestion->id }}' style="width: 250px; height: auto;" class="img-responsive" />
+                                                            <img src="{{ $currentimage }}" id='img-upload{{ $examquestion->question->id }}' style="width: 250px; height: auto;" class="img-responsive" />
                                                         </center>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label for="explanation">ব্যাখ্যা (প্রয়োজনে)</label><br/>
-                                                        <textarea class="form-control summernote" name="explanation" id="explanation" placeholder="ব্যাখ্যা" style="width: 100%; height: 220px;">{{ $examquestion->questionexplanation ? $examquestion->questionexplanation->explanation : '' }}</textarea>
+                                                        <textarea class="form-control summernote" name="explanation" id="explanation" placeholder="ব্যাখ্যা" style="width: 100%; height: 220px;">{{ $examquestion->question->questionexplanation ? $examquestion->question->questionexplanation->explanation : '' }}</textarea>
                                                     </div>
                                                   </div>
                                             </div>
@@ -189,11 +189,11 @@
                                   </div>
 
                                   <script>
-                                    $('#editQuestionModal{{ $examquestion->id }}').on('hidden.bs.modal', function () {
+                                    $('#editQuestionModal{{ $examquestion->question->id }}').on('hidden.bs.modal', function () {
                                          // Restore the original enforceFocus if needed, or simply leave it as is if only this component uses modals.
                                     });
 
-                                      $('#question{{ $examquestion->id }}').summernote({
+                                      $('#question{{ $examquestion->question->id }}').summernote({
                                         // callbacks: {
                                         //   onChange: function(contents, $editable) {
                                         //     $("textarea#content").html(contents);
@@ -236,23 +236,23 @@
                                             if (input.files && input.files[0]) {
                                                 var reader = new FileReader();
                                                 reader.onload = function (e) {
-                                                    $('#img-upload{{ $examquestion->id }}').attr('src', e.target.result);
+                                                    $('#img-upload{{ $examquestion->question->id }}').attr('src', e.target.result);
                                                 }
                                                 reader.readAsDataURL(input.files[0]);
                                             }
                                         }
-                                        $("#image{{ $examquestion->id }}").change(function(){
+                                        $("#image{{ $examquestion->question->id }}").change(function(){
                                             readURL(this);
                                             var filesize = parseInt((this.files[0].size)/1024);
                                             if(filesize > 10000) {
-                                              $("#image{{ $examquestion->id }}").val('');
+                                              $("#image{{ $examquestion->question->id }}").val('');
                                               // toastr.warning('File size is: '+filesize+' Kb. try uploading less than 300Kb', 'WARNING').css('width', '400px;');
                                               Toast.fire({
                                                   icon: 'warning',
                                                   title: 'File size is: '+filesize+' Kb. try uploading less than 300Kb'
                                               })
                                               setTimeout(function() {
-                                              $("#img-upload{{ $examquestion->id }}").attr('src', '{{ asset('images/placeholder.png') }}');
+                                              $("#img-upload{{ $examquestion->question->id }}").attr('src', '{{ asset('images/placeholder.png') }}');
                                               }, 1000);
                                             }
                                         });
