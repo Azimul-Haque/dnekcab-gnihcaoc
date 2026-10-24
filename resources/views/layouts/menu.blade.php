@@ -60,21 +60,6 @@
 </li>
 @endif
 
-{{-- @if(Auth::user()->role == 'admin' || Auth::user()->role == 'manager' || Auth::user()->role == 'volunteer')
-<li class="nav-item">
-    <a href="{{ route('dashboard.questions.reported') }}" class="nav-link {{ Request::is('dashboard/reported') ? 'active' : '' }} {{ Request::is('dashboard/reported/*') ? 'active' : '' }}">
-        <i class="nav-icon fas fa-flag"></i>
-        <p>রিপোর্টেড প্রশ্নসমূহ</p>
-    </a>
-</li>
-<li class="nav-item">
-    <a href="{{ route('dashboard.questions.changetopic') }}" class="nav-link {{ Request::is('dashboard/change/topic/questions') ? 'active' : '' }} {{ Request::is('dashboard/change/topic/questions/*') ? 'active' : '' }}">
-        <i class="nav-icon fas fa-bookmark"></i>
-        <p>টপিক পরিবর্তন</p>
-    </a>
-</li>
-@endif --}}
-
 {{-- @if(Auth::user()->role == 'admin' || Auth::user()->role == 'manager')
 <li class="nav-item">
     <a href="{{ route('dashboard.materials') }}" class="nav-link {{ Request::is('dashboard/materials') ? 'active' : '' }} {{ Request::is('dashboard/materials/*') ? 'active' : '' }}">
