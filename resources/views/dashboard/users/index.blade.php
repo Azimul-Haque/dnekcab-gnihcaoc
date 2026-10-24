@@ -7,14 +7,11 @@
 @endsection
 
 @section('content')
-	@section('page-header') ব্যবহারকারীগণ (মোট {{ bangla($userscount) }} জন) @endsection
+    @section('page-header') ব্যবহারকারীগণ (মোট {{ bangla($userscount) }} জন) @endsection
     <div class="container-fluid">
-		<div class="card">
+        <div class="card">
           <div class="card-header">
             <h3 class="card-title">ব্যবহারকারীগণ</h3>
-            {{-- <small><a href="{{ route('dashboard.userssort')  }}" style="margin-left: 5px;">সর্বোচ্চ পরীক্ষার্থী</a></small>
-            <small><a href="{{ route('dashboard.expiredusers')  }}" style="margin-left: 5px;">মেয়াদোত্তীর্ণ পরীক্ষার্থী</a></small>
- --}}
             <div class="card-tools">
               <form class="form-inline form-group-lg" action="">
                 <div class="form-group">
@@ -27,7 +24,6 @@
                   <i class="fas fa-user-plus"></i> নতুন
                 </button>
               </form>
-            	
             </div>
           </div>
           <!-- /.card-header -->
@@ -65,7 +61,7 @@
                             <th>যোগাযোগ</th>
                             <th>পরিসংখ্যান</th>
                             <th>রোল</th>
-                            <th>মেয়াদ</th>
+                            <th>মেয়াদ</th>
                             <th class="text-right">অ্যাকশন</th>
                         </tr>
                     </thead>
@@ -76,6 +72,13 @@
                                     <a href="{{ route('dashboard.users.single', $user->id) }}" class="user-name-link">
                                         {{ $user->name }}
                                     </a>
+                                    {{-- Approval Status Icon --}}
+                                    @if($user->is_approved)
+                                        <i class="fas fa-check-circle text-success ml-1" title="অনুমোদিত"></i>
+                                    @else
+                                        <i class="fas fa-exclamation-circle text-danger ml-1" title="অনুমোদন অপেক্ষমান"></i>
+                                    @endif
+
                                     <div class="date-info">যোগদান: {{ date('d M, Y', strtotime($user->created_at)) }}</div>
                                 </td>
 
@@ -84,7 +87,6 @@
                                 </td>
 
                                 <td>
-                                    {{-- <span class="stat-pill"><i class="fas fa-box-open mr-1 text-success"></i> প্যাকেজ: {{ bangla($user->payments->count()) }}</span> --}}
                                     <span class="stat-pill"><i class="fas fa-file-signature mr-1 text-warning"></i> পরীক্ষা: {{ bangla($user->meritlists->count()) }}</span>
                                 </td>
 
@@ -102,16 +104,20 @@
 
                                 <td class="text-right">
                                     <div class="btn-group">
-                                        {{-- <button type="button" class="btn btn-outline-info btn-sm" data-toggle="modal" data-target="#smsModal{{ $user->id }}" title="SMS">
-                                            <i class="fas fa-envelope"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-outline-warning btn-sm" data-toggle="modal" data-target="#notifModal{{ $user->id }}" title="Push Notification">
-                                            <i class="fas fa-bell"></i>
-                                        </button> --}}
-
-                    
+                                        {{-- Approve / Unapprove Toggle Button --}}
+                                        <form action="{{ route('dashboard.users.approve', $user->id) }}" method="POST" style="display: inline-block;">
+                                            @csrf
+                                            @if($user->is_approved)
+                                                <button type="submit" class="btn btn-outline-warning btn-sm" title="অনুমোদন বাতিল করুন">
+                                                    <i class="fas fa-user-times"></i>
+                                                </button>
+                                            @else
+                                                <button type="submit" class="btn btn-outline-success btn-sm" title="অনুমোদন দিন">
+                                                    <i class="fas fa-user-check"></i>
+                                                </button>
+                                            @endif
+                                        </form>
                                         
-
                                         <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#editUserModal{{ $user->id }}" title="Edit">
                                             <i class="fas fa-user-edit"></i>
                                         </button>
@@ -120,51 +126,7 @@
                                         </button>
                                     </div>
 
-                                    {{-- MODALS (লজিক অপরিবর্তিত) --}}
-                                    
-                                    {{-- <div class="modal fade text-left" id="smsModal{{ $user->id }}" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header bg-info text-white">
-                                                    <h5 class="modal-title">এসএমএস - {{ $user->name }}</h5>
-                                                    <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
-                                                </div>
-                                                <form method="post" action="{{ route('dashboard.users.singlesms', $user->id) }}">
-                                                    @csrf
-                                                    <div class="modal-body">
-                                                        <textarea class="form-control" placeholder="মেসেজ লিখুন" name="message" style="min-height: 150px; resize: none;" required></textarea>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ফিরে যান</button>
-                                                        <button type="submit" class="btn btn-info">মেসেজ পাঠান</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div> --}}
-
-                                    {{-- <div class="modal fade text-left" id="notifModal{{ $user->id }}" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header bg-warning">
-                                                    <h5 class="modal-title">নোটিফিকেশন পাঠান</h5>
-                                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                                                </div>
-                                                <form method="post" action="{{ route('dashboard.users.singlenotification', $user->id) }}">
-                                                    @csrf
-                                                    <div class="modal-body">
-                                                        <input type="text" name="headings" class="form-control mb-2" placeholder="হেডিংস" required>
-                                                        <input type="text" name="message" class="form-control" placeholder="মেসেজ" required>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ফিরে যান</button>
-                                                        <button type="submit" class="btn btn-warning">দাখিল করুন</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
- --}}
+                                    {{-- Edit Modal --}}
                                     <div class="modal fade text-left" id="editUserModal{{ $user->id }}" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
@@ -191,10 +153,17 @@
                                                             <option value="manager" @if($user->role == 'manager') selected @endif>ম্যানেজার</option>
                                                             <option value="user" @if($user->role == 'user') selected @endif>ব্যবহারকারী/ পরীক্ষার্থী</option>
                                                         </select>
-                                                        <label>প্যাকেজের মেয়াদ</label>
+                                                        
+                                                        <label>স্ট্যাটাস</label>
+                                                        <select name="is_approved" class="form-control mb-2">
+                                                            <option value="1" @if($user->is_approved == 1) selected @endif>অনুমোদিত</option>
+                                                            <option value="0" @if($user->is_approved == 0) selected @endif>অপেক্ষমান</option>
+                                                        </select>
+
+                                                        <label>প্যাকেজের মেয়াদ</label>
                                                         <input type="text" name="packageexpirydate" id="packageexpirydate{{ $user->id }}" class="form-control mb-2" value="{{ date('F d, Y', strtotime($user->package_expiry_date)) }}" required>
-                                                        <label>পাসওয়ার্ড (পরিবর্তন করতে চাইলে)</label>
-                                                        <input type="password" name="password" class="form-control" placeholder="নতুন পাসওয়ার্ড">
+                                                        <label>পাসওয়ার্ড (পরিবর্তন করতে চাইলে)</label>
+                                                        <input type="password" name="password" class="form-control" placeholder="নতুন পাসওয়ার্ড">
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">ফিরে যান</button>
@@ -205,6 +174,7 @@
                                         </div>
                                     </div>
 
+                                    {{-- Delete Modal --}}
                                     <div class="modal fade text-left" id="deleteUserModal{{ $user->id }}" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
@@ -248,8 +218,6 @@
     </div>
 
     {{-- Add User Modal Code --}}
-    {{-- Add User Modal Code --}}
-    <!-- Modal -->
     <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel" aria-hidden="true" data-backdrop="static">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -260,85 +228,54 @@
             </button>
           </div>
           <form method="post" action="{{ route('dashboard.users.store') }}">
-	          <div class="modal-body">
-	            
-	                @csrf
+          <div class="modal-body">
+                @csrf
+                <div class="input-group mb-3">
+                    <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="নাম" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-user"></span></div>
+                    </div>
+                </div>
 
-	                <div class="input-group mb-3">
-	                    <input type="text"
-	                           name="name"
-	                           class="form-control"
-	                           value="{{ old('name') }}"
-	                           placeholder="নাম" required>
-	                    <div class="input-group-append">
-	                        <div class="input-group-text"><span class="fas fa-user"></span></div>
-	                    </div>
-	                </div>
+                <div class="input-group mb-3">
+                    <input type="text" name="mobile" value="{{ old('mobile') }}" autocomplete="off" class="form-control" placeholder="মোবাইল নম্বর (১১ ডিজিট)" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-phone"></span></div>
+                    </div>
+                </div>
 
-	                <div class="input-group mb-3">
-	                    <input type="text"
-	                           name="mobile"
-	                           value="{{ old('mobile') }}"
-	                           autocomplete="off"
-	                           class="form-control"
-	                           placeholder="মোবাইল নম্বর (১১ ডিজিট)" required>
-	                    <div class="input-group-append">
-	                        <div class="input-group-text"><span class="fas fa-phone"></span></div>
-	                    </div>
-	                </div>
+                <div class="input-group mb-3">
+                    <select name="role" id="adduserrole" class="form-control" required>
+                        <option selected="" disabled="" value="">ধরন</option>
+                        <option value="admin">এডমিন</option>
+                        <option value="manager">ম্যানেজার</option>
+                        <option value="user" selected>ব্যবহারকারী/ পরীক্ষার্থী</option>
+                    </select>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-user-secret"></span></div>
+                    </div>
+                </div>
 
-	                <div class="input-group mb-3">
-	                	<select name="role" id="adduserrole" class="form-control" required>
-	                		<option selected="" disabled="" value="">ধরন</option>
-	                		<option value="admin">এডমিন</option>
-							<option value="manager">ম্যানেজার</option>
-                            <option value="user" selected>ব্যবহারকারী/ পরীক্ষার্থী</option>
-							{{-- <option value="accountant">একাউন্টেন্ট</option> --}}
-	                	</select>
-	                    <div class="input-group-append">
-	                        <div class="input-group-text"><span class="fas fa-user-secret"></span></div>
-	                    </div>
-	                </div>
-
-
-	                <div class="input-group mb-3">
-	                    <input type="password"
-	                           name="password"
-	                           class="form-control"
-	                           autocomplete="off"
-	                           placeholder="পাসওয়ার্ড" required>
-	                    <div class="input-group-append">
-	                        <div class="input-group-text"><span class="fas fa-lock"></span></div>
-	                    </div>
-	                </div>
-	            
-	          </div>
-	          <div class="modal-footer">
-	            <button type="button" class="btn btn-secondary" data-dismiss="modal">ফিরে যান</button>
-	            <button type="submit" class="btn btn-success">দাখিল করুন</button>
-	          </div>
+                <div class="input-group mb-3">
+                    <input type="password" name="password" class="form-control" autocomplete="off" placeholder="পাসওয়ার্ড" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-lock"></span></div>
+                    </div>
+                </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">ফিরে যান</button>
+            <button type="submit" class="btn btn-success">দাখিল করুন</button>
+          </div>
           </form>
         </div>
       </div>
     </div>
-    {{-- Add User Modal Code --}}
-    {{-- Add User Modal Code --}}
-
-    
 @endsection
 
 @section('third_party_scripts')
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
-        $('#adduserrole').change(function () {
-            if($('#adduserrole').val() == 'accountant') {
-                $('#ifaccountant').hide();
-            } else {
-                $('#ifaccountant').show();
-            }
-        });
-
-
         $(document).on('click', '#search-button', function() {
           if($('#search-param').val() != '') {
             var urltocall = '{{ route('dashboard.users') }}' +  '/' + $('#search-param').val();
@@ -365,35 +302,5 @@
             }
           }
         });
-    </script>
-
-    <script>
-    function confirmPayout(userId) {
-        // ১. প্রথমে ফর্মটি সিলেক্ট করুন
-        var form = document.getElementById('payoutForm' + userId);
-
-        // ২. ব্রাউজারের নেটিভ ভ্যালিডেশন চেক করুন (required, min, max ইত্যাদি)
-        if (form.checkValidity()) {
-            // ৩. যদি সব ফিল্ড ঠিক থাকে, তবেই Swal দেখাবে
-            Swal.fire({
-                title: "আপনি কি নিশ্চিত?",
-                text: "টাকাটি পাঠানো হয়েছে এবং আপনি এই রেকর্ডটি ডাটাবেসে সেভ করতে চাচ্ছেন?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#28a745",
-                cancelButtonColor: "#6c757d",
-                confirmButtonText: "হ্যাঁ, কনফার্ম করুন!",
-                cancelButtonText: "ফিরে যান",
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit(); // সব ঠিক থাকলে সাবমিট হবে
-                }
-            });
-        } else {
-            // ৪. যদি কোনো ফিল্ড বাকি থাকে, তবে ব্রাউজারকে এরর দেখাতে বলুন
-            form.reportValidity();
-        }
-    }
     </script>
 @endsection
