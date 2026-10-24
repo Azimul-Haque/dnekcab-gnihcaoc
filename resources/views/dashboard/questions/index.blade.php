@@ -138,39 +138,39 @@
                                                               </div>
                                                           </div>
                                                         </div>
-                                                          <div class="col-md-6">
-                                                              <div class="input-group mb-3">
-                                                                  <select name="topic_id" id="topic-select-{{ $question->id }}" data-saved-id="{{ $question->topic_id }}" data-saved-text="{{ $question->topic->full_path ?? '' }}" class="form-control topic-select-field" style="width: 100%;" required>
-                                                                      {{-- <option selected="" disabled="" value="">টপিক (বিষয়)</option>
-                                                                      @foreach ($topics as $topic)
-                                                                          <option value="{{ $topic->id }}" @if($question->topic_id == $topic->id) selected @endif>{{ $topic->name }}</option>
-                                                                      @endforeach --}}
-                                                                  </select>
-                                                                  <div class="input-group-append">
-                                                                      <div class="input-group-text"><span class="fas fa-bookmark"></span></div>
-                                                                  </div>
-                                                              </div>
-                                                          </div>
-                                                          <div class="col-md-6">
-                                                              <div class="form-group ">
-                                                                  <label for="image">ছবি (প্রয়োজনে)</label>
-                                                                  <input type="file" id="image{{ $question->id }}" name="image" accept="image/*">
-                                                              </div>
-                                                              <center>
-                                                                  <?php
-                                                                    if($question->questionimage) {
-                                                                        $currentimage = asset('images/questions/' . $question->questionimage->image);
-                                                                    } else {
-                                                                        $currentimage = asset('images/placeholder.png');
-                                                                    }
-                                                                  ?>
-                                                                  <img src="{{ $currentimage }}" id='img-upload{{ $question->id }}' style="width: 250px; height: auto;" class="img-responsive" />
-                                                              </center>
-                                                          </div>
-                                                          <div class="col-md-6">
-                                                              <label for="explanation">ব্যাখ্যা (প্রয়োজনে)</label><br/>
-                                                              <textarea class="form-control summernote" name="explanation" id="explanation" placeholder="ব্যাখ্যা" style="width: 100%; height: 220px;">{{ $question->questionexplanation ? $question->questionexplanation->explanation : '' }}</textarea>
-                                                          </div>
+                                                        <div class="col-md-6">
+                                                            <div class="input-group mb-3">
+                                                                <select name="topic_id" id="topic-select-{{ $question->id }}" data-saved-id="{{ $question->topic_id }}" data-saved-text="{{ $question->topic->full_path ?? '' }}" class="form-control topic-select-field" style="width: 100%;" required>
+                                                                    {{-- <option selected="" disabled="" value="">টপিক (বিষয়)</option>
+                                                                    @foreach ($topics as $topic)
+                                                                        <option value="{{ $topic->id }}" @if($question->topic_id == $topic->id) selected @endif>{{ $topic->name }}</option>
+                                                                    @endforeach --}}
+                                                                </select>
+                                                                <div class="input-group-append">
+                                                                    <div class="input-group-text"><span class="fas fa-bookmark"></span></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group ">
+                                                                <label for="image">ছবি (প্রয়োজনে)</label>
+                                                                <input type="file" id="image{{ $question->id }}" name="image" accept="image/*">
+                                                            </div>
+                                                            <center>
+                                                                <?php
+                                                                  if($question->questionimage) {
+                                                                      $currentimage = asset('images/questions/' . $question->questionimage->image);
+                                                                  } else {
+                                                                      $currentimage = asset('images/placeholder.png');
+                                                                  }
+                                                                ?>
+                                                                <img src="{{ $currentimage }}" id='img-upload{{ $question->id }}' style="width: 250px; height: auto;" class="img-responsive" />
+                                                            </center>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="explanation">ব্যাখ্যা (প্রয়োজনে)</label><br/>
+                                                            <textarea class="form-control summernote" name="explanation" id="explanation" placeholder="ব্যাখ্যা" style="width: 100%; height: 220px;">{{ $question->questionexplanation ? $question->questionexplanation->explanation : '' }}</textarea>
+                                                        </div>
                                                       </div>
                                                 </div>
                                                 <div class="modal-footer">
