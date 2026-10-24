@@ -1,0 +1,123 @@
+@extends('layouts.index')
+@section('title') {{ $blogger->name }} | ব্লগ-Blog | BCS Exam Aid - বিসিএস ও সরকারি চাকরির সেরা প্ল্যাটফর্ম @endsection
+
+@section('meta-data')
+    <meta name="description" content="BCS Exam Aid বাংলাদেশ সিভিল সার্ভিস (BCS) পরীক্ষা এবং অন্যান্য সরকারি চাকরি (NSI, দুদক, বাংলাদেশ ব্যাংক, অন্যান্য ব্যাংক, প্রাথমিক শিক্ষক নিয়োগ) পরীক্ষার প্রস্তুতির জন্য সেরা ডেডিকেটেড অনলাইন প্ল্যাটফর্ম। Developed By A. H. M. Azimul Haque.">
+    <meta name="keywords" content="BCS, Bangladesh Civil Service, NSI, দুদক, বাংলাদেশ ব্যাংক, অন্যান্য ব্যাংক, প্রাথমিক শিক্ষক নিয়োগ, Primary Exam, Job Circular, Bank Job Circular, Bank Job Exam, BCS Circular, বিসিএস পরীক্ষা, বার কাউন্সিল পরীক্ষা, জুডিশিয়াল পরীক্ষা, Judicial Exam, bcs book list, bcs book suggestion, BCS Preparation Books, বিসিএস প্রিলিমিনারি বই তালিকা, বিসিএস বই তালিকা, বিসিএস লিখিত বই তালিকা, bcs preliminary book list, bcs written book list, বিসিএস প্রিলিমিনারি পরীক্ষার সিলেবাস, বিসিএস পরীক্ষার সিলেবাস">
+    <!-- Structured data JSON-LD (optional but highly recommended) -->
+    <script type="application/ld+json">
+        {
+        "@context": "https://schema.org",
+        "@type": "Website",
+        "headline": "বিসিএস এক্সাম এইড - ব্লগ - {{ $blogger->name }}",
+        "description": "{{ $blogger->name }}-এর লেখা বিসিএস এক্সাম এইডের সকল ব্লগ পাচ্ছেন এই পাতায়। বিসিএস ও সরকারি চাকরির পূর্ণান্নগ প্রস্তুতি হোক এখানেই!",
+        "image": "{{ asset('images/bcs-exam-aid-banner.png') }}",
+        "url": "{{ url()->current() }}",
+        "author": {
+              "@type": "Person",
+              "name": "{{  $blogger->name ?? 'এ. এইচ. এম. আজিমুল হক' }}"
+            }
+        }
+    </script>
+@endsection
+
+@section('third_party_stylesheets')
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+	      integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+	      crossorigin="anonymous"/>
+	 <style type="text/css">
+	 	.blog-box {
+	 		border: 1px solid #EEEEEE;
+	 	}
+	 	.blog-box:hover {
+	 		border: 1px solid gray;
+	 	}
+	 </style>
+@endsection
+
+@section('content')
+<section style="padding-top: 150px; padding-bottom: 60px;background-color: #FFFFFF; height: 100px; border-bottom: 1px solid #F4F4F4;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+            	<center>
+                	<h4>{{ $blogger->name }}</h4>
+            	</center>
+            </div>
+        </div>
+    </div>
+</section>
+<section style="background-color: #F4F4F4; padding-top: 20px; padding-bottom: 50px;">
+    <div class="container">
+	    <div class="row">
+	    	@foreach($blogger->blogs as $blog)
+		     	<div class="col-md-4">
+					<div class="blog-listing blog-listing-classic no-margin-top wow fadeIn blog-box" style="padding: 20px; margin-bottom: 20px; background-color: #FFFFFF; border-radius: 5px; min-height: 460px;">
+			            <!-- post image -->
+			            @if($blog->featured_image != null)
+			                <div><a class="blog-image" href="{{ route('blog.single', $blog->slug) }}"><img class="img-responsive" src="{{ asset('images/blogs/'.$blog->featured_image) }}" alt="" style="width: 100%;" /></a></div><br/>
+			            @endif
+			            <!-- end post image -->
+			            <div class="blog-details">
+			                <small class="blog-date"><a href="{{ route('blogger.profile', $blog->user->id) }}"><b>{{ $blog->user->name }}</b></a> | {{ date('F d, Y', strtotime($blog->created_at)) }} | <a href="{{ route('blog.categorywise', str_replace(" ", "-", $blog->blogcategory->name)) }}">{{ $blog->blogcategory->name }}</a> </small>
+			                <h5>
+			                    <a href="{{ route('blog.single', $blog->slug) }}" style="color: #000000;">
+			                        {{ $blog->title }}
+			                    </a>
+			                </h5>
+			                <div style="text-align: justify; margin-bottom: 10px;">
+			                    @if($blog->description != '')
+			                      {{ $blog->description }}
+			                    @else
+			                      @if(strlen(strip_tags($blog->body))>200)
+			                          {{ mb_substr(strip_tags($blog->body), 0, stripos($blog->body, " ", stripos(strip_tags($blog->body), " ")+200))."... " }}
+			                      @else
+			                          {{ strip_tags($blog->body) }}
+			                      @endif
+			                    @endif
+			                </div>
+			                <small style="margin-bottom: 10px;">
+			                    <a href="#!" class="blog-like" style="color: gray; margin-right: 20px;"><i class="far fa-heart"></i> {{ $blog->likes }} Like(s)</a>
+			                    <a href="#!" class="comment" style="color: gray;"><i class="far fa-comment"></i>
+			                    <span id="comment_count{{ $blog->id }}"></span>
+			                     comment(s)</a>
+			                </small>
+			            </div>
+			        </div>
+			        {{-- <script type="text/javascript" src="{{ asset('vendor/hcode/js/jquery.min.js') }}"></script>
+			        <script type="text/javascript">
+			            // $.ajax({
+			            //     url: "https://graph.facebook.com/v2.2/?fields=share{comment_count}&id={{ url('/blog/'.$blog->slug) }}",
+			            //     dataType: "jsonp",
+			            //     success: function(data) {
+			            //         $('#comment_count{{ $blog->id }}').text(data.share.comment_count);
+			            //     }
+			            // });
+			        </script> --}}
+		    	</div>
+		    	<script type="application/ld+json">
+		    	    {
+		    	    "@context": "https://schema.org",
+		    	    "@type": "Article",
+		    	    "headline": "{{ $blog->title }}",
+		    	    "description": "{{ $blog->description ?? mb_substr(strip_tags($blog->body), 0, 200) }}",
+		    	    "image": "{{ asset('images/blogs/'.$blog->featured_image) ?? asset('images/bcs-exam-aid-banner.png') }}",
+		    	    "url": "{{ url('/') . '/blog/' . $blog->slug }}",
+		    	    "author": {
+		    	      "@type": "Person",
+		    	      "name": "{{ $blog->user->name ?? 'এ. এইচ. এম. আজিমুল হক' }}"
+		    	    },
+		    	    "datePublished": "{{ $blog->created_at ?? now()->toIso8601String() }}",
+		    	    "dateModified": "{{ $blog->updated_at ?? now()->toIso8601String() }}"
+		    	    }
+		    	</script>
+	    	@endforeach
+	    	{{ $blogger->blogs->links() }}
+	  	</div>
+  	</div>
+</section>
+@endsection
+
+@section('third_party_scripts')
+
+@endsection

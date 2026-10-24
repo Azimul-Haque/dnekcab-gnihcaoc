@@ -1,0 +1,323 @@
+@extends('layouts.app')
+
+@section('title') প্রোফাইল | {{ $user->name }} @endsection
+
+@section('third_party_stylesheets')
+  <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+  <style type="text/css">
+    .profile-card { border-radius: 15px; overflow: hidden; transition: 0.3s; }
+    .info-box { border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important; }
+    .stat-pill { background: #f1f3f9; padding: 5px 12px; border-radius: 50px; font-weight: 600; color: #4e73df; font-size: 14px; display: inline-block; margin-top: 5px; border: 1px solid #d1d9e6; }
+    .table-modern thead th { background-color: #f8f9fa; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; border-bottom: 2px solid #eee; }
+    .table-modern td { vertical-align: middle !important; padding: 12px 15px; }
+    .card-title-icon { width: 35px; height: 35px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; margin-right: 10px; }
+    .bg-soft-success { background: #e8f5e9; color: #2e7d32; }
+    .bg-soft-primary { background: #e3f2fd; color: #1565c0; }
+    .bg-soft-warning { background: #fffde7; color: #f57f17; }
+    .pulse-green { animation: pulse-green 2s infinite; }
+    @keyframes pulse-green { 0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(40, 167, 69, 0); } 100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); } }
+  </style>
+@endsection
+
+@section('content')
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 font-weight-bold text-dark"><i class="fas fa-user-circle text-primary"></i> {{ $user->name }}</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card profile-card shadow-sm border-0">
+                <div class="card-body p-0">
+                    <div class="bg-primary p-4 text-center">
+                        {{-- <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=random&color=fff&size=128" class="img-circle elevation-2 mb-3" style="width: 100px; border: 3px solid #fff;"> --}}
+                        <h4 class="text-white font-weight-bold mb-0">{{ $user->name }}</h4>
+                        <span class="badge badge-light badge-pill px-3">{{ ucfirst($user->role) }}</span>
+                    </div>
+                    <div class="p-3">
+                        <ul class="list-group list-group-unbordered">
+                            <li class="list-group-item border-0">
+                                <i class="fas fa-phone-alt text-muted mr-2"></i> <b>মোবাইল:</b> <span class="float-right text-dark">{{ $user->mobile }}</span>
+                            </li>
+                            <li class="list-group-item border-0">
+                                <i class="fas fa-calendar-alt text-muted mr-2"></i> <b>যোগদান:</b> <span class="float-right text-dark">{{ bangla(date('d F, Y', strtotime($user->created_at))) }}</span>
+                            </li>
+                            <li class="list-group-item border-0">
+                                <i class="fas fa-clock text-danger mr-2"></i> <b>মেয়াদ:</b> <span class="float-right text-danger font-weight-bold">{{ bangla(date('d F, Y', strtotime($user->package_expiry_date))) }}</span>
+                            </li>
+                            <li class="list-group-item border-0">
+                                <i class="fas fa-shopping-cart text-muted mr-2"></i> <b>মোট ক্রয়:</b> <span class="float-right badge badge-primary">{{ bangla($user->payments->count()) }} বার</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            @if($user->isAmbassador())
+            <div class="card shadow-sm border-0 bg-soft-success">
+                <div class="card-body">
+                    <h6 class="font-weight-bold mb-3"><i class="fas fa-award text-success"></i> ক্যাম্পাস অ্যাম্বাসেডর প্যানেল</h6>
+                    <div class="row">
+                        <div class="col-6 border-right">
+                            <small class="text-muted d-block">বর্তমান ব্যালেন্স</small>
+                            <h4 class="text-success font-weight-bold mb-0">৳ {{ bangla($user->ambassadorProfile->balance) }}</h4>
+                        </div>
+                        <div class="col-6 pl-3">
+                            <small class="text-muted d-block">মোট আয়</small>
+                            <h4 class="text-dark font-weight-bold mb-0">৳ {{ bangla($user->ambassadorProfile->total_earned) }}</h4>
+                        </div>
+                    </div>
+
+                    @if($user->ambassadorProfile->balance >= 500)
+                        <button type="button" class="btn btn-success btn-sm btn-block mt-3 pulse-green" data-toggle="modal" data-target="#payoutModal">
+                            <i class="fas fa-hand-holding-usd"></i> পে-আউট করুন
+                        </button>
+                    @endif
+
+                    <div class="modal fade text-left" id="payoutModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header bg-success text-white">
+                                    <h5 class="modal-title"><i class="fas fa-money-check-alt"></i> পে-আউট প্রদান (অ্যাম্বাসেডর)</h5>
+                                    <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+                                </div>
+
+                                <form id="payoutForm{{ $user->id }}" method="post" action="{{ route('dashboard.ambassadors.payout', $user->id) }}">
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="text-muted small">অ্যাম্বাসেডর</label>
+                                                <p class="font-weight-bold mb-0">{{ $user->name }}</p>
+                                            </div>
+                                            <div class="col-md-6 text-right">
+                                                <label class="text-muted small">বর্তমান ব্যালেন্স</label>
+                                                <h5 class="text-success font-weight-bold">৳ {{ $user->ambassadorProfile->balance ?? '0.00' }}</h5>
+                                            </div>
+                                        </div>
+
+                                        <hr>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>টাকার পরিমাণ (সর্বনিম্ন ৫০০ ৳)</label>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">৳</span>
+                                                        </div>
+                                                        
+                                                        <input type="number" 
+                                                               name="amount" 
+                                                               class="form-control @if(($user->ambassadorProfile->balance ?? 0) < 500) is-invalid @endif" 
+                                                               placeholder="0.00" 
+                                                               {{-- ব্যালেন্স ৫০০ এর কম হলে ইনপুটটি ডিজেবল থাকবে --}}
+                                                               @if(($user->ambassadorProfile->balance ?? 0) < 500) disabled @endif
+                                                               
+                                                               {{-- মডার্ন লজিক: মিনিমাম সবসময় ৫০০, ম্যাক্সিমাম ইউজারের ব্যালেন্স --}}
+                                                               min="500" 
+                                                               max="{{ $user->ambassadorProfile->balance ?? 0 }}" 
+                                                               
+                                                               {{-- ডিফল্ট ভ্যালু হিসেবে ৫০০ সেট করা ভালো প্র্যাকটিস --}}
+                                                               value="{{ ($user->ambassadorProfile->balance ?? 0) >= 500 ? 500 : '' }}"
+                                                               required>
+                                                    </div>
+                                                    
+                                                    {{-- ব্যালেন্স ৫০০ এর কম হলে এই ওয়ার্নিং মেসেজটি দেখাবে --}}
+                                                    @if(($user->ambassadorProfile->balance ?? 0) < 500)
+                                                        <small class="text-danger font-weight-bold mt-1">
+                                                            <i class="fas fa-exclamation-circle"></i> দুঃখিত, ৫০০ টাকার নিচে পে-আউট দেওয়া সম্ভব নয়।
+                                                        </small>
+                                                    @else
+                                                        <small class="text-muted">আপনার বর্তমান ব্যালেন্স: ৳ {{ bangla($user->ambassadorProfile->balance) }}</small>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>পেমেন্ট মেথড</label>
+                                                    <select name="payment_method" class="form-control" required>
+                                                        <option value="bKash">bKash (বিকাশ)</option>
+                                                        <option value="Nagad">Nagad (নগদ)</option>
+                                                        <option value="Rocket">Rocket (রকেট)</option>
+                                                        <option value="Bank">Bank Transfer</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>মোবাইল নম্বর (যেখানে টাকা পাঠিয়েছেন)</label>
+                                            <input type="text" name="payment_number" class="form-control" value="{{ $user->mobile }}" placeholder="017XXXXXXXX" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>ট্রানজেকশন আইডি (Transaction ID)</label>
+                                            <input type="text" name="transaction_id" class="form-control" placeholder="যেমন: TRN12345678" required>
+                                            <small class="text-muted">বিকাশ/নগদ থেকে প্রাপ্ত ট্রানজেকশন আইডিটি এখানে দিন।</small>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">ফিরে যান</button>
+                                        <button type="button" class="btn btn-success" onclick="confirmPayout('{{ $user->id }}')">
+                                            <i class="fas fa-paper-plane"></i> পেমেন্ট কনফার্ম করুন
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            <div class="info-box bg-soft-primary">
+                <span class="info-box-icon"><i class="fas fa-file-signature text-primary"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">পরীক্ষা তথ্য</span>
+                    <span class="info-box-number text-primary h4 mb-0">{{ bangla($user->meritlists->count()) }} টি</span>
+                    <small class="text-muted font-italic">সফলভাবে অংশগ্রহণ করেছেন</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            @if($user->isAmbassador())
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3">
+                    <h5 class="card-title font-weight-bold mb-0">
+                        <span class="card-title-icon bg-soft-success"><i class="fas fa-history"></i></span> পে-আউট হিস্ট্রি
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-modern mb-0">
+                            <thead>
+                                <tr>
+                                    <th>তারিখ</th>
+                                    <th>মেথড ও নম্বর</th>
+                                    <th class="text-center">পরিমাণ</th>
+                                    <th>ট্রানজেকশন আইডি</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($user->payoutRequests as $payout)
+                                <tr>
+                                    <td class="small">{{ date('d M, Y', strtotime($payout->created_at)) }}</td>
+                                    <td>
+                                        <span class="badge badge-secondary">{{ $payout->payment_method }}</span><br>
+                                        <small class="text-dark font-weight-bold">{{ $payout->payment_number }}</small>
+                                    </td>
+                                    <td class="text-center text-success font-weight-bold">৳ {{ bangla($payout->amount) }}</td>
+                                    <td><small class="text-muted font-italic">{{ $payout->transaction_id ?? 'N/A' }}</small></td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="4" class="text-center py-4 text-muted">এখনো কোনো পে-আউট রিকোয়েস্ট নেই।</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white py-3">
+                    <h5 class="card-title font-weight-bold mb-0">
+                        <span class="card-title-icon bg-soft-primary"><i class="fas fa-list-ul"></i></span> পরীক্ষার ইতিহাস
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-modern table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>পরীক্ষার নাম ও কোর্স</th>
+                                    <th>সময়</th>
+                                    <th class="text-center">প্রাপ্ত নম্বর</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($user->meritlists as $examdata)
+                                <tr>
+                                    <td>
+                                        <div class="font-weight-bold text-dark">{{ $examdata->exam->name }}</div>
+                                        <small class="text-muted"><i class="fas fa-book-open fa-xs"></i> {{ $examdata->course->name }}</small>
+                                    </td>
+                                    <td>
+                                        <small class="text-muted">{{ date('F d Y h:i a', strtotime($examdata->created_at)) }}</small>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge badge-info px-3 py-2" style="font-size: 14px;">{{ bangla($examdata->marks) }}</span>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="2" class="text-center py-4 text-muted font-italic">এখনো কোনো পরীক্ষায় অংশগ্রহণ করা হয়নি।</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('third_party_scripts')
+  <script src="//cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+  <script>
+    $(document).ready(function() {
+        $('.table-modern').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "pageLength": 5
+        });
+    });
+  </script>
+  <script>
+  function confirmPayout(userId) {
+      // ১. প্রথমে ফর্মটি সিলেক্ট করুন
+      var form = document.getElementById('payoutForm' + userId);
+
+      // ২. ব্রাউজারের নেটিভ ভ্যালিডেশন চেক করুন (required, min, max ইত্যাদি)
+      if (form.checkValidity()) {
+          // ৩. যদি সব ফিল্ড ঠিক থাকে, তবেই Swal দেখাবে
+          Swal.fire({
+              title: "আপনি কি নিশ্চিত?",
+              text: "টাকাটি পাঠানো হয়েছে এবং আপনি এই রেকর্ডটি ডাটাবেসে সেভ করতে চাচ্ছেন?",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#28a745",
+              cancelButtonColor: "#6c757d",
+              confirmButtonText: "হ্যাঁ, কনফার্ম করুন!",
+              cancelButtonText: "ফিরে যান",
+              reverseButtons: true
+          }).then((result) => {
+              if (result.isConfirmed) {
+                  form.submit(); // সব ঠিক থাকলে সাবমিট হবে
+              }
+          });
+      } else {
+          // ৪. যদি কোনো ফিল্ড বাকি থাকে, তবে ব্রাউজারকে এরর দেখাতে বলুন
+          form.reportValidity();
+      }
+  }
+  </script>
+@endsection
