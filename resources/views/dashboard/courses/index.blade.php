@@ -292,14 +292,8 @@
                       <select name="category" class="form-control" required>
                           <option selected="" disabled="" value="">কোর্স ক্যাটাগরি</option>
                           @foreach($examcategories as $category)
-                            <option value="{{ $category->id }}" @if($course->category == $category->id) selected @endif>{{ $category->name }}</option>
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
                           @endforeach
-                          <option value="1">বিসিএস</option>
-                          <option value="2">প্রাইমারি</option>
-                          <option value="3">ব্যাংক</option>
-                          <option value="4">NTRCA</option>
-                          <option value="5">NSI, DGFI ও অন্যান্য</option>
-                          <option value="6">প্রশ্ন ব্যাংক</option>
                       </select>
                       <div class="input-group-append">
                           <div class="input-group-text"><span class="fas fa-tag"></span></div>
