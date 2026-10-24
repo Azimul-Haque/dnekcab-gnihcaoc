@@ -142,7 +142,140 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                               </div>
-                                              
+                                              <form method="post" action="{{ route('dashboard.exams.update', $exam->id) }}" enctype="multipart/form-data">
+                                                  <div class="modal-body text-left">
+                                                      @csrf
+                                                      <div class="row">
+                                                          
+                                                          <!-- পরীক্ষার ক্যাটাগরি -->
+                                                          <div class="col-md-6 mb-3">
+                                                              <label class="font-weight-bold text-dark small mb-1">পরীক্ষার ক্যাটাগরি</label>
+                                                              <div class="input-group">
+                                                                  <select name="examcategory_id" class="form-control" required>
+                                                                      <option value="" disabled>পরীক্ষার ক্যাটাগরি নির্বাচন করুন</option>
+                                                                      @foreach ($examcategories as $category)
+                                                                          <option value="{{ $category->id }}" @if($exam->examcategory_id == $category->id) selected @endif>{{ $category->name }}</option>
+                                                                      @endforeach
+                                                                  </select>
+                                                                  <div class="input-group-append">
+                                                                      <div class="input-group-text"><span class="fas fa-bookmark"></span></div>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+
+                                                          <!-- পরীক্ষার নাম -->
+                                                          <div class="col-md-6 mb-3">
+                                                              <label class="font-weight-bold text-dark small mb-1">পরীক্ষার নাম</label>
+                                                              <div class="input-group">
+                                                                  <input type="text" name="name" class="form-control" value="{{ $exam->name }}" placeholder="পরীক্ষার নাম লিখুন" required>
+                                                                  <div class="input-group-append">
+                                                                      <div class="input-group-text"><span class="far fa-clipboard"></span></div>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+
+                                                          <!-- সময়কাল (মিনিটে) -->
+                                                          <div class="col-md-6 mb-3">
+                                                              <label class="font-weight-bold text-dark small mb-1">সময়কাল (মিনিটে)</label>
+                                                              <div class="input-group">
+                                                                  <input type="number" name="duration" value="{{ $exam->duration }}" min="1" class="form-control" placeholder="যেমন: ৬০" required>
+                                                                  <div class="input-group-append">
+                                                                      <div class="input-group-text"><span class="fas fa-stopwatch"></span></div>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+
+                                                          <!-- প্রতি প্রশ্নের মান -->
+                                                          <div class="col-md-6 mb-3">
+                                                              <label class="font-weight-bold text-dark small mb-1">প্রতি প্রশ্নের মান</label>
+                                                              <div class="input-group">
+                                                                  <input type="number" name="qsweight" value="{{ $exam->qsweight }}" min="1" class="form-control" placeholder="যেমন: ১" required>
+                                                                  <div class="input-group-append">
+                                                                      <div class="input-group-text"><span class="fas fa-sort-amount-up-alt"></span></div>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+
+                                                          <!-- নেগেটিভ মার্ক পারসেন্টেজ -->
+                                                          <div class="col-md-6 mb-3">
+                                                              <label class="font-weight-bold text-dark small mb-1">নেগেটিভ মার্কস (%)</label>
+                                                              <div class="input-group">
+                                                                  <input type="number" name="negativepercentage" value="{{ $exam->negativepercentage }}" min="0" max="50" class="form-control" placeholder="যেমন: ২৫" required>
+                                                                  <div class="input-group-append">
+                                                                      <div class="input-group-text"><span class="fas fa-percent"></span></div>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+
+                                                          <!-- কাটমার্কস -->
+                                                          <div class="col-md-6 mb-3">
+                                                              <label class="font-weight-bold text-dark small mb-1">কাটমার্কস</label>
+                                                              <div class="input-group">
+                                                                  <input type="text" name="cutmark" value="{{ $exam->cutmark }}" class="form-control" placeholder="যেমন: ৫০" required>
+                                                                  <div class="input-group-append">
+                                                                      <div class="input-group-text"><span class="fas fa-greater-than-equal"></span></div>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+
+                                                          <!-- চালু হবে (শুরুর তারিখ) -->
+                                                          <div class="col-md-6 mb-3">
+                                                              <label class="font-weight-bold text-dark small mb-1">চালু হবে (তারিখ)</label>
+                                                              <div class="input-group">
+                                                                  <input type="text" name="available_from" id="available_from{{ $exam->id }}" value="{{ date('F d, Y', strtotime($exam->available_from)) }}" class="form-control" autocomplete="off" placeholder="তারিখ নির্বাচন করুন" required>
+                                                                  <div class="input-group-append">
+                                                                      <div class="input-group-text"><span class="fas fa-calendar-check"></span></div>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+
+                                                          <!-- চালু থাকবে (শেষ তারিখ) -->
+                                                          <div class="col-md-6 mb-3">
+                                                              <label class="font-weight-bold text-dark small mb-1">চালু থাকবে (পর্যন্ত)</label>
+                                                              <div class="input-group">
+                                                                  <input type="text" name="available_to" id="available_to{{ $exam->id }}" value="{{ date('F d, Y', strtotime($exam->available_to)) }}" class="form-control" autocomplete="off" placeholder="তারিখ নির্বাচন করুন" required>
+                                                                  <div class="input-group-append">
+                                                                      <div class="input-group-text"><span class="fas fa-calendar-minus"></span></div>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+
+                                                          <!-- লেকচার PDF লিংক -->
+                                                          <div class="col-md-6 mb-3">
+                                                              <label class="font-weight-bold text-dark small mb-1">লেকচার PDF লিংক (ঐচ্ছিক)</label>
+                                                              <div class="input-group">
+                                                                  <input type="text" name="lecture_url" id="lecture_url{{ $exam->id }}" value="{{ $exam->lecture_url }}" class="form-control" placeholder="https://example.com/lecture.pdf">
+                                                                  <div class="input-group-append">
+                                                                      <div class="input-group-text"><span class="fas fa-file-pdf"></span></div>
+                                                                  </div>
+                                                              </div>
+                                                          </div>
+
+                                                          <!-- সব সময় এভেইলএবল অপশন -->
+                                                          <div class="col-md-6 mb-3 d-flex align-items-center pt-3">
+                                                              <div class="icheck-primary d-inline">
+                                                                  <input type="checkbox" name="alltimeavailability" id="alltimeavailability{{ $exam->id }}" value="1" @if($exam->alltimeavailability == 1) checked @endif>
+                                                                  <label for="alltimeavailability{{ $exam->id }}" class="font-weight-bold text-dark small">
+                                                                      সব সময় এভেইলএবল থাকবে
+                                                                  </label>
+                                                              </div>
+                                                          </div>
+
+                                                          <!-- সিলেবাস -->
+                                                          <div class="col-md-12 mb-3">
+                                                              <label class="font-weight-bold text-dark small mb-1">সিলেবাস</label>
+                                                              <div class="input-group">
+                                                                  <textarea class="form-control" name="syllabus" style="height: 120px;" placeholder="সিলেবাসের বিস্তারিত লিখুন" required>{!! str_replace('<br />', "", $exam->syllabus) !!}</textarea>
+                                                              </div>
+                                                          </div>
+
+                                                      </div>
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">ফিরে যান</button>
+                                                      <button type="submit" class="btn btn-success">আপডেট করুন</button>
+                                                  </div>
+                                              </form>
                                           </div>
                                           </div>
                                       </div>
