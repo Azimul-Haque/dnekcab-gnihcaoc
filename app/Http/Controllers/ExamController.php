@@ -294,7 +294,6 @@ class ExamController extends Controller
                                      ->orderBy('question_id', 'asc')
                                      ->get();
         $topics = Topic::all();
-        $tags = Tag::all();
 
 
         $mainTopics = Topic::whereNull('parent_id')
@@ -308,7 +307,6 @@ class ExamController extends Controller
                                     ->withExam($exam)
                                     ->withExamquestions($examquestions)
                                     ->withTopics($topics)
-                                    ->withTags($tags)
                                     ->withQuestions($questions)
                                     ->withMainTopics($mainTopics);
     }
