@@ -26,10 +26,6 @@ class Question extends Model
         return $this->hasOne('App\Models\Examquestion');
     }
 
-    public function tags() {
-        return $this->belongsToMany('App\Models\Tag');
-    }
-
     public function reportedquestions(){
         return $this->hasMany('App\Models\Reportedquestion');
     }
