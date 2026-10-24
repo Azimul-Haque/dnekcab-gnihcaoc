@@ -24,14 +24,14 @@
 </li>
 @endif --}}
 
-@if(Auth::user()->role == 'admin')
+{{-- @if(Auth::user()->role == 'admin')
 <li class="nav-item">
     <a href="{{ route('dashboard.packages') }}" class="nav-link {{ Request::is('dashboard/packages') ? 'active' : '' }} {{ Request::is('dashboard/packages/*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-coins"></i>
         <p>প্যাকেজ</p>
     </a>
 </li>
-@endif
+@endif --}}
 
 @if(Auth::user()->role == 'admin' || Auth::user()->role == 'manager')
 <li class="nav-item">
