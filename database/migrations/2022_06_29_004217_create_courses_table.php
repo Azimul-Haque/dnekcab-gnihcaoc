@@ -17,7 +17,6 @@ class CreateCoursesTable extends Migration
             $table->id();
             $table->string('name');
             $table->integer('status')->default(0);
-            $table->integer('type')->default(1); // 1 = Course, 2 = BJS MT, 3 = Bar MT, 4 = Free MT
             $table->integer('priority')->default(3);
             $table->integer('category')->default(0); // 1 = BCS, 2 = Primary, 3 = Bank, 4 = NTRCS, 5 = NSI/DGFI and Others, 6 = QB
             $table->integer('live')->default(0); // live থাকলে কোর্স ক্যাটাগরির ভেতরে শো করবে
