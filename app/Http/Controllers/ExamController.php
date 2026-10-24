@@ -26,6 +26,7 @@ use Artisan;
 use OneSignal;
 use Cache;
 use View;
+use Log;
 
 class ExamController extends Controller
 {
