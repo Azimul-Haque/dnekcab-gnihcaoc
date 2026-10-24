@@ -529,7 +529,7 @@
                       <div class="col-md-12 mb-3">
                           <label class="font-weight-bold text-dark small mb-1">সিলেবাস</label>
                           <div class="input-group">
-                              <textarea class="form-control" name="syllabus" style="height: 120px;" placeholder="সিলেবাসের বিস্তারিত লিখুন (যদি থাকে)" required>N/A</textarea>
+                              <textarea class="form-control" name="syllabus" style="height: 120px;" placeholder="সিলেবাসের বিস্তারিত লিখুন (যদি থাকে)" required></textarea>
                           </div>
                       </div>
 
