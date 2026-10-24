@@ -11,6 +11,7 @@ class Examquestion extends Model
         'exam_id',     // <--- এটি যুক্ত করুন
         'question_id', // <--- এটি যুক্ত করুন
     ];
+    
     public function exam(){
         return $this->belongsTo('App\Models\Exam');
     }
