@@ -85,6 +85,11 @@ Route::post('/dashboard/users/{id}/update', 'DashboardController@updateUser')->n
 Route::post('/dashboard/users/bulk/package/update', 'DashboardController@updateBulkPackageDate')->name('dashboard.users.bulk.package.update');
 Route::get('/dashboard/users/{id}/delete', 'DashboardController@deleteUser')->name('dashboard.users.delete');
 Route::post('/dashboard/users/{id}/single/notification', 'DashboardController@sendSingleNotification')->name('dashboard.users.singlenotification');
+
+
+Route::get('/dashboard/users/approve', 'DashboardController@ambassadorsPayoutsList')->name('dashboard.users.approve');
+
+
 Route::post('/dashboard/users/{id}/single/sms', 'DashboardController@sendSingleSMS')->name('dashboard.users.singlesms');
 Route::post('/dashboard/ambassadors/{id}/payout', 'DashboardController@givePayout')->name('dashboard.ambassadors.payout');
 Route::get('/dashboard/users/ambassadors/payouts', 'DashboardController@ambassadorsPayoutsList')->name('dashboard.ambassadors.payouts');
