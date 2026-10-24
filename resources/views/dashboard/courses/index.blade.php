@@ -139,7 +139,7 @@
                                                   </div>
                                                   <div class="input-group mb-3">
                                                     <select name="category" class="form-control" required>
-                                                        <option selected="" disabled="" value="">আপডেটেড ধরন</option>
+                                                        <option selected="" disabled="" value="">কোর্স ক্যাটাগরি</option>
                                                         <option value="1" @if($course->category == 1) selected @endif>বিসিএস</option>
                                                         <option value="2" @if($course->category == 2) selected @endif>প্রাইমারি</option>
                                                         <option value="3" @if($course->category == 3) selected @endif>ব্যাংক</option>
@@ -336,7 +336,7 @@
 
                     <div class="input-group mb-3">
                       <select name="category" class="form-control" required>
-                          <option selected="" disabled="" value="">আপডেটেড ধরন</option>
+                          <option selected="" disabled="" value="">কোর্স ক্যাটাগরি</option>
                           <option value="1">বিসিএস</option>
                           <option value="2">প্রাইমারি</option>
                           <option value="3">ব্যাংক</option>
