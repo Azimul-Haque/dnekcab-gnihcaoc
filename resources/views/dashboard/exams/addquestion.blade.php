@@ -270,23 +270,30 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header bg-warning">
-            <h5 class="modal-title" id="addExcelQuesitonModalLabel">Excel আপলোড</h5>
+            <h5 class="modal-title" id="addExcelQuesitonModalLabel">Excel আপলোড (প্রশ্ন)</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          
+          <form method="post" action="{{ route('dashboard.exams.questions.excel.store', $exam->id) }}" enctype="multipart/form-data">
+              @csrf
               <div class="modal-body">
-                <form method="post" action="{{ route('dashboard.exams.questions.excel.store', $exam->id) }}" enctype='multipart/form-data'>
-                    @csrf
-                    <label for="file">Excel ফাইল</label>
-                    <input type="file" id="file" name="file" class="form-control" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required><br/>
-                    <button type="submit" class="btn btn-warning">দাখিল করুন</button>
-                </form>
+                  <div class="form-group mb-3">
+                      <label class="font-weight-bold text-dark small mb-1">Excel ফাইল নির্বাচন করুন</label>
+                      <div class="input-group">
+                          <div class="custom-file">
+                              <input type="file" id="file" name="file" class="custom-file-input" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
+                              <label class="custom-file-label" for="file">ফাইল খুঁজুন...</label>
+                          </div>
+                      </div>
+                      <small class="text-muted mt-2 d-block"><i class="fas fa-info-circle"></i> শুধুমাত্র সঠিক ডেমো ফরম্যাটের .xls, .xlsx বা .csv ফাইল সাপোর্ট করবে।</small>
+                  </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">ফিরে যান</button>
+                <button type="submit" class="btn btn-warning">আপলোড করুন</button>
               </div>
+          </form>
         </div>
       </div>
     </div>
