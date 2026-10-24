@@ -571,7 +571,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="input-group mb-3">
+                            {{-- <div class="input-group mb-3">
                                 <select name="difficulty" class="form-control" required>
                                     <option selected="" disabled="" value="">ডিফিকাল্টি লেভেল</option>
                                     <option value="1" selected>সহজ</option>
@@ -581,7 +581,7 @@
                                 <div class="input-group-append">
                                     <div class="input-group-text"><span class="fas fa-star-half-alt"></span></div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="col-md-6">
                             <div class="input-group mb-3">
