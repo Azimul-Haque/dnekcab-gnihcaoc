@@ -80,66 +80,96 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                               </div>
-                                              <form method="post" action="{{ route('dashboard.courses.update', $course->id) }}" enctype='multipart/form-data'>
-                                                <div class="modal-body">
+                                              <form method="post" action="{{ route('dashboard.courses.update', $course->id) }}" enctype="multipart/form-data">
                                                   @csrf
-                                                  <div class="input-group mb-3">
-                                                      <input type="text" name="name" class="form-control" value="{{ $course->name }}" placeholder="কোর্সের নাম" required>
-                                                      <div class="input-group-append">
-                                                          <div class="input-group-text"><span class="fas fa-layer-group"></span></div>
+                                                  <div class="modal-body text-left">
+                                                      
+                                                      <!-- কোর্সের নাম -->
+                                                      <div class="form-group mb-3">
+                                                          <label class="font-weight-bold text-dark small mb-1">কোর্সের নাম</label>
+                                                          <div class="input-group">
+                                                              <input type="text" name="name" class="form-control" value="{{ $course->name }}" placeholder="কোর্সের নাম লিখুন" required>
+                                                              <div class="input-group-append">
+                                                                  <div class="input-group-text"><span class="fas fa-layer-group"></span></div>
+                                                              </div>
+                                                          </div>
                                                       </div>
-                                                  </div>
-                                                  <div class="input-group mb-3">
-                                                    <select name="status" class="form-control" required>
-                                                        <option selected="" disabled="" value="">স্ট্যাটাস (চলমান কোর্সসমূহতে দেখাবে কি না)</option>
-                                                        <option value="1" @if($course->status == 1) selected @endif>Active - হ্যাঁ</option>
-                                                        <option value="0" @if($course->status == 0) selected @endif>In-active - না</option>
-                                                    </select>
-                                                    <div class="input-group-append">
-                                                        <div class="input-group-text"><span class="fas fa-star-half-alt"></span></div>
-                                                    </div>
-                                                  </div>
-                                                  <div class="input-group mb-3">
-                                                      <input type="number" name="priority" class="form-control" value="{{ $course->priority }}" placeholder="প্রায়োরিটি (চলমান কোর্সসমূহতে যে সিরিয়ালে অ্যাপে দেখাবে)" required>
-                                                      <div class="input-group-append">
-                                                          <div class="input-group-text"><span class="fas fa-sort-amount-up"></span></div>
-                                                      </div>
-                                                  </div>
-                                                  <div class="input-group mb-3">
-                                                    <select name="category" class="form-control" required>
-                                                        <option selected="" disabled="" value="">কোর্স ক্যাটাগরি</option>
-                                                        @foreach($examcategories as $category)
-                                                          <option value="{{ $category->id }}" @if($course->category == $category->id) selected @endif>{{ $category->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                    <div class="input-group-append">
-                                                        <div class="input-group-text"><span class="fas fa-tag"></span></div>
-                                                    </div>
-                                                  </div>
 
-                                                  <div class="input-group mb-3">
-                                                      <select name="live" class="form-control" required>
-                                                          <option selected="" disabled="" value="{{ $course->live }}">লাইভ স্যাটাস (ক্যাটাগরিভিত্তিক এর ভেতরে দেখাবে কি না)</option>
-                                                          <option value="1" @if($course->live == 1) selected @endif>Live - হ্যাঁ</option>
-                                                          <option value="0" @if($course->live == 0) selected @endif>Expired - না</option>
-                                                      </select>
-                                                      <div class="input-group-append">
-                                                          <div class="input-group-text"><span class="fas fa-star-half-alt"></span></div>
+                                                      <!-- স্ট্যাটাস (চলমান কোর্সসমূহ) -->
+                                                      <div class="form-group mb-3">
+                                                          <label class="font-weight-bold text-dark small mb-1">স্ট্যাটাস (চলমান কোর্সসমূহতে দেখাবে কি না)</label>
+                                                          <div class="input-group">
+                                                              <select name="status" class="form-control" required>
+                                                                  <option value="" disabled>স্ট্যাটাস নির্বাচন করুন</option>
+                                                                  <option value="1" @if($course->status == 1) selected @endif>Active - হ্যাঁ</option>
+                                                                  <option value="0" @if($course->status == 0) selected @endif>In-active - না</option>
+                                                              </select>
+                                                              <div class="input-group-append">
+                                                                  <div class="input-group-text"><span class="fas fa-toggle-on"></span></div>
+                                                              </div>
+                                                          </div>
                                                       </div>
-                                                  </div>
 
-                                                  <div class="input-group mb-3">
-                                                      <input type="number" name="serial" class="form-control" value="{{ $course->serial }}" placeholder="সিরিয়াল (ক্যাটাগরিভিত্তিক এর ভেতরে যে সিরিয়ালে অ্যাপে দেখাবে)" required>
-                                                      <div class="input-group-append">
-                                                          <div class="input-group-text"><span class="fas fa-sort-amount-up"></span></div>
+                                                      <!-- প্রায়োরিটি -->
+                                                      <div class="form-group mb-3">
+                                                          <label class="font-weight-bold text-dark small mb-1">প্রায়োরিটি (চলমান কোর্সসমূহতে দেখানোর ক্রমিক)</label>
+                                                          <div class="input-group">
+                                                              <input type="number" name="priority" class="form-control" value="{{ $course->priority }}" placeholder="যেমন: ১, ২, ৩..." required>
+                                                              <div class="input-group-append">
+                                                                  <div class="input-group-text"><span class="fas fa-sort-amount-up"></span></div>
+                                                              </div>
+                                                          </div>
                                                       </div>
+
+                                                      <!-- কোর্স ক্যাটাগরি -->
+                                                      <div class="form-group mb-3">
+                                                          <label class="font-weight-bold text-dark small mb-1">কোর্স ক্যাটাগরি</label>
+                                                          <div class="input-group">
+                                                              <select name="category" class="form-control" required>
+                                                                  <option value="" disabled>ক্যাটাগরি নির্বাচন করুন</option>
+                                                                  @foreach($examcategories as $category)
+                                                                      <option value="{{ $category->id }}" @if($course->category == $category->id) selected @endif>{{ $category->name }}</option>
+                                                                  @endforeach
+                                                              </select>
+                                                              <div class="input-group-append">
+                                                                  <div class="input-group-text"><span class="fas fa-tag"></span></div>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+
+                                                      <!-- লাইভ স্ট্যাটাস -->
+                                                      <div class="form-group mb-3">
+                                                          <label class="font-weight-bold text-dark small mb-1">লাইভ স্ট্যাটাস (ক্যাটাগরিভিত্তিক এর ভেতরে দেখাবে কি না)</label>
+                                                          <div class="input-group">
+                                                              <select name="live" class="form-control" required>
+                                                                  <option value="" disabled>লাইভ স্ট্যাটাস নির্বাচন করুন</option>
+                                                                  <option value="1" @if($course->live == 1) selected @endif>Live - হ্যাঁ</option>
+                                                                  <option value="0" @if($course->live == 0) selected @endif>Expired - না</option>
+                                                              </select>
+                                                              <div class="input-group-append">
+                                                                  <div class="input-group-text"><span class="fas fa-satellite-dish"></span></div>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+
+                                                      <!-- সিরিয়াল -->
+                                                      <div class="form-group mb-3">
+                                                          <label class="font-weight-bold text-dark small mb-1">সিরিয়াল (ক্যাটাগরিভিত্তিক এর ভেতরে দেখানোর ক্রমিক)</label>
+                                                          <div class="input-group">
+                                                              <input type="number" name="serial" class="form-control" value="{{ $course->serial }}" placeholder="যেমন: ১, ২, ৩..." required>
+                                                              <div class="input-group-append">
+                                                                  <div class="input-group-text"><span class="fas fa-sort-numeric-down"></span></div>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+
                                                   </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">ফিরে যান</button>
-                                                  <button type="submit" class="btn btn-success">দাখিল করুন</button>
-                                                </div>
-                                            </form>
+                                                  
+                                                  <div class="modal-footer">
+                                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">ফিরে যান</button>
+                                                      <button type="submit" class="btn btn-success">আপডেট করুন</button>
+                                                  </div>
+                                              </form>
                                           </div>
                                           </div>
                                       </div>
