@@ -1,3 +1,7 @@
+<?php
+
+namespace App\Imports;
+
 use Rap2hpoutre\FastExcel\FastExcel;
 use App\Models\Question;
 use App\Models\Questionexplanation;
