@@ -109,7 +109,7 @@
                                                     <select name="category" class="form-control" required>
                                                         <option selected="" disabled="" value="">কোর্স ক্যাটাগরি</option>
                                                         @foreach($examcategories as $category)
-                                                          <option value="{{ $category->id }}" @if($course->category == $category) selected @endif>বিসিএস</option>
+                                                          <option value="{{ $category->id }}" @if($course->category == $category->id) selected @endif>বিসিএস</option>
                                                         @endforeach
                                                         
                                                         <option value="2" @if($course->category == 2) selected @endif>প্রাইমারি</option>
