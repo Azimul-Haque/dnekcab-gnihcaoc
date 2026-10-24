@@ -124,7 +124,7 @@
                   </div>
             </div>
             <div class="col-md-3">
-                <div class="card">
+                {{-- <div class="card">
                     <div class="card-header">
                       <h3 class="card-title">স্বয়ংক্রিয় প্রশ্ন প্রণয়ন</h3>
           
@@ -144,20 +144,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- @foreach ($topics as $topic)
-                                <tr>
-                                    <td>{{ $topic->name }}</td>
-                                    @php
-                                        $totalqs = 0;
-                                        foreach ($examquestions as $examquestion) {
-                                            if($examquestion->question->topic_id == $topic->id) {
-                                                $totalqs++;
-                                            }
-                                        }
-                                    @endphp
-                                    <td>{{ $totalqs }}</td>
-                                </tr>
-                            @endforeach
+                    
                         </tbody>
                       </table>
                     </div>
