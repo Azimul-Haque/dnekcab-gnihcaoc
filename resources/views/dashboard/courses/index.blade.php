@@ -29,8 +29,8 @@
                     @php
                         // $examcategories = Examcategory::all(); // ব্যবহার করা যেতে পারে
                         $categoryNames = [
-                            1 => 'বিসিএস',
-                            2 => 'প্রাইমারি',
+                            1 => 'HSC',
+                            2 => 'SSC',
                             3 => 'ব্যাংক',
                             4 => 'NTRCA',
                             5 => 'NSI, DGFI ও অন্যান্য',
