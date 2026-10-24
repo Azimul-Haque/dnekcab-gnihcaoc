@@ -108,11 +108,11 @@
                                         <form action="{{ route('dashboard.users.approve', $user->id) }}" method="POST" style="display: inline-block;">
                                             @csrf
                                             @if($user->is_approved)
-                                                <button type="submit" class="btn btn-outline-warning btn-sm" title="অনুমোদন বাতিল করুন">
+                                                <button type="submit" class="btn btn-outline-warning btn-sm" title="অনুমোদন বাতিল করুন" rel="tooltip" title="" data-original-title="অনুমোদন বাতিল করুন">
                                                     <i class="fas fa-user-times"></i>
                                                 </button>
                                             @else
-                                                <button type="submit" class="btn btn-outline-success btn-sm" title="অনুমোদন দিন">
+                                                <button type="submit" class="btn btn-outline-success btn-sm" title="অনুমোদন দিন" >
                                                     <i class="fas fa-user-check"></i>
                                                 </button>
                                             @endif
