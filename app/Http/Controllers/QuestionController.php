@@ -9,7 +9,6 @@ use App\Models\Question;
 use App\Models\Questionimage;
 use App\Models\Questionexplanation;
 use App\Models\Topic;
-use App\Models\Reportedquestion;
 use App\Models\Message;
 
 use Carbon\Carbon;
