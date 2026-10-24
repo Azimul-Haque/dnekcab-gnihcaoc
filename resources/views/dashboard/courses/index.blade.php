@@ -63,15 +63,15 @@
                                       @endif
                                   </td><td>
                                       @if($course->category == 1)
-                                        বিসিএস
+                                        HSC
                                       @elseif($course->category == 2)
-                                        প্রাইমারি
+                                        SSC
                                       @elseif($course->category == 3)
-                                        ব্যাংক
+                                        মেডিকেল ভর্তি
                                       @elseif($course->category == 4)
-                                        NTRCA
+                                        ঢাবি ক
                                       @elseif($course->category == 5)
-                                        NSI, DGFI ও অন্যান্য
+                                        বুয়েট
                                       @elseif($course->category == 6)
                                         প্রশ্ন ব্যাংক
                                       @endif
