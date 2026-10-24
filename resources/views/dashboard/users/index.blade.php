@@ -189,7 +189,7 @@
                                                         <select name="role" class="form-control mb-2">
                                                             <option value="admin" @if($user->role == 'admin') selected @endif>এডমিন</option>
                                                             <option value="manager" @if($user->role == 'manager') selected @endif>ম্যানেজার</option>
-                                                            <option value="user" @if($user->role == 'user') selected @endif>ব্যবহারকারী</option>
+                                                            <option value="user" @if($user->role == 'user') selected @endif>ব্যবহারকারী/ পরীক্ষার্থী</option>
                                                         </select>
                                                         <label>প্যাকেজের মেয়াদ</label>
                                                         <input type="text" name="packageexpirydate" id="packageexpirydate{{ $user->id }}" class="form-control mb-2" value="{{ date('F d, Y', strtotime($user->package_expiry_date)) }}" required>
