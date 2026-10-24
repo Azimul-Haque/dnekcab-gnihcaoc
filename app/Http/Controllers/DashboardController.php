@@ -336,6 +336,20 @@ class DashboardController extends Controller
         return redirect()->route('dashboard.users');
     }
 
+    public function toggleApprove($id)
+    {
+        $user = User::findOrFail($id);
+        
+        // বর্তমান স্ট্যাটাসটি উল্টে দিবে (১ থাকলে ০ হবে, ০ থাকলে ১ হবে)
+        $user->is_approved = !$user->is_approved;
+        $user->save();
+
+        // মেসেজ তৈরি
+        $status = $user->is_approved ? 'অনুমোদিত' : 'অনুমোদন বাতিল';
+        
+        return redirect()->back()->with('success', "ব্যবহারকারীর স্ট্যাটাস সফলভাবে {$status} করা হয়েছে।");
+    }
+
     public function updateBulkPackageDate(Request $request)
     {
         $this->validate($request,array(
