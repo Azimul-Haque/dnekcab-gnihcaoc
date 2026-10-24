@@ -288,6 +288,8 @@ class ExamController extends Controller
         return redirect()->route('dashboard.exams');
     }
 
+    public function storeExamExcelQuestion($id)
+
     public function addQuestionToExam($id)
     {
         $exam = Exam::findOrFail($id);
