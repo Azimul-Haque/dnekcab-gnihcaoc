@@ -143,7 +143,7 @@
                                         </div>
                                     </div> --}}
 
-                                    <div class="modal fade text-left" id="notifModal{{ $user->id }}" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+                                    {{-- <div class="modal fade text-left" id="notifModal{{ $user->id }}" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header bg-warning">
@@ -164,7 +164,7 @@
                                             </div>
                                         </div>
                                     </div>
-
+ --}}
                                     <div class="modal fade text-left" id="editUserModal{{ $user->id }}" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
