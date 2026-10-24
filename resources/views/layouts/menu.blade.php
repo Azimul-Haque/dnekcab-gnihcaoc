@@ -75,14 +75,14 @@
 </li>
 @endif --}}
 
-@if(Auth::user()->role == 'admin' || Auth::user()->role == 'manager')
+{{-- @if(Auth::user()->role == 'admin' || Auth::user()->role == 'manager')
 <li class="nav-item">
     <a href="{{ route('dashboard.materials') }}" class="nav-link {{ Request::is('dashboard/materials') ? 'active' : '' }} {{ Request::is('dashboard/materials/*') ? 'active' : '' }}">
         <i class="nav-icon far fa-file-alt"></i>
         <p>ম্যাটেরিয়ালসমূহ</p>
     </a>
 </li>
-@endif
+@endif --}}
 
 @if(Auth::user()->role == 'admin')
 <li class="nav-item">
