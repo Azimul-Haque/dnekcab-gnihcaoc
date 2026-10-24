@@ -280,7 +280,7 @@
                 <form method="post" action="{{ route('dashboard.exams.questions.excel.store', $exam->id) }}" enctype='multipart/form-data'>
                     @csrf
                     <label for="file">Excel ফাইল</label>
-                    <input type="file" id="file" name="file" class="form-control" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"><br/>
+                    <input type="file" id="file" name="file" class="form-control" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required><br/>
                     <button type="submit" class="btn btn-warning">দাখিল করুন</button>
                 </form>
               </div>
