@@ -334,7 +334,6 @@ class ExamController extends Controller
                     'option3'    => $option3,
                     'option4'    => $option4,
                     'answer'     => (int)$answer,
-                    'difficulty' => 1,
                 ]);
 
                 // Explanation থাকলে ইনসার্ট
