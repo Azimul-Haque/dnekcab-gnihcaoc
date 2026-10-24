@@ -372,8 +372,6 @@ class ExamController extends Controller
         } catch (\Throwable $e) {
             DB::rollBack();
 
-            // এরর লগ করা হচ্ছে যাতে storage/logs/laravel.log এ চেক করা যায়
-            Log::error('Excel Import Error: ' . $e->getMessage());
 
             return redirect()->back()->with('error', 'ফাইল আপলোডে সমস্যা হয়েছে। Error: ' . $e->getMessage());
         }
