@@ -49,7 +49,8 @@ class CourseController extends Controller
         // dd($courses);
         return view('dashboard.courses.index')
                     ->withCourses($courses)
-                    ->withTotalcourses($totalcourses);
+                    ->withTotalcourses($totalcourses)
+                    ->withExamcategories($examcategories);
     }
 
     public function storeCourse(Request $request)
