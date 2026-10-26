@@ -25,6 +25,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
     public function payments(){
         return $this->hasMany('App\Models\Payment');
     }
@@ -49,15 +53,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(PayoutRequest::class);
     }
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
 
     protected static function boot()
     {
