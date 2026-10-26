@@ -20,19 +20,14 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box {{ $currentColor }} shadow border-0 position-relative" style="border-radius: 12px; overflow: hidden; transition: transform .3s ease;">
                     
-                    {{-- ১. ফিক্সড এডিট বাটন (data-toggle ও data-target সহ) --}}
+                    {{-- ১. বুলেটপ্রুফ অন-ক্লিক এডিট বাটন --}}
                     <div class="position-absolute" style="top: 8px; right: 8px; z-index: 10;">
                         <button type="button" 
-                                class="btn btn-sm btn-light shadow-sm rounded-circle edit-category-btn" 
-                                data-toggle="modal"
-                                data-target="#editCategoryModal"
-                                data-id="{{ $category->id }}"
-                                data-name="{{ $category->name }}"
-                                data-thumbnail="{{ $category->thumbnail ?? '📚' }}"
-                                data-update-url="{{ route('dashboard.exams.category.update', ['id' => $category->id]) }}"
+                                class="btn btn-sm btn-light shadow-sm rounded-circle" 
+                                onclick='openEditModal({{ $category->id }}, @json($category->name), @json($category->thumbnail ?? "📚"), @json(route("dashboard.exams.category.update", ["id" => $category->id])))'
                                 title="ক্যাটাগরি এডিট করুন"
                                 style="width: 28px; height: 28px; padding: 0; line-height: 28px; opacity: 0.95;">
-                            <i class="fas fa-pencil-alt text-dark" style="font-size: 0.75rem; pointer-events: none;"></i>
+                            <i class="fas fa-pencil-alt text-dark" style="font-size: 0.75rem;"></i>
                         </button>
                     </div>
 
@@ -175,28 +170,20 @@
 
 @section('third_party_scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-@section('third_party_scripts')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     function selectEmoji(inputId, emoji) {
-        $('#' + inputId).val(emoji);
+        document.getElementById(inputId).value = emoji;
     }
 
-    // বুটস্ট্র্যাপ ৪ নেটিভ মডাল ওপেন ইভেন্ট (১০০% ডাটা ফিল-আপ গ্যারান্টি)
-    $('#editCategoryModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget); // যে বাটনটিতে ক্লিক করা হয়েছে
-        
-        var id = button.data('id');
-        var name = button.data('name');
-        var thumbnail = button.data('thumbnail');
-        var updateUrl = button.data('update-url');
+    // সরাসরি ডাটা পপুলেট করে মডাল শো করার ডাইরেক্ট মেথড
+    function openEditModal(id, name, thumbnail, updateUrl) {
+        document.getElementById('edit_category_id').value = id;
+        document.getElementById('edit_category_name').value = name;
+        document.getElementById('edit_thumbnail_input').value = thumbnail;
+        document.getElementById('editCategoryForm').action = updateUrl;
 
-        var modal = $(this);
-        modal.find('#edit_category_id').val(id);
-        modal.find('#edit_category_name').val(name);
-        modal.find('#edit_thumbnail_input').val(thumbnail);
-        modal.find('#editCategoryForm').attr('action', updateUrl);
-    });
+        $('#editCategoryModal').modal('show');
+    }
 
     // সার্চ ফিল্টার
     $(document).on('click', '#search-button', function() {
@@ -218,16 +205,11 @@
       }
     });
 </script>
-@endsection
 
 <style>
     .small-box:hover {
         transform: translateY(-4px);
         box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
-    }
-    .edit-category-btn:hover {
-        transform: scale(1.15);
-        background-color: #ffffff !important;
     }
     .emoji-option:hover {
         background-color: #e2e8f0;
