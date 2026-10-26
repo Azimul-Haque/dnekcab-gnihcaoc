@@ -13,6 +13,13 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $fillable = [
+        'name',
+        'mobile',
+        'email',
+        'password',
+    ];
+
     public function payments(){
         return $this->hasMany('App\Models\Payment');
     }
