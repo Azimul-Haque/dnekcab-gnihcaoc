@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
-use App\Models\ExamCategory;
+use App\Models\Examcategory;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
