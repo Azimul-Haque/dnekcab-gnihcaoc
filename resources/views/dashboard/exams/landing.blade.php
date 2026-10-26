@@ -9,7 +9,12 @@
     <div class="row">
         @php
             $colors = ['bg-info', 'bg-success', 'bg-warning', 'bg-danger', 'bg-primary', 'bg-teal', 'bg-purple'];
-            $emojis = ['📚', '🔬', '📖', '📊', '🎓', '📝', '🏫', '🧪', '💻', '💡', '🎨', '📑', '🎯', '🏆', '⚖️', '📌', '⚡', '🧠', '📐', '📂'];
+            $emojis = [
+                            '📚', '🔬', '📖', '📊', '🎓', '📝', '🏫', '🧪', 
+                            '💻', '💡', '🎨', '📑', '🎯', '🏆', '⚖️', '📌', 
+                            '⚡', '🧠', '📐', '📂', '📜', '🖊️', '🔍', '🌐', 
+                            '🚀', '⭐', '📢', '🗓️', '📋', '🏅', '🥇', '📈'
+                        ];
         @endphp
 
         @foreach($examcategories as $index => $category)
