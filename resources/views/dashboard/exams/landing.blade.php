@@ -38,7 +38,7 @@
 
                     {{-- অরিজিনাল ক্লিন ইনফো বডি --}}
                     <div class="inner p-3">
-                        <h3 class="mb-0">{{ $category->exams_count ?? $category->exams->count() }}</h3>
+                        <h3 class="mb-0"><span class="mr-1">{{ $category->thumbnail ?? '📚' }}</span></h3>
                         <p class="font-weight-bold mb-0 text-truncate" style="font-size: 1.1rem; opacity: 0.95;" title="{{ $category->name }}">
                             <span class="mr-1">{{ $category->thumbnail ?? '📚' }}</span> {{ $category->name }}
                         </p>
