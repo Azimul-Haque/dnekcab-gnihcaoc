@@ -124,6 +124,7 @@ class ExamController extends Controller
         $category->save();
 
         Cache::forget('examcategories');
+        Cache::forget('exam_categories');
         Session::flash('success', 'Category created successfully!');
         return redirect()->bacK();
     }
@@ -141,6 +142,7 @@ class ExamController extends Controller
         $category->save();
 
         Cache::forget('examcategories');
+        Cache::forget('exam_categories');
         Session::flash('success', 'Category updated successfully!');
         return redirect()->route('dashboard.exams');
     }
