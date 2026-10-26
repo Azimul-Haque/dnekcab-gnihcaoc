@@ -144,7 +144,7 @@ class ExamController extends Controller
         Cache::forget('examcategories');
         Cache::forget('exam_categories');
         Session::flash('success', 'Category updated successfully!');
-        return redirect()->route('dashboard.exams');
+        return redirect()->back();
     }
 
     public function deleteExamCategory($id)
