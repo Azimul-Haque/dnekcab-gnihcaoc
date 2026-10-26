@@ -3,7 +3,7 @@
 
 @section('content')
 
-@section('page-header') পরীক্ষার বিভাগসমূহ @endsection
+@section('page-header') ক্যাটাগরিভিত্তিক পরীক্ষাসমূহ @endsection
 
 <div class="container-fluid">
     <div class="row">
