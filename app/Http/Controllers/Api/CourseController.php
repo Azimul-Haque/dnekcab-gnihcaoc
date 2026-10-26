@@ -53,7 +53,7 @@ class CourseController extends Controller
     {
         try {
             // v3 ক্যাশ কী ব্যবহার করা হয়েছে
-            $courseexams = Cache::remember('course_exams_v3_' . $courseId, 864000, function () use ($courseId) {
+            $courseexams = Cache::remember('course_exams_' . $courseId, 864000, function () use ($courseId) {
                 return Exam::query()
                     // ১. Direct Join
                     ->join('courseexams', 'exams.id', '=', 'courseexams.exam_id')
