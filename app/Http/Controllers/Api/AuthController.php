@@ -91,7 +91,7 @@ class AuthController extends Controller
         // RateLimiter::hit('daily-otp:'.$mobile, 86400); // ২৪ ঘণ্টার মেয়াদে হিট
 
         // ৬. এসএমএস গেটওয়ে
-        $this->sendSmsViaGateway($mobile, "{$otp} is your pin for Coaching App.");
+        $this->sendSmsViaGateway($mobile, "{$otp} is your OTP for Coaching App.");
 
         return response()->json([
             'status'  => true,
