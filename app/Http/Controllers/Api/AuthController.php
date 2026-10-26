@@ -212,12 +212,6 @@ class AuthController extends Controller
             // Session::flash('warning', 'দুঃখিত! SMS পাঠানো যায়নি!');
         }
 
-        $newOTP = new Userotp();
-        $newOTP->mobile = $number;
-        $newOTP->otp = $otp;
-        $newOTP->ip_address = $ip_address; // 🌟 Save the IP 🌟
-        $newOTP->save();
-
         // return $otp;
         return response()->json(['success' => true, 'message' => 'OTP পাঠানো হয়েছে!']);
     }
