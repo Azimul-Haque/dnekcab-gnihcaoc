@@ -47,6 +47,7 @@ class HomeController extends Controller
                 'message'        => 'হোম ডাটা সফলভাবে পাওয়া গেছে।',
                 'active_courses' => $activeCourses,
                 'categories'     => $categories,
+                'is_approved'    => $isApproved, // লাইভ স্ট্যাটাস (1 অথবা 0)
             ], 200);
 
         } catch (\Exception $e) {
