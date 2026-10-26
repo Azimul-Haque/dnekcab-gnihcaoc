@@ -21,17 +21,16 @@
                 <div class="small-box {{ $currentColor }} shadow border-0 position-relative" style="border-radius: 12px; overflow: hidden; transition: transform .3s ease;">
                     
                     {{-- ভাসমান এডিট বাটন (Top-Right Edit Button) --}}
-                    <div class="position-absolute" style="top: 10px; right: 10px; z-index: 10;">
-                        <button type="button" 
-                                class="btn btn-sm btn-light shadow-sm rounded-circle edit-category-btn" 
-                                data-id="{{ $category->id }}"
-                                data-name="{{ $category->name }}"
-                                data-thumbnail="{{ $category->thumbnail ?? '📚' }}"
-                                title="ক্যাটাগরি এডিট করুন"
-                                style="width: 32px; height: 32px; padding: 0; line-height: 32px; opacity: 0.9; transition: all 0.2s;">
-                            <i class="fas fa-pen text-dark" style="font-size: 0.85rem;"></i>
-                        </button>
-                    </div>
+                    <button type="button" 
+                            class="btn btn-sm btn-light shadow-sm rounded-circle edit-category-btn" 
+                            data-id="{{ $category->id }}"
+                            data-name="{{ $category->name }}"
+                            data-thumbnail="{{ $category->thumbnail ?? '📚' }}"
+                            data-update-url="{{ route('dashboard.exams.category.update', ['id' => $category->id]) }}"
+                            title="ক্যাটাগরি এডিট করুন"
+                            style="width: 32px; height: 32px; padding: 0; line-height: 32px; opacity: 0.9; transition: all 0.2s;">
+                        <i class="fas fa-pen text-dark" style="font-size: 0.85rem;"></i>
+                    </button>
 
                     {{-- ইনফো সেকশন (ইমোজি থাম্বনেইল সহ) --}}
                     <div class="inner p-3">
