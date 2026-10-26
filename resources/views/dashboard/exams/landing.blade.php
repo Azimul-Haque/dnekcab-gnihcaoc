@@ -43,10 +43,6 @@
                             {{ $category->name }}
                         </p>
                     </div>
-
-                    <div class="icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
                     
                     {{-- ওয়াটারমার্ক আইকন সেকশন --}}
                     {{-- <div class="icon" style="top: 5px; right: 35px;">
