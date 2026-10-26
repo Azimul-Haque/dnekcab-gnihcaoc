@@ -166,6 +166,55 @@ class AuthController extends Controller
      */
     private function sendSmsViaGateway($phone, $message)
     {
-        
+        // FOR PLAY CONSOLE TESTING PURPOSE
+        // FOR PLAY CONSOLE TESTING PURPOSE
+        if($mobile_number == '01751398392' || $mobile_number == '01842828885') {
+           $otp = env('SMS_GATEWAY_PLAY_CONSOLE_TEST_OTP');
+        }
+
+        // TEXT MESSAGE OTP
+        // TEXT MESSAGE OTP
+
+        // NEW PANEL
+        $url = config('sms.url2');
+        $api_key = config('sms.api_key');
+        $senderid = config('sms.senderid');
+        $number = $mobile_number;
+        $message = $otp . ' is your pin for BCS Exam Aid App.';
+
+        $data = [
+            "api_key" => $api_key,
+            "senderid" => $senderid,
+            "number" => $number,
+            "message" => $message,
+        ];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        $jsonresponse = json_decode($response);
+
+        if($jsonresponse->response_code == 202) {
+            // Session::flash('success', 'SMS সফলভাবে পাঠানো হয়েছে!');
+        } elseif($jsonresponse->response_code == 1007) {
+            // Session::flash('warning', 'অপর্যাপ্ত SMS ব্যালেন্সের কারণে SMS পাঠানো যায়নি!');
+        } else {
+            // Session::flash('warning', 'দুঃখিত! SMS পাঠানো যায়নি!');
+        }
+
+        // Userotp::where('mobile', $number)->delete(); // এটাকার প্রিভেন্ট করার জন্য ডিলেট ক্রতেসি না...
+
+        $newOTP = new Userotp();
+        $newOTP->mobile = $number;
+        $newOTP->otp = $otp;
+        $newOTP->ip_address = $ip_address; // 🌟 Save the IP 🌟
+        $newOTP->save();
+
+        // return $otp;
+        return response()->json(['success' => true, 'message' => 'OTP পাঠানো হয়েছে!']);
     }
 }
