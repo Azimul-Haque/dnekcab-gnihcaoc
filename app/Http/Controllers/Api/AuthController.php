@@ -155,7 +155,7 @@ class AuthController extends Controller
                 'name'   => null, // নতুন ইউজারের নাম ফাঁকা থাকবে
                 'is_approved' => 0
             ]);
-        } elseif (empty($user->name)) {
+        } elseif (empty($user->name) || $user->name == ''No Name';') {
             $isNewUser = true; // আগে একাউন্ট থাকলেও যদি নাম না থাকে
         }
 
