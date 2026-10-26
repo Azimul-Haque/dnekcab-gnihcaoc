@@ -18,12 +18,12 @@ use App\Http\Controllers\Api\AuthController;
 
 
 Route::prefix('v1')->group(function () {
-    Route::post('/send-otp', [APIController::class, 'sendOtp']);
-    Route::post('/verify-otp', [APIController::class, 'verifyOtp']);
+    Route::post('/send-otp', [AuthController::class, 'sendOtp']);
+    Route::post('/verify-otp', [AuthController::class, 'verifyOtp']);
 
     // অথেনটিকেটেড ইউজার রুট ( Sanctum দিয়ে সুরক্ষিত )
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/user-profile', [APIController::class, 'userProfile']);
+        Route::get('/user-profile', [AuthController::class, 'userProfile']);
     });
 });
 
