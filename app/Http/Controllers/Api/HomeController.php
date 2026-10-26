@@ -32,8 +32,7 @@ class HomeController extends Controller
 
             // ২. ক্যাটাগরি সমূহ (১০ দিনের ক্যাশ)
             $categories = Cache::remember('exam_categories', now()->addDays(10), function () {
-                return ExamCategory::select('id', 'name')
-                    ->get();
+                return ExamCategory::select('id', 'name')->get();
             });
 
             return response()->json([
