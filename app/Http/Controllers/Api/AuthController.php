@@ -81,7 +81,7 @@ class AuthController extends Controller
         ], now()->addMinutes(5));
 
         // ২ মিনিটের কুলডাউন ফ্ল্যাগ সেভ
-        Cache::put('otp_cooldown_'.$mobile, time() + 60, 60);
+        Cache::put('otp_cooldown_'.$mobile, time() + 120, 120);
 
         // হিট কাউন্ট বৃদ্ধি
         // হিট কাউন্ট বৃদ্ধি
