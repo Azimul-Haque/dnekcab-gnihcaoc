@@ -180,8 +180,6 @@ class AuthController extends Controller
         $url = config('sms.url2');
         $api_key = config('sms.api_key');
         $senderid = config('sms.senderid');
-        $number = $phone;
-        $message = $message;
 
         $data = [
             "api_key" => $api_key,
