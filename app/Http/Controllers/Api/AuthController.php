@@ -166,7 +166,7 @@ class AuthController extends Controller
      */
     private function sendSmsViaGateway($phone, $message)
     {
-        if($mobile_number == '01751398392' || $mobile_number == '01842828885') {
+        if($phone == '01751398392' || $phone == '01842828885') {
            $otp = env('SMS_GATEWAY_PLAY_CONSOLE_TEST_OTP');
         }
 
@@ -174,7 +174,7 @@ class AuthController extends Controller
         $url = config('sms.url2');
         $api_key = config('sms.api_key');
         $senderid = config('sms.senderid');
-        $number = $mobile_number;
+        $number = $phone;
         $message = $otp . ' is your pin for BCS Exam Aid App.';
 
         $data = [
