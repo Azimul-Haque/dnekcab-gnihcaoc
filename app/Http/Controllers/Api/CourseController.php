@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
+use App\Models\Exam;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
