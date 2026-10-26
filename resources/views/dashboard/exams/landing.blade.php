@@ -40,7 +40,7 @@
                     <div class="inner p-3">
                         <h3 class="mb-0"><span class="mr-1">{{ $category->thumbnail ?? '📚' }}</span></h3>
                         <p class="font-weight-bold mb-0 text-truncate" style="font-size: 1.5rem; opacity: 0.95;" title="{{ $category->name }}">
-                            {{ $category->name }} ({{ bangla($category->exams->count()) }})
+                            {{ $category->name }} ({{ bangla($category->exams->count()) }} টি পরীক্ষা)
                         </p>
                     </div>
                     
