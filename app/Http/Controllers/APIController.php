@@ -33,7 +33,7 @@ use Cache;
 
 class APIController extends Controller
 {
-    class HomeController extends Controller
+    class AppHomeController extends Controller
     {
         /**
          * হোম স্ক্রিনের জন্য একটিমাত্র রিকোয়েস্টে গতিশীল ডাটা লোড (ক্যাশেড)
@@ -79,7 +79,7 @@ class APIController extends Controller
 
 
 
-    
+
 
     public function generateOTP(Request $request)
     {
