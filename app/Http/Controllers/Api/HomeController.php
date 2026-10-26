@@ -13,12 +13,12 @@ class HomeController extends Controller
     public function getHomeData()
     {
         try {
-            // ১. চলমান কোর্সসমূহ (priority অনুযায়ী সর্টেড এবং ১০ দিনের ক্যাশ)
+            // ১. চলমান কোর্সসমূহ ( priority অনুযায়ী সর্টেড এবং ১০ দিনের ক্যাশ )
             $activeCourses = Cache::remember('active_courses', now()->addDays(10), function () {
                 return Course::query()
                     ->select('id', 'name', 'priority')
-                    ->where('status', 1) // এক্টিভ কোর্স
-                    ->withCount('courseexams as total_exams') // SQL লেভেলে এক্সাম কাউন্ট
+                    ->where('status', 1)
+                    ->withCount('courseexams as total_exams')
                     ->orderBy('priority', 'asc')
                     ->get()
                     ->map(function ($course) {
@@ -30,7 +30,7 @@ class HomeController extends Controller
                     });
             });
 
-            // ২. ক্যাটাগরি সমূহ (১০ দিনের ক্যাশ)
+            // ২. ক্যাটাগরি সমূহ ( ১০ দিনের ক্যাশ )
             $categories = Cache::remember('exam_categories', now()->addDays(10), function () {
                 return ExamCategory::select('id', 'name')->get();
             });
@@ -43,7 +43,7 @@ class HomeController extends Controller
             ], 200);
 
         } catch (\Exception $e) {
-            Log::error('Home Data Error: ' . $e->getMessage());
+            Log::error('Home Data API Error: ' . $e->getMessage());
 
             return response()->json([
                 'status'  => false,
