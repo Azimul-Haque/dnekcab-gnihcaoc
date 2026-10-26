@@ -18,7 +18,7 @@ class AuthController extends Controller
     public function sendOtp(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'phone' => 'required|string|min:11|max:14',
+            'mobile' => 'required|string|min:11|max:14',
         ]);
 
         if ($validator->fails()) {
@@ -29,7 +29,7 @@ class AuthController extends Controller
             ], 422);
         }
 
-        $phone = preg_replace('/[^0-9]/', '', $request->phone); // শুধুমাত্র ডিজিটাল ক্যারেক্টার রাখা
+        $mobile = preg_replace('/[^0-9]/', '', $request->mobile); // শুধুমাত্র ডিজিটাল ক্যারেক্টার রাখা
         $ip = $request->ip();
 
         // ১. IP ভিত্তিক লিমিট (১ ঘণ্টায় সর্বোচ্চ ১০ টি)
@@ -50,7 +50,7 @@ class AuthController extends Controller
         // // ২. মোবাইল নম্বর ভিত্তিক দৈনিক লিমিট (২৪ ঘণ্টায় সর্বোচ্চ ৫ টি)
         // // ২. মোবাইল নম্বর ভিত্তিক দৈনিক লিমিট (২৪ ঘণ্টায় সর্বোচ্চ ৫ টি)
         // // ২. মোবাইল নম্বর ভিত্তিক দৈনিক লিমিট (২৪ ঘণ্টায় সর্বোচ্চ ৫ টি)
-        // if (RateLimiter::tooManyAttempts('daily-otp:'.$phone, 5)) {
+        // if (RateLimiter::tooManyAttempts('daily-otp:'.$mobile, 5)) {
         //     return response()->json([
         //         'status'  => false,
         //         'message' => 'আজকের দিনের ওটিপি লিমিট শেষ। আগামীকাল আবার চেষ্টা করুন।'
@@ -58,8 +58,8 @@ class AuthController extends Controller
         // }
 
         // ৩. ১ মিনিটের কুলডাউন চেক
-        if (Cache::has('otp_cooldown_'.$phone)) {
-            $ttl = Cache::get('otp_cooldown_'.$phone) - time();
+        if (Cache::has('otp_cooldown_'.$mobile)) {
+            $ttl = Cache::get('otp_cooldown_'.$mobile) - time();
             return response()->json([
                 'status'  => false,
                 'message' => "অনুগ্রহ করে {$ttl} সেকেন্ড পর পুনরায় ওটিপি রিকোয়েস্ট করুন।"
@@ -70,28 +70,28 @@ class AuthController extends Controller
         $otp = rand(1000, 9999);
 
         // টেস্ট এনভায়রনমেন্টের জন্য ফিক্সড ওটিপি (প্রোডাকশনে সরাতে পারেন)
-        if ($phone === '01751398392') {
+        if ($mobile === '01751398392') {
             $otp = 4321;
         }
 
         // ৫. ক্যাশে ওটিপি সেভ (মেয়াদ ৫ মিনিট)
-        Cache::put('otp_'.$phone, [
+        Cache::put('otp_'.$mobile, [
             'code' => $otp,
             'attempts' => 0
         ], now()->addMinutes(5));
 
         // ১ মিনিটের কুলডাউন ফ্ল্যাগ সেভ
-        Cache::put('otp_cooldown_'.$phone, time() + 60, 60);
+        Cache::put('otp_cooldown_'.$mobile, time() + 60, 60);
 
         // হিট কাউন্ট বৃদ্ধি
         // হিট কাউন্ট বৃদ্ধি
         // হিট কাউন্ট বৃদ্ধি
         // হিট কাউন্ট বৃদ্ধি
         // RateLimiter::hit('ip-otp:'.$ip, 3600); // ১ ঘণ্টার মেয়াদে হিট
-        // RateLimiter::hit('daily-otp:'.$phone, 86400); // ২৪ ঘণ্টার মেয়াদে হিট
+        // RateLimiter::hit('daily-otp:'.$mobile, 86400); // ২৪ ঘণ্টার মেয়াদে হিট
 
         // ৬. এসএমএস গেটওয়ে Integration (এখানে আপনার SMS Gateway API হিট করবেন)
-        $this->sendSmsViaGateway($phone, "{$otp} is your pin for Coaching App.");
+        $this->sendSmsViaGateway($mobile, "{$otp} is your pin for Coaching App.");
 
         return response()->json([
             'status'  => true,
@@ -106,7 +106,7 @@ class AuthController extends Controller
     public function verifyOtp(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'phone' => 'required|string',
+            'mobile' => 'required|string',
             'otp'   => 'required|string|size:4',
         ]);
 
@@ -114,8 +114,8 @@ class AuthController extends Controller
             return response()->json(['status' => false, 'message' => '৪ ডিজিটের ওটিপি লিখুন।'], 422);
         }
 
-        $phone = preg_replace('/[^0-9]/', '', $request->phone);
-        $cachedData = Cache::get('otp_'.$phone);
+        $mobile = preg_replace('/[^0-9]/', '', $request->mobile);
+        $cachedData = Cache::get('otp_'.$mobile);
 
         if (!$cachedData) {
             return response()->json([
@@ -126,7 +126,7 @@ class AuthController extends Controller
 
         // ব্রুট ফোর্স প্রটেকশন (সর্বোচ্চ ৫ বার ভুল চেষ্টার পর ব্লক)
         if ($cachedData['attempts'] >= 5) {
-            Cache::forget('otp_'.$phone);
+            Cache::forget('otp_'.$mobile);
             return response()->json([
                 'status'  => false,
                 'message' => 'অতিরিক্ত ভুল চেষ্টার কারণে ওটিপিটি বাতিল করা হয়েছে। নতুন ওটিপি নিন।'
@@ -136,7 +136,7 @@ class AuthController extends Controller
         // ওটিপি ম্যাচ চেক
         if ($cachedData['code'] != $request->otp) {
             $cachedData['attempts']++;
-            Cache::put('otp_'.$phone, $cachedData, now()->addMinutes(5));
+            Cache::put('otp_'.$mobile, $cachedData, now()->addMinutes(5));
 
             return response()->json([
                 'status'  => false,
@@ -145,12 +145,12 @@ class AuthController extends Controller
         }
 
         // ওটিপি সঠিক হলে ক্যাশ থেকে মুছে ফেলা
-        Cache::forget('otp_'.$phone);
-        Cache::forget('otp_cooldown_'.$phone);
+        Cache::forget('otp_'.$mobile);
+        Cache::forget('otp_cooldown_'.$mobile);
 
         // ইউজার না থাকলে নতুন অ্যাকাউন্ট তৈরি করা, থাকলে অ্যাকাউন্টটি খুঁজে নেওয়া
         $user = User::firstOrCreate(
-            ['phone' => $phone],
+            ['mobile' => $mobile],
             [
                 'name' => 'User_' . Str::random(5),
                 'status' => 1
@@ -167,7 +167,7 @@ class AuthController extends Controller
             'user'    => [
                 'id'    => $user->id,
                 'name'  => $user->name,
-                'phone' => $user->phone,
+                'mobile' => $user->mobile,
             ]
         ]);
     }
@@ -175,7 +175,7 @@ class AuthController extends Controller
     /**
      * এসএমএস পাঠানোর কাস্টম হেল্পার
      */
-    private function sendSmsViaGateway($phone, $message)
+    private function sendSmsViaGateway($mobile, $message)
     {
         $url = config('sms.url2');
         $api_key = config('sms.api_key');
@@ -184,7 +184,7 @@ class AuthController extends Controller
         $data = [
             "api_key" => $api_key,
             "senderid" => $senderid,
-            "number" => $phone,
+            "number" => $mobile,
             "message" => $message,
         ];
         $ch = curl_init();
