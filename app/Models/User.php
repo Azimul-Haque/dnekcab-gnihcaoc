@@ -55,29 +55,29 @@ class User extends Authenticatable
         return $this->hasMany(PayoutRequest::class);
     }
 
-    protected static function boot()
-    {
-        parent::boot();
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        // ইউজার তৈরি হওয়ার ঠিক আগে এই ফাংশনটি কল হবে
-        static::creating(function ($user) {
-            // যদি আগে থেকে কোনো কোড না থাকে, তবেই নতুন কোড তৈরি করবে
-            if (empty($user->referral_code)) {
-                $user->referral_code = self::generateUniqueCode();
-            }
-        });
-    }
+    //     // ইউজার তৈরি হওয়ার ঠিক আগে এই ফাংশনটি কল হবে
+    //     static::creating(function ($user) {
+    //         // যদি আগে থেকে কোনো কোড না থাকে, তবেই নতুন কোড তৈরি করবে
+    //         if (empty($user->referral_code)) {
+    //             $user->referral_code = self::generateUniqueCode();
+    //         }
+    //     });
+    // }
 
-    /**
-     * একটি ইউনিক ৬ অক্ষরের মিক্সড কোড জেনারেট করার ফাংশন
-     */
-    public static function generateUniqueCode()
-    {
-        do {
-            // ৬ অক্ষরের রেন্ডম স্ট্রিং (যেমন: X72B9P)
-            $code = strtoupper(Str::random(6));
-        } while (self::where('referral_code', $code)->exists()); // ডাটাবেসে চেক করবে ডুপ্লিকেট আছে কি না
+    // /**
+    //  * একটি ইউনিক ৬ অক্ষরের মিক্সড কোড জেনারেট করার ফাংশন
+    //  */
+    // public static function generateUniqueCode()
+    // {
+    //     do {
+    //         // ৬ অক্ষরের রেন্ডম স্ট্রিং (যেমন: X72B9P)
+    //         $code = strtoupper(Str::random(6));
+    //     } while (self::where('referral_code', $code)->exists()); // ডাটাবেসে চেক করবে ডুপ্লিকেট আছে কি না
 
-        return $code;
-    }
+    //     return $code;
+    // }
 }
