@@ -7,7 +7,7 @@ use App\Models\Course;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
-class HomeController extends Controller
+class CourseController extends Controller
 {
     /**
      * ক্যাটাগরি আইডি অনুযায়ী চলমান কোর্সসমূহ লোড করা (১০ দিনের ক্যাশ)
