@@ -91,7 +91,7 @@ class AuthController extends Controller
         // RateLimiter::hit('daily-otp:'.$phone, 86400); // ২৪ ঘণ্টার মেয়াদে হিট
 
         // ৬. এসএমএস গেটওয়ে Integration (এখানে আপনার SMS Gateway API হিট করবেন)
-        $this->sendSmsViaGateway($phone, "আপনার Coacing অ্যাপের ওটিপি কোড হলো: {$otp}");
+        $this->sendSmsViaGateway($phone, "{$otp} is your pin for Coaching App.");
 
         return response()->json([
             'status'  => true,
