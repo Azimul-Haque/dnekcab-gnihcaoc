@@ -76,8 +76,8 @@ class AuthController extends Controller
         Cache::put('otp_cooldown_'.$phone, time() + 60, 60);
 
         // হিট কাউন্ট বৃদ্ধি
-        RateLimiter::hit('ip-otp:'.$ip, 3600); // ১ ঘণ্টার মেয়াদে হিট
-        RateLimiter::hit('daily-otp:'.$phone, 86400); // ২৪ ঘণ্টার মেয়াদে হিট
+        // RateLimiter::hit('ip-otp:'.$ip, 3600); // ১ ঘণ্টার মেয়াদে হিট
+        // RateLimiter::hit('daily-otp:'.$phone, 86400); // ২৪ ঘণ্টার মেয়াদে হিট
 
         // ৬. এসএমএস গেটওয়ে Integration (এখানে আপনার SMS Gateway API হিট করবেন)
         $this->sendSmsViaGateway($phone, "আপনার Coacing অ্যাপের ওটিপি কোড হলো: {$otp}");
