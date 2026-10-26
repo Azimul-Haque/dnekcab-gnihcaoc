@@ -53,7 +53,7 @@ class CourseController extends Controller
     {
         try {
             // ১০ দিনের ক্যাশ (10 * 24 * 60 * 60 সেকেন্ড = 864,000 সেকেন্ড)
-            $courseexams = Cache::remember('course_exams_' . $id, 864000, function () use ($id) {
+            $courseexams = Cache::remember('course_exams_' . $id, 864000, function () use ($courseId) {
                 return Exam::query()
                     // ১. courseexams টেবিলের সাথে Direct Join
                     ->join('courseexams', 'exams.id', '=', 'courseexams.exam_id')
