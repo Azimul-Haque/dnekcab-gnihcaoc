@@ -166,14 +166,9 @@ class AuthController extends Controller
      */
     private function sendSmsViaGateway($phone, $message)
     {
-        // FOR PLAY CONSOLE TESTING PURPOSE
-        // FOR PLAY CONSOLE TESTING PURPOSE
         if($mobile_number == '01751398392' || $mobile_number == '01842828885') {
            $otp = env('SMS_GATEWAY_PLAY_CONSOLE_TEST_OTP');
         }
-
-        // TEXT MESSAGE OTP
-        // TEXT MESSAGE OTP
 
         // NEW PANEL
         $url = config('sms.url2');
