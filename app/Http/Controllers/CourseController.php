@@ -254,6 +254,7 @@ class CourseController extends Controller
         foreach($course->courseexams as $exams) {
             $exams->delete();
         }
+        Cache::forget('active_courses');
         Cache::forget('courses' . $course->category);
         $course->delete();
         
