@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\APIController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+
+Route::prefix('v1')->group(function () {
+    Route::post('/send-otp', [APIController::class, 'sendOtp']);
+    Route::post('/verify-otp', [APIController::class, 'verifyOtp']);
+
+    // অথেনটিকেটেড ইউজার রুট ( Sanctum দিয়ে সুরক্ষিত )
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/user-profile', [APIController::class, 'userProfile']);
+    });
+});
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
