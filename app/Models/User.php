@@ -18,6 +18,7 @@ class User extends Authenticatable
         'role',
         'mobile',
         'email',
+        'is_approved',
         'password',
     ];
 
