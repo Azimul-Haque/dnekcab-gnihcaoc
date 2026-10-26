@@ -56,6 +56,7 @@ class CourseController extends Controller
                 return Exam::query()
                     ->join('courseexams', 'exams.id', '=', 'courseexams.exam_id')
                     ->where('courseexams.course_id', $courseId)
+                    ->withCount('examquestions as total_questions') // প্রশ্নের সংখ্যা গণনা
                     ->select(
                         'exams.id',
                         'exams.examcategory_id',
