@@ -50,71 +50,65 @@ class CourseController extends Controller
     }
 
     public function getCourseExams($courseId)
-    {
-        try {
-            // ১০ দিনের ক্যাশ (10 * 24 * 60 * 60 সেকেন্ড = 864,000 সেকেন্ড)
-            $courseexams = Cache::remember('course_exams_' . $courseId, 864000, function () use ($courseId) {
-                return Exam::query()
-                    // ১. courseexams টেবিলের সাথে Direct Join
-                    ->join('courseexams', 'exams.id', '=', 'courseexams.exam_id')
-                    ->where('courseexams.course_id', $courseId) // $id এর জায়গায় $courseId
-                    
-                    // ২. SQL লেভেলেই প্রশ্ন সংখ্যা কাউন্ট
-                    ->withCount('examquestions as total_questions')
-                    
-                    // ৩. প্রয়োজনীয় কলাম সিলেক্ট
-                    ->select(
-                        'exams.id',
-                        'exams.name',
-                        'exams.duration',
-                        'exams.negativepercentage',
-                        'exams.available_from',
-                        'exams.available_to',
-                        'exams.syllabus',
-                        'exams.participation',
-                        'exams.cutmark',
-                        'exams.lecture_url',
-                        'exams.serial'
-                    )
-                    
-                    // ৪. ২-লেয়ার সর্টিং লজিক
-                    ->orderBy('exams.serial', 'desc')
-                    ->orderBy('exams.id', 'desc')
-                    ->get()
-                    
-                    // ৫. JSON স্ট্রাকচার ম্যাপিং
-                    ->map(function ($exam) {
-                        return [
-                            'id'                 => $exam->id,
-                            'name'               => $exam->name,
-                            'duration'           => $exam->duration,
-                            'negativepercentage' => $exam->negativepercentage,
-                            'available_from'     => $exam->available_from,
-                            'start'              => $exam->available_from,
-                            'available_to'       => $exam->available_to,
-                            'syllabus'           => $exam->syllabus ?? 'N/A',
-                            'participation'      => $exam->participation ?? 0,
-                            'cutmark'            => $exam->cutmark ?? 0,
-                            'lecture_url'        => $exam->lecture_url,
-                            'total_questions'    => $exam->total_questions ?? 0,
-                            'questioncount'      => $exam->total_questions ?? 0,
-                        ];
-                    });
-            });
+        {
+            try {
+                // v2 ক্যাশ কী ব্যবহার করা হয়েছে যাতে পুরোনো ক্যাশ বাইপাস হয়ে নতুন ডাটা আসে
+                $courseexams = Cache::remember('course_exams_v2_' . $courseId, 864000, function () use ($courseId) {
+                    return Exam::query()
+                        ->join('courseexams', 'exams.id', '=', 'courseexams.exam_id')
+                        ->where('courseexams.course_id', $courseId)
+                        ->select([
+                            'exams.id',
+                            'exams.name',
+                            'exams.duration',
+                            'exams.negativepercentage',
+                            'exams.available_from',
+                            'exams.available_to',
+                            'exams.syllabus',
+                            'exams.participation',
+                            'exams.cutmark',
+                            'exams.lecture_url',
+                            'exams.serial',
+                            // DB::raw দিয়ে ১০০% গ্যারান্টিসহ প্রশ্ন সংখ্যা গণনা
+                            DB::raw('(SELECT COUNT(*) FROM examquestions WHERE examquestions.exam_id = exams.id) as total_questions')
+                        ])
+                        ->orderBy('exams.serial', 'desc')
+                        ->orderBy('exams.id', 'desc')
+                        ->get()
+                        ->map(function ($exam) {
+                            $qCount = (int) ($exam->total_questions ?? 0);
+                            
+                            return [
+                                'id'                 => $exam->id,
+                                'name'               => $exam->name,
+                                'duration'           => $exam->duration,
+                                'negativepercentage' => $exam->negativepercentage,
+                                'available_from'     => $exam->available_from,
+                                'start'              => $exam->available_from,
+                                'available_to'       => $exam->available_to,
+                                'syllabus'           => $exam->syllabus ?? 'N/A',
+                                'participation'      => $exam->participation ?? 0,
+                                'cutmark'            => $exam->cutmark ?? 0,
+                                'lecture_url'        => $exam->lecture_url,
+                                'total_questions'    => $qCount,
+                                'questioncount'      => $qCount,
+                            ];
+                        });
+                });
 
-            return response()->json([
-                'status'  => true,
-                'success' => true,
-                'exams'   => $courseexams,
-            ], 200);
+                return response()->json([
+                    'status'  => true,
+                    'success' => true,
+                    'exams'   => $courseexams,
+                ], 200);
 
-        } catch (\Exception $e) {
-            Log::error('Course Exams API Error: ' . $e->getMessage());
+            } catch (\Exception $e) {
+                Log::error('Course Exams API Error: ' . $e->getMessage());
 
-            return response()->json([
-                'status'  => false,
-                'message' => 'সার্ভার এরর: ' . $e->getMessage(),
-            ], 500);
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'সার্ভার এরর: ' . $e->getMessage(),
+                ], 500);
+            }
         }
-    }
 }
