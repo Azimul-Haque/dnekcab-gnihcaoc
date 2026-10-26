@@ -31,11 +31,12 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/home-data', [HomeController::class, 'getHomeData']);
     });
+    
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/category/{id}/courses', [CourseController::class, 'getCategoryCourses']);
     });
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/course/{id}/exams', [HomeController::class, 'getCourseExams']);
+        Route::get('/course/{id}/exams', [CourseController::class, 'getCourseExams']);
     });
 });
 
