@@ -133,7 +133,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form method="post" id="editCategoryForm" action="{{ route('dashboard.exams.category.update') }}">
+        <form method="post" id="editCategoryForm" action="">
             @csrf
             @method('PUT')
             <input type="hidden" name="id" id="edit_category_id">
