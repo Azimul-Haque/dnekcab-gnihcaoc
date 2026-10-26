@@ -126,7 +126,7 @@
         </div>
         <form method="post" id="editCategoryForm" action="">
             @csrf
-            @method('PUT')
+            @method('POST')
             <input type="hidden" name="id" id="edit_category_id">
 
             <div class="modal-body p-3">
