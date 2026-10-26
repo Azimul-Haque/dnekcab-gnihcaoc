@@ -45,9 +45,9 @@
                     </div>
                     
                     {{-- ওয়াটারমার্ক আইকন সেকশন --}}
-                    <div class="icon" style="top: 5px; right: 35px;">
+                    {{-- <div class="icon" style="top: 5px; right: 35px;">
                         <span style="font-size: 42px; opacity: 0.3;">{{ $category->thumbnail ?? '📚' }}</span>
-                    </div>
+                    </div> --}}
                     
                     <a href="{{ route('dashboard.exams', ['id' => $category->id]) }}" class="small-box-footer py-1" style="background: rgba(0,0,0,0.1); border-top: 1px solid rgba(255,255,255,0.1);">
                         পরীক্ষাসমূহ দেখুন <i class="fas fa-arrow-circle-right ml-1"></i>
