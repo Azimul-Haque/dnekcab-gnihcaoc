@@ -212,6 +212,12 @@ class AuthController extends Controller
         $api_key = config('sms.api_key');
         $senderid = config('sms.senderid');
 
+        // ১. কনফিগ সঠিকভাবে লোড হয়েছে কিনা চেক
+        if (empty($url) || empty($api_key)) {
+            \Log::error("SMS Gateway Config Error: URL or API Key is missing.");
+            return false;
+        }
+
         $data = [
             "api_key"  => $api_key,
             "senderid" => $senderid,
@@ -222,12 +228,21 @@ class AuthController extends Controller
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data)); // Array-র বদলে http_build_query ব্যবহার করুন
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        
         $response = curl_exec($ch);
+        $curlError = curl_error($ch);
         curl_close($ch);
 
-        return true;
+        if ($curlError) {
+            \Log::error("SMS cURL Error: " . $curlError);
+            return false;
+        }
+
+        \Log::info("SMS Gateway Response: " . $response);
+
+        return $response;
     }
 }
