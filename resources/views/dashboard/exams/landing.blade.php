@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="icon">
-                        <span style="">{{ $category->thumbnail ?? '📚' }}</span>
+                        <i class="fas fa-graduation-cap"></i>
                     </div>
                     
                     {{-- ওয়াটারমার্ক আইকন সেকশন --}}
