@@ -51,4 +51,28 @@ class HomeController extends Controller
             ], 500);
         }
     }
+
+    public function checkUserApprovalStatus(Request $request)
+    {
+        $userId = $request->user()->id; // Sanctum Token থেকে Auth User
+
+        // ১০ দিনের ক্যাশ (এডমিন থেকে স্টেটাস চেঞ্জ করলে ক্যাশ ফ্লাশ করা হবে)
+        $isApproved = Cache::remember('user_approval_status_' . $userId, 864000, function () use ($userId) {
+            $user = User::select('id', 'is_approved')->find($userId);
+            
+            return $user ? (int) $user->is_approved : null;
+        });
+
+        if ($isApproved === null) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'ব্যবহারকারী পাওয়া যায়নি',
+            ], 444);
+        }
+
+        return response()->json([
+            'status'      => true,
+            'is_approved' => $isApproved, // 1 অথবা 0
+        ], 200);
+    }
 }
