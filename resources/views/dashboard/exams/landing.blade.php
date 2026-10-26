@@ -20,17 +20,19 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box {{ $currentColor }} shadow border-0 position-relative" style="border-radius: 12px; overflow: hidden; transition: transform .3s ease;">
                     
-                    {{-- কম্প্যাক্ট ফ্লোটিং এডিট বাটন --}}
+                    {{-- ১. ফিক্সড এডিট বাটন (data-toggle ও data-target সহ) --}}
                     <div class="position-absolute" style="top: 8px; right: 8px; z-index: 10;">
                         <button type="button" 
                                 class="btn btn-sm btn-light shadow-sm rounded-circle edit-category-btn" 
+                                data-toggle="modal"
+                                data-target="#editCategoryModal"
                                 data-id="{{ $category->id }}"
                                 data-name="{{ $category->name }}"
                                 data-thumbnail="{{ $category->thumbnail ?? '📚' }}"
                                 data-update-url="{{ route('dashboard.exams.category.update', ['id' => $category->id]) }}"
                                 title="ক্যাটাগরি এডিট করুন"
                                 style="width: 28px; height: 28px; padding: 0; line-height: 28px; opacity: 0.95;">
-                            <i class="fas fa-pencil-alt text-dark" style="font-size: 0.75rem;"></i>
+                            <i class="fas fa-pencil-alt text-dark" style="font-size: 0.75rem; pointer-events: none;"></i>
                         </button>
                     </div>
 
@@ -54,7 +56,7 @@
             </div>
         @endforeach
 
-        {{-- অরিজিনাল সাইজের নতুন ক্যাটাগরি যোগ করার কার্ড --}}
+        {{-- নতুন ক্যাটাগরি যোগ করার কার্ড --}}
         <div class="col-lg-3 col-6">
             <div class="small-box shadow-sm border-dashed" 
                  style="background-color: #f8f9fa; border: 2px dashed #ddd; border-radius: 12px; cursor: pointer; transition: transform .2s;"
@@ -178,18 +180,20 @@
         $('#' + inputId).val(emoji);
     }
 
-    $(document).on('click', '.edit-category-btn', function() {
-        var id = $(this).data('id');
-        var name = $(this).data('name');
-        var thumbnail = $(this).data('thumbnail');
-        var updateUrl = $(this).data('update-url');
+    // ২. নির্ভরযোগ্য ক্লিক ইভেন্ট হ্যান্ডলার
+    $(document).on('click', '.edit-category-btn', function(e) {
+        e.stopPropagation();
+        
+        var btn = $(this);
+        var id = btn.attr('data-id');
+        var name = btn.attr('data-name');
+        var thumbnail = btn.attr('data-thumbnail');
+        var updateUrl = btn.attr('data-update-url');
 
         $('#edit_category_id').val(id);
         $('#edit_category_name').val(name);
         $('#edit_thumbnail_input').val(thumbnail);
         $('#editCategoryForm').attr('action', updateUrl);
-
-        $('#editCategoryModal').modal('show');
     });
 
     $(document).on('click', '#search-button', function() {
