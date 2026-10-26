@@ -27,11 +27,12 @@ Route::prefix('v1')->group(function () {
         Route::get('/user-profile', [AuthController::class, 'userProfile']);
     });
     Route::middleware('auth:sanctum')->post('/update-name', [AuthController::class, 'updateName']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/home-data', [HomeController::class, 'getHomeData']);
+    });
 });
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/home-data', [HomeController::class, 'getHomeData']);
-});
+
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
 //     return $request->user();
