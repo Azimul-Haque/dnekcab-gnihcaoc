@@ -33,21 +33,21 @@ class AuthController extends Controller
         $ip = $request->ip();
 
         // ১. IP ভিত্তিক লিমিট (১ ঘণ্টায় সর্বোচ্চ ১০ টি)
-        if (RateLimiter::tooManyAttempts('ip-otp:'.$ip, 10)) {
-            $seconds = RateLimiter::availableIn('ip-otp:'.$ip);
-            return response()->json([
-                'status'  => false,
-                'message' => "অতিরিক্ত চেষ্টার কারণে আপনার IP সাময়িকভাবে ব্লক করা হয়েছে। অনুগ্রহ করে {$seconds} সেকেন্ড পর চেষ্টা করুন।"
-            ], 429);
-        }
+        // if (RateLimiter::tooManyAttempts('ip-otp:'.$ip, 10)) {
+        //     $seconds = RateLimiter::availableIn('ip-otp:'.$ip);
+        //     return response()->json([
+        //         'status'  => false,
+        //         'message' => "অতিরিক্ত চেষ্টার কারণে আপনার IP সাময়িকভাবে ব্লক করা হয়েছে। অনুগ্রহ করে {$seconds} সেকেন্ড পর চেষ্টা করুন।"
+        //     ], 429);
+        // }
 
-        // ২. মোবাইল নম্বর ভিত্তিক দৈনিক লিমিট (২৪ ঘণ্টায় সর্বোচ্চ ৫ টি)
-        if (RateLimiter::tooManyAttempts('daily-otp:'.$phone, 5)) {
-            return response()->json([
-                'status'  => false,
-                'message' => 'আজকের দিনের ওটিপি লিমিট শেষ। আগামীকাল আবার চেষ্টা করুন।'
-            ], 429);
-        }
+        // // ২. মোবাইল নম্বর ভিত্তিক দৈনিক লিমিট (২৪ ঘণ্টায় সর্বোচ্চ ৫ টি)
+        // if (RateLimiter::tooManyAttempts('daily-otp:'.$phone, 5)) {
+        //     return response()->json([
+        //         'status'  => false,
+        //         'message' => 'আজকের দিনের ওটিপি লিমিট শেষ। আগামীকাল আবার চেষ্টা করুন।'
+        //     ], 429);
+        // }
 
         // ৩. ১ মিনিটের কুলডাউন চেক
         if (Cache::has('otp_cooldown_'.$phone)) {
