@@ -21,6 +21,10 @@ class User extends Authenticatable
         'password',
     ];
 
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+
     public function payments(){
         return $this->hasMany('App\Models\Payment');
     }
@@ -45,21 +49,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(PayoutRequest::class);
     }
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
 
     /**
      * The attributes that should be cast to native types.
