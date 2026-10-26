@@ -62,7 +62,7 @@ class AuthController extends Controller
         $otp = rand(1000, 9999);
 
         // টেস্ট এনভায়রনমেন্টের জন্য ফিক্সড ওটিপি (প্রোডাকশনে সরাতে পারেন)
-        if ($phone === '01700000000') {
+        if ($phone === '01751398392') {
             $otp = 1234;
         }
 
