@@ -53,16 +53,16 @@ class CourseController extends Controller
     {
         try {
             // ১০ দিনের ক্যাশ (10 * 24 * 60 * 60 সেকেন্ড = 864,000 সেকেন্ড)
-            $courseexams = Cache::remember('course_exams_' . $id, 864000, function () use ($courseId) {
+            $courseexams = Cache::remember('course_exams_' . $courseId, 864000, function () use ($courseId) {
                 return Exam::query()
                     // ১. courseexams টেবিলের সাথে Direct Join
                     ->join('courseexams', 'exams.id', '=', 'courseexams.exam_id')
-                    ->where('courseexams.course_id', $id)
+                    ->where('courseexams.course_id', $courseId) // $id এর জায়গায় $courseId
                     
-                    // ২. SQL লেভেলেই প্রশ্ন সংখ্যা কাউন্ট (RAM ফ্রি থাকবে)
+                    // ২. SQL লেভেলেই প্রশ্ন সংখ্যা কাউন্ট
                     ->withCount('examquestions as total_questions')
                     
-                    // ৩. শুধুমাত্র প্রয়োজনীয় কলাম সিলেক্ট
+                    // ৩. প্রয়োজনীয় কলাম সিলেক্ট
                     ->select(
                         'exams.id',
                         'exams.name',
@@ -77,12 +77,12 @@ class CourseController extends Controller
                         'exams.serial'
                     )
                     
-                    // ৪. আপনার ২-লেয়ার সর্টিং লজিক
+                    // ৪. ২-লেয়ার সর্টিং লজিক
                     ->orderBy('exams.serial', 'desc')
                     ->orderBy('exams.id', 'desc')
                     ->get()
                     
-                    // ৫. ক্লিন এবং পারফেক্ট JSON স্ট্রাকচার ম্যাপিং
+                    // ৫. JSON স্ট্রাকচার ম্যাপিং
                     ->map(function ($exam) {
                         return [
                             'id'                 => $exam->id,
@@ -90,14 +90,14 @@ class CourseController extends Controller
                             'duration'           => $exam->duration,
                             'negativepercentage' => $exam->negativepercentage,
                             'available_from'     => $exam->available_from,
-                            'start'              => $exam->available_from, // ব্যাকওয়ার্ড কম্প্যাটিবিলিটি
+                            'start'              => $exam->available_from,
                             'available_to'       => $exam->available_to,
                             'syllabus'           => $exam->syllabus ?? 'N/A',
                             'participation'      => $exam->participation ?? 0,
                             'cutmark'            => $exam->cutmark ?? 0,
                             'lecture_url'        => $exam->lecture_url,
                             'total_questions'    => $exam->total_questions ?? 0,
-                            'questioncount'      => $exam->total_questions ?? 0, // ব্যাকওয়ার্ড কম্প্যাটিবিলিটি
+                            'questioncount'      => $exam->total_questions ?? 0,
                         ];
                     });
             });
