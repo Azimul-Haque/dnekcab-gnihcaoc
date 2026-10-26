@@ -25,6 +25,7 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/user-profile', [AuthController::class, 'userProfile']);
     });
+    Route::middleware('auth:sanctum')->post('/update-name', [AuthController::class, 'updateName']);
 });
 
 // Route::middleware('auth:api')->get('/user', function (Request $request) {
