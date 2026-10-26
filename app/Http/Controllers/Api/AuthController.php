@@ -83,6 +83,13 @@ class AuthController extends Controller
         // ১ মিনিটের কুলডাউন ফ্ল্যাগ সেভ
         Cache::put('otp_cooldown_'.$mobile, time() + 60, 60);
 
+        // হিট কাউন্ট বৃদ্ধি
+        // হিট কাউন্ট বৃদ্ধি
+        // হিট কাউন্ট বৃদ্ধি
+        // হিট কাউন্ট বৃদ্ধি
+        // RateLimiter::hit('ip-otp:'.$ip, 3600); // ১ ঘণ্টার মেয়াদে হিট
+        // RateLimiter::hit('daily-otp:'.$mobile, 86400); // ২৪ ঘণ্টার মেয়াদে হিট
+
         // ৬. এসএমএস গেটওয়ে
         $this->sendSmsViaGateway($mobile, "{$otp} is your pin for Coaching App.");
 
