@@ -13,6 +13,13 @@ class HomeController extends Controller
     public function getHomeData()
     {
         try {
+            $user = $request->user();
+
+            // ১. ইউজারের লাইভ এপ্রুভাল স্ট্যাটাস (ক্যাশ বাইপাস)
+            $isApproved = Cache::remember('user_approval_status_' . $user->id, 864000, function () use ($user) {
+                return (int) $user->is_approved;
+            });
+
             // ১. চলমান কোর্সসমূহ ( priority অনুযায়ী সর্টেড এবং ১০ দিনের ক্যাশ )
             $activeCourses = Cache::remember('active_courses', now()->addDays(10), function () {
                 return Course::query()
