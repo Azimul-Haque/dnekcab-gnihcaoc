@@ -175,27 +175,30 @@
 
 @section('third_party_scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+@section('third_party_scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     function selectEmoji(inputId, emoji) {
         $('#' + inputId).val(emoji);
     }
 
-    // ২. নির্ভরযোগ্য ক্লিক ইভেন্ট হ্যান্ডলার
-    $(document).on('click', '.edit-category-btn', function(e) {
-        e.stopPropagation();
+    // বুটস্ট্র্যাপ ৪ নেটিভ মডাল ওপেন ইভেন্ট (১০০% ডাটা ফিল-আপ গ্যারান্টি)
+    $('#editCategoryModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // যে বাটনটিতে ক্লিক করা হয়েছে
         
-        var btn = $(this);
-        var id = btn.attr('data-id');
-        var name = btn.attr('data-name');
-        var thumbnail = btn.attr('data-thumbnail');
-        var updateUrl = btn.attr('data-update-url');
+        var id = button.data('id');
+        var name = button.data('name');
+        var thumbnail = button.data('thumbnail');
+        var updateUrl = button.data('update-url');
 
-        $('#edit_category_id').val(id);
-        $('#edit_category_name').val(name);
-        $('#edit_thumbnail_input').val(thumbnail);
-        $('#editCategoryForm').attr('action', updateUrl);
+        var modal = $(this);
+        modal.find('#edit_category_id').val(id);
+        modal.find('#edit_category_name').val(name);
+        modal.find('#edit_thumbnail_input').val(thumbnail);
+        modal.find('#editCategoryForm').attr('action', updateUrl);
     });
 
+    // সার্চ ফিল্টার
     $(document).on('click', '#search-button', function() {
       if($('#search-param').val() != '') {
         var urltocall = '{{ route('dashboard.exams') }}' +  '/' + $('#search-param').val().replace(/\\|\//g, '%');
@@ -215,6 +218,7 @@
       }
     });
 </script>
+@endsection
 
 <style>
     .small-box:hover {
