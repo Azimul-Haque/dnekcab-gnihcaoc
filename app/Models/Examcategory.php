@@ -8,6 +8,11 @@ class Examcategory extends Model
 {
     public $timestamps = false;
 
+    use HasFactory;
+
+    protected $table = 'examcategories'; // টেবিলের সঠিক নাম ডিফাইন করা হলো
+    protected $guarded = [];
+
     public function exams(){
         return $this->hasMany('App\Models\Exam');
     }
