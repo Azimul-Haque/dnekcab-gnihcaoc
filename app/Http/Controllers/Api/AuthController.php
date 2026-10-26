@@ -57,7 +57,7 @@ class AuthController extends Controller
         //     ], 429);
         // }
 
-        // ৩. ১ মিনিটের কুলডাউন চেক
+        // ৩. ২ মিনিটের কুলডাউন চেক
         if (Cache::has('otp_cooldown_'.$mobile)) {
             $ttl = Cache::get('otp_cooldown_'.$mobile) - time();
             return response()->json([
