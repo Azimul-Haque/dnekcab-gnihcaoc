@@ -123,6 +123,7 @@ class AuthController extends Controller
             ], 400);
         }
 
+        // আগের থেকেই সর্বোচ্চ ভুল চেষ্টার সীমা অতিক্রম করে থাকলে
         if ($cachedData['attempts'] >= 5) {
             Cache::forget('otp_'.$mobile);
             return response()->json([
@@ -131,16 +132,30 @@ class AuthController extends Controller
             ], 400);
         }
 
-        if ($cachedData['code'] != $request->otp) {
+        // ওটিপি না মিললে
+        if ((string)$cachedData['code'] !== (string)$request->otp) {
             $cachedData['attempts']++;
+
+            // ৫ম বার ভুল হলেই সাথে সাথে ব্লক ও ক্যাশ ডিলিট
+            if ($cachedData['attempts'] >= 5) {
+                Cache::forget('otp_'.$mobile);
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'অতিরিক্ত ৫ বার ভুল চেষ্টার কারণে ওটিপিটি বাতিল করা হয়েছে। নতুন ওটিপি নিন।'
+                ], 400);
+            }
+
+            // ভুল চেষ্টা আপডেট সেভ
             Cache::put('otp_'.$mobile, $cachedData, now()->addMinutes(5));
 
+            $remainingAttempts = 5 - $cachedData['attempts'];
             return response()->json([
                 'status'  => false,
-                'message' => 'ভুল ওটিপি কোড। পুনরায় চেষ্টা করুন।'
+                'message' => "ভুল ওটিপি কোড। আর {$remainingAttempts} বার চেষ্টা করতে পারবেন।"
             ], 400);
         }
 
+        // ওটিপি সঠিক হলে ক্যাশ ক্লিয়ার
         Cache::forget('otp_'.$mobile);
         Cache::forget('otp_cooldown_'.$mobile);
 
@@ -151,25 +166,27 @@ class AuthController extends Controller
         if (!$user) {
             $isNewUser = true;
             $user = User::create([
-                'mobile' => $mobile,
-                'name'   => 'No Name', // নতুন ইউজারের নাম ফাঁকা থাকবে
-                'is_approved' => 0
+                'mobile'      => $mobile,
+                'name'        => 'No Name',
+                'is_approved' => 0, // ডিফল্ট অনুমোদনহীন
             ]);
         } elseif (empty($user->name) || $user->name == 'No Name') {
-            $isNewUser = true; // আগে একাউন্ট থাকলেও যদি নাম না থাকে
+            $isNewUser = true;
         }
 
+        // Sanctum লং-লিভড টোকেন জেনারেট (৩ মাস মেয়াদ)
         $token = $user->createToken('coacing_mobile_app')->plainTextToken;
 
         return response()->json([
             'status'      => true,
             'message'     => 'সফলভাবে লগইন হয়েছে।',
             'token'       => $token,
-            'is_new_user' => $isNewUser, // অ্যাপে নাম চাওয়ার জন্য ফ্ল্যাগ
+            'is_new_user' => $isNewUser,
             'user'        => [
-                'id'     => $user->id,
-                'name'   => $user->name,
-                'mobile' => $user->mobile,
+                'id'          => $user->id,
+                'name'        => $user->name,
+                'mobile'      => $user->mobile,
+                'is_approved' => $user->is_approved,
             ]
         ]);
     }
