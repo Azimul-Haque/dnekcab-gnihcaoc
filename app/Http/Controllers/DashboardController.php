@@ -346,6 +346,8 @@ class DashboardController extends Controller
 
         // মেসেজ তৈরি
         $status = $user->is_approved ? 'অনুমোদিত' : 'অনুমোদন বাতিল';
+
+        Cache::forget('user_approval_status_' . $user->id);
         
         return redirect()->back()->with('success', "ব্যবহারকারীর স্ট্যাটাস সফলভাবে {$status} করা হয়েছে।");
     }
