@@ -52,7 +52,7 @@ class CourseController extends Controller
     {
         try {
             $exams = Cache::remember('course_exams_' . $courseId, now()->addDays(10), function () use ($courseId) {
-                return Courseexam::query()
+                return Exam::query()
                     ->where('course_id', $courseId)
                     ->with(['exam' => function ($query) {
                         $query->select(
