@@ -112,9 +112,9 @@
                                         @endif
 
                                         <!-- 2. INSTANT SMS BUTTON -->
-                                        <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#smsModal{{ $message->id }}" title="SMS পাঠান">
+                                        {{-- <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#smsModal{{ $message->id }}" title="SMS পাঠান">
                                             <i class="fas fa-paper-plane"></i>
-                                        </button>
+                                        </button> --}}
 
                                         <!-- 3. MARK RESOLVED BUTTON -->
                                         @if($message->status == 0)
@@ -131,7 +131,7 @@
                                 </tr>
 
                                 <!-- ==================== INSTANT SMS MODAL ==================== -->
-                                <div class="modal fade" id="smsModal{{ $message->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                {{-- <div class="modal fade" id="smsModal{{ $message->id }}" tabindex="-1" role="dialog" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content border-0 shadow">
                                             <div class="modal-header bg-primary text-white">
@@ -165,7 +165,7 @@
                                             </form>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 <!-- ==================== UPDATE MODAL ==================== -->
                                 <div class="modal fade" id="updateModal{{ $message->id }}" tabindex="-1" role="dialog" aria-hidden="true">
