@@ -31,7 +31,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/home-data', [HomeController::class, 'getHomeData']);
     });
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/category/{id}/courses', [HomeController::class, 'getCategoryCourses']);
+        Route::get('/category/{id}/courses', [CourseController::class, 'getCategoryCourses']);
     });
 });
 
