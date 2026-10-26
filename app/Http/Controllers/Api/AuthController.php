@@ -141,8 +141,8 @@ class AuthController extends Controller
             ], 400);
         }
 
-        // Cache::forget('otp_'.$mobile);
-        // Cache::forget('otp_cooldown_'.$mobile);
+        Cache::forget('otp_'.$mobile);
+        Cache::forget('otp_cooldown_'.$mobile);
 
         // ইউজার আগে থেকেই আছে কি না তা চেক করা
         $user = User::where('mobile', $mobile)->first();
