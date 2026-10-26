@@ -29,52 +29,27 @@ class AuthController extends Controller
             ], 422);
         }
 
-        $mobile = preg_replace('/[^0-9]/', '', $request->mobile); // শুধুমাত্র ডিজিটাল ক্যারেক্টার রাখা
+        $mobile = preg_replace('/[^0-9]/', '', $request->mobile);
         $ip = $request->ip();
-
-        // ১. IP ভিত্তিক লিমিট (১ ঘণ্টায় সর্বোচ্চ ১০ টি)
-        // ১. IP ভিত্তিক লিমিট (১ ঘণ্টায় সর্বোচ্চ ১০ টি)
-        // ১. IP ভিত্তিক লিমিট (১ ঘণ্টায় সর্বোচ্চ ১০ টি)
-        // ১. IP ভিত্তিক লিমিট (১ ঘণ্টায় সর্বোচ্চ ১০ টি)
-        // ১. IP ভিত্তিক লিমিট (১ ঘণ্টায় সর্বোচ্চ ১০ টি)
-        // if (RateLimiter::tooManyAttempts('ip-otp:'.$ip, 10)) {
-        //     $seconds = RateLimiter::availableIn('ip-otp:'.$ip);
-        //     return response()->json([
-        //         'status'  => false,
-        //         'message' => "অতিরিক্ত চেষ্টার কারণে আপনার IP সাময়িকভাবে ব্লক করা হয়েছে। অনুগ্রহ করে {$seconds} সেকেন্ড পর চেষ্টা করুন।"
-        //     ], 429);
-        // }
-
-        // // ২. মোবাইল নম্বর ভিত্তিক দৈনিক লিমিট (২৪ ঘণ্টায় সর্বোচ্চ ৫ টি)
-        // // ২. মোবাইল নম্বর ভিত্তিক দৈনিক লিমিট (২৪ ঘণ্টায় সর্বোচ্চ ৫ টি)
-        // // ২. মোবাইল নম্বর ভিত্তিক দৈনিক লিমিট (২৪ ঘণ্টায় সর্বোচ্চ ৫ টি)
-        // // ২. মোবাইল নম্বর ভিত্তিক দৈনিক লিমিট (২৪ ঘণ্টায় সর্বোচ্চ ৫ টি)
-        // // ২. মোবাইল নম্বর ভিত্তিক দৈনিক লিমিট (২৪ ঘণ্টায় সর্বোচ্চ ৫ টি)
-        // if (RateLimiter::tooManyAttempts('daily-otp:'.$mobile, 5)) {
-        //     return response()->json([
-        //         'status'  => false,
-        //         'message' => 'আজকের দিনের ওটিপি লিমিট শেষ। আগামীকাল আবার চেষ্টা করুন।'
-        //     ], 429);
-        // }
 
         // ৩. ১ মিনিটের কুলডাউন চেক
         if (Cache::has('otp_cooldown_'.$mobile)) {
             $ttl = Cache::get('otp_cooldown_'.$mobile) - time();
             return response()->json([
                 'status'  => false,
-                'message' => "অনুগ্রহ করে {$ttl} সেকেন্ড পর পুনরায় ওটিপি রিকোয়েস্ট করুন।"
+                'message' => "অনুগ্রহ করে {$ttl} সেকেন্ড পর পুনরায় ওটিপি রিকোয়েস্ট করুন।"
             ], 429);
         }
 
         // ৪. চার ডিজিটের ওটিপি জেনারেট
         $otp = rand(1000, 9999);
 
-        // টেস্ট এনভায়রনমেন্টের জন্য ফিক্সড ওটিপি (প্রোডাকশনে সরাতে পারেন)
+        // টেস্ট এনভায়রনমেন্টের জন্য ফিক্সড ওটিপি
         if ($mobile === '01751398392') {
             $otp = 4321;
         }
 
-        // ৫. ক্যাশে ওটিপি সেভ (মেয়াদ ৫ মিনিট)
+        // ৫. ক্যাশে ওটিপি সেভ (মেয়াদ ৫ মিনিট)
         Cache::put('otp_'.$mobile, [
             'code' => $otp,
             'attempts' => 0
@@ -83,31 +58,23 @@ class AuthController extends Controller
         // ১ মিনিটের কুলডাউন ফ্ল্যাগ সেভ
         Cache::put('otp_cooldown_'.$mobile, time() + 60, 60);
 
-        // হিট কাউন্ট বৃদ্ধি
-        // হিট কাউন্ট বৃদ্ধি
-        // হিট কাউন্ট বৃদ্ধি
-        // হিট কাউন্ট বৃদ্ধি
-        // RateLimiter::hit('ip-otp:'.$ip, 3600); // ১ ঘণ্টার মেয়াদে হিট
-        // RateLimiter::hit('daily-otp:'.$mobile, 86400); // ২৪ ঘণ্টার মেয়াদে হিট
-
-        // ৬. এসএমএস গেটওয়ে Integration (এখানে আপনার SMS Gateway API হিট করবেন)
+        // ৬. এসএমএস গেটওয়ে
         $this->sendSmsViaGateway($mobile, "{$otp} is your pin for Coaching App.");
 
         return response()->json([
             'status'  => true,
-            'message' => 'আপনার মোবাইলে ৪ ডিজিটের ওটিপি পাঠানো হয়েছে।',
-            // 'debug_otp' => $otp // ডেভেলপমেন্টের জন্য এটি অন রাখতে পারেন
+            'message' => 'আপনার মোবাইলে ৪ ডিজিটের ওটিপি পাঠানো হয়েছে।',
         ]);
     }
 
     /**
-     * ওটিপি ভেরিফাই ও ৯০ দিনের লং-লিভড সেশন টোকেন তৈরি
+     * ওটিপি ভেরিফাই ও লং-লিভড সেশন টোকেন জেনারেট
      */
     public function verifyOtp(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'mobile' => 'required|string',
-            'otp'   => 'required|string|size:4',
+            'otp'    => 'required|string|size:4',
         ]);
 
         if ($validator->fails()) {
@@ -120,61 +87,93 @@ class AuthController extends Controller
         if (!$cachedData) {
             return response()->json([
                 'status'  => false,
-                'message' => 'ওটিপি এর মেয়াদ শেষ হয়ে গেছে। পুনরায় নতুন ওটিপি পাঠান।'
+                'message' => 'ওটিপি এর মেয়াদ শেষ হয়ে গেছে। পুনরায় নতুন ওটিপি পাঠান।'
             ], 400);
         }
 
-        // ব্রুট ফোর্স প্রটেকশন (সর্বোচ্চ ৫ বার ভুল চেষ্টার পর ব্লক)
         if ($cachedData['attempts'] >= 5) {
             Cache::forget('otp_'.$mobile);
             return response()->json([
                 'status'  => false,
-                'message' => 'অতিরিক্ত ভুল চেষ্টার কারণে ওটিপিটি বাতিল করা হয়েছে। নতুন ওটিপি নিন।'
+                'message' => 'অতিরিক্ত ভুল চেষ্টার কারণে ওটিপিটি বাতিল করা হয়েছে। নতুন ওটিপি নিন।'
             ], 400);
         }
 
-        // ওটিপি ম্যাচ চেক
         if ($cachedData['code'] != $request->otp) {
             $cachedData['attempts']++;
             Cache::put('otp_'.$mobile, $cachedData, now()->addMinutes(5));
 
             return response()->json([
                 'status'  => false,
-                'message' => 'ভুল ওটিপি কোড। পুনরায় চেষ্টা করুন।'
+                'message' => 'ভুল ওটিপি কোড। পুনরায় চেষ্টা করুন।'
             ], 400);
         }
 
-        // ওটিপি সঠিক হলে ক্যাশ থেকে মুছে ফেলা
         Cache::forget('otp_'.$mobile);
         Cache::forget('otp_cooldown_'.$mobile);
 
-        // ইউজার না থাকলে নতুন অ্যাকাউন্ট তৈরি করা, থাকলে অ্যাকাউন্টটি খুঁজে নেওয়া
-        $user = User::firstOrCreate(
-            ['mobile' => $mobile],
-            [
-                'name' => 'User_' . Str::random(5),
-                'status' => 1
-            ]
-        );
+        // ইউজার আগে থেকেই আছে কি না তা চেক করা
+        $user = User::where('mobile', $mobile)->first();
+        $isNewUser = false;
 
-        // Sanctum লং-লিভড টোকেন জেনারেট (৩ মাস মেয়াদ)
+        if (!$user) {
+            $isNewUser = true;
+            $user = User::create([
+                'mobile' => $mobile,
+                'name'   => null, // নতুন ইউজারের নাম ফাঁকা থাকবে
+                'status' => 1
+            ]);
+        } elseif (empty($user->name)) {
+            $isNewUser = true; // আগে একাউন্ট থাকলেও যদি নাম না থাকে
+        }
+
         $token = $user->createToken('coacing_mobile_app')->plainTextToken;
 
         return response()->json([
-            'status'  => true,
-            'message' => 'সফলভাবে লগইন হয়েছে।',
-            'token'   => $token,
-            'user'    => [
-                'id'    => $user->id,
-                'name'  => $user->name,
+            'status'      => true,
+            'message'     => 'সফলভাবে লগইন হয়েছে।',
+            'token'       => $token,
+            'is_new_user' => $isNewUser, // অ্যাপে নাম চাওয়ার জন্য ফ্ল্যাগ
+            'user'        => [
+                'id'     => $user->id,
+                'name'   => $user->name,
                 'mobile' => $user->mobile,
             ]
         ]);
     }
 
     /**
-     * এসএমএস পাঠানোর কাস্টম হেল্পার
+     * ইউজারের নাম আপডেট করার API
      */
+    public function updateName(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|min:2|max:100',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'দয়া করে আপনার সঠিক নাম লিখুন।',
+                'errors'  => $validator->errors()
+            ], 422);
+        }
+
+        $user = $request->user();
+        $user->name = trim($request->name);
+        $user->save();
+
+        return response()->json([
+            'status'  => true,
+            'message' => 'আপনার নাম সফলভাবে সেভ হয়েছে।',
+            'user'    => [
+                'id'     => $user->id,
+                'name'   => $user->name,
+                'mobile' => $user->mobile,
+            ]
+        ]);
+    }
+
     private function sendSmsViaGateway($mobile, $message)
     {
         $url = config('sms.url2');
@@ -182,11 +181,12 @@ class AuthController extends Controller
         $senderid = config('sms.senderid');
 
         $data = [
-            "api_key" => $api_key,
+            "api_key"  => $api_key,
             "senderid" => $senderid,
-            "number" => $mobile,
-            "message" => $message,
+            "number"   => $mobile,
+            "message"  => $message,
         ];
+        
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -195,17 +195,7 @@ class AuthController extends Controller
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $response = curl_exec($ch);
         curl_close($ch);
-        $jsonresponse = json_decode($response);
 
-        if($jsonresponse->response_code == 202) {
-            // Session::flash('success', 'SMS সফলভাবে পাঠানো হয়েছে!');
-        } elseif($jsonresponse->response_code == 1007) {
-            // Session::flash('warning', 'অপর্যাপ্ত SMS ব্যালেন্সের কারণে SMS পাঠানো যায়নি!');
-        } else {
-            // Session::flash('warning', 'দুঃখিত! SMS পাঠানো যায়নি!');
-        }
-
-        // return $otp;
-        return response()->json(['success' => true, 'message' => 'OTP পাঠানো হয়েছে!']);
+        return response()->json(['success' => true, 'message' => 'OTP পাঠানো হয়েছে!']);
     }
 }
