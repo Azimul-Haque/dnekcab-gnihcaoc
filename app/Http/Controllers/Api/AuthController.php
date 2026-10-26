@@ -33,6 +33,10 @@ class AuthController extends Controller
         $ip = $request->ip();
 
         // ১. IP ভিত্তিক লিমিট (১ ঘণ্টায় সর্বোচ্চ ১০ টি)
+        // ১. IP ভিত্তিক লিমিট (১ ঘণ্টায় সর্বোচ্চ ১০ টি)
+        // ১. IP ভিত্তিক লিমিট (১ ঘণ্টায় সর্বোচ্চ ১০ টি)
+        // ১. IP ভিত্তিক লিমিট (১ ঘণ্টায় সর্বোচ্চ ১০ টি)
+        // ১. IP ভিত্তিক লিমিট (১ ঘণ্টায় সর্বোচ্চ ১০ টি)
         // if (RateLimiter::tooManyAttempts('ip-otp:'.$ip, 10)) {
         //     $seconds = RateLimiter::availableIn('ip-otp:'.$ip);
         //     return response()->json([
@@ -41,6 +45,10 @@ class AuthController extends Controller
         //     ], 429);
         // }
 
+        // // ২. মোবাইল নম্বর ভিত্তিক দৈনিক লিমিট (২৪ ঘণ্টায় সর্বোচ্চ ৫ টি)
+        // // ২. মোবাইল নম্বর ভিত্তিক দৈনিক লিমিট (২৪ ঘণ্টায় সর্বোচ্চ ৫ টি)
+        // // ২. মোবাইল নম্বর ভিত্তিক দৈনিক লিমিট (২৪ ঘণ্টায় সর্বোচ্চ ৫ টি)
+        // // ২. মোবাইল নম্বর ভিত্তিক দৈনিক লিমিট (২৪ ঘণ্টায় সর্বোচ্চ ৫ টি)
         // // ২. মোবাইল নম্বর ভিত্তিক দৈনিক লিমিট (২৪ ঘণ্টায় সর্বোচ্চ ৫ টি)
         // if (RateLimiter::tooManyAttempts('daily-otp:'.$phone, 5)) {
         //     return response()->json([
@@ -75,6 +83,9 @@ class AuthController extends Controller
         // ১ মিনিটের কুলডাউন ফ্ল্যাগ সেভ
         Cache::put('otp_cooldown_'.$phone, time() + 60, 60);
 
+        // হিট কাউন্ট বৃদ্ধি
+        // হিট কাউন্ট বৃদ্ধি
+        // হিট কাউন্ট বৃদ্ধি
         // হিট কাউন্ট বৃদ্ধি
         // RateLimiter::hit('ip-otp:'.$ip, 3600); // ১ ঘণ্টার মেয়াদে হিট
         // RateLimiter::hit('daily-otp:'.$phone, 86400); // ২৪ ঘণ্টার মেয়াদে হিট
