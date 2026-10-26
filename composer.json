@@ -17,7 +17,7 @@
         "infyomlabs/laravel-ui-adminlte": "^3.0",
         "intervention/image": "^2.5",
         "laravel/framework": "^8.0",
-        "laravel/sanctum": "*",
+        "laravel/sanctum": "^2.15",
         "laravel/tinker": "^2.0",
         "laravelcollective/html": "^6.2",
         "mews/purifier": "^3.4",

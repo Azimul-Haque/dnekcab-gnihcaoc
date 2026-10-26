@@ -14,57 +14,59 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
-Route::get('/testapi', 'APIController@test')->name('api.test');
 
-// Route::post('/generateotp', 'APIController@generateOTP')->name('api.generateotp');
-Route::post('/generateotp', 'APIController@generateOTP')->name('api.generateotp')->middleware('otp.throttle');
-Route::post('/loginorcreate', 'APIController@loginOrCreate')->name('api.loginorcreate');
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::get('/checkuid/{softtoken}/{phonenumber}', 'APIController@checkUid')->name('api.checkuid');
-Route::get('/checkpackagevalidity/{softtoken}/{phonenumber}', 'APIController@checkPackageValidity')->name('api.checkpackagevalidity');
-Route::post('/adduser', 'APIController@addUser')->name('api.adduser');
-Route::post('/addonesignaldata', 'APIController@addOneSignalData')->name('api.addonesignaldata');
-Route::post('/updateuser', 'APIController@updateUser')->name('api.updateuser');
-Route::post('/notification/single', 'APIController@sendSingleNotification')->name('api.sendsinglenotification');
-Route::get('/notification/test', 'APIController@testNotification')->name('api.testnotification');
+// Route::get('/testapi', 'APIController@test')->name('api.test');
 
-Route::get('/testcache', 'APIController@testCache')->name('api.testcache');
-Route::get('/getcourses/{softtoken}/{coursetype}', 'APIController@getCourses')->name('api.getcourses');
-Route::get('/getcourses/exams/{softtoken}/{id}', 'APIController@getCourseExams')->name('api.getcourses.exams');
-Route::get('/getothercourses/exams/{softtoken}/{coursetype}', 'APIController@getOtherCourseExams')->name('api.getothercourses.exams');
-Route::get('/getcourses/exam/{softtoken}/{id}/questions', 'APIController@getCourseExamQuestions')->name('api.getcourses.exam.questions');
-Route::get('/gettopicwise/exam/{softtoken}/{id}/questions', 'APIController@getTopicExamQuestions')->name('api.gettopicwise.exam.questions');
-Route::get('/gettopics/{softtoken}', 'APIController@getTopics')->name('api.gettopics');
-Route::get('/getpackages/{softtoken}', 'APIController@getPackages')->name('api.getpackages');
-Route::post('/payment/proceed', 'APIController@paymentProceed')->name('api.paymentproceed');
+// // Route::post('/generateotp', 'APIController@generateOTP')->name('api.generateotp');
+// Route::post('/generateotp', 'APIController@generateOTP')->name('api.generateotp')->middleware('otp.throttle');
+// Route::post('/loginorcreate', 'APIController@loginOrCreate')->name('api.loginorcreate');
 
-// NEW VERSION CATEGORY WISE COURSES AND OTHERS
-Route::get('/getcourses/categorywise/{softtoken}/{category}', 'APIController@getCoursesCategoryWise')->name('api.getcategorywise');
-// NEW VERSION CATEGORY WISE COURSES AND OTHERS
+// Route::get('/checkuid/{softtoken}/{phonenumber}', 'APIController@checkUid')->name('api.checkuid');
+// Route::get('/checkpackagevalidity/{softtoken}/{phonenumber}', 'APIController@checkPackageValidity')->name('api.checkpackagevalidity');
+// Route::post('/adduser', 'APIController@addUser')->name('api.adduser');
+// Route::post('/addonesignaldata', 'APIController@addOneSignalData')->name('api.addonesignaldata');
+// Route::post('/updateuser', 'APIController@updateUser')->name('api.updateuser');
+// Route::post('/notification/single', 'APIController@sendSingleNotification')->name('api.sendsinglenotification');
+// Route::get('/notification/test', 'APIController@testNotification')->name('api.testnotification');
 
-Route::post('/message/store', 'APIController@storeMessage')->name('api.storemessage');
+// Route::get('/testcache', 'APIController@testCache')->name('api.testcache');
+// Route::get('/getcourses/{softtoken}/{coursetype}', 'APIController@getCourses')->name('api.getcourses');
+// Route::get('/getcourses/exams/{softtoken}/{id}', 'APIController@getCourseExams')->name('api.getcourses.exams');
+// Route::get('/getothercourses/exams/{softtoken}/{coursetype}', 'APIController@getOtherCourseExams')->name('api.getothercourses.exams');
+// Route::get('/getcourses/exam/{softtoken}/{id}/questions', 'APIController@getCourseExamQuestions')->name('api.getcourses.exam.questions');
+// Route::get('/gettopicwise/exam/{softtoken}/{id}/questions', 'APIController@getTopicExamQuestions')->name('api.gettopicwise.exam.questions');
+// Route::get('/gettopics/{softtoken}', 'APIController@getTopics')->name('api.gettopics');
+// Route::get('/getpackages/{softtoken}', 'APIController@getPackages')->name('api.getpackages');
+// Route::post('/payment/proceed', 'APIController@paymentProceed')->name('api.paymentproceed');
 
-Route::get('/getpaymenthistory/{softtoken}/{phonenumber}', 'APIController@getPaymentHistory')->name('api.getpaymenthistory');
+// // NEW VERSION CATEGORY WISE COURSES AND OTHERS
+// Route::get('/getcourses/categorywise/{softtoken}/{category}', 'APIController@getCoursesCategoryWise')->name('api.getcategorywise');
+// // NEW VERSION CATEGORY WISE COURSES AND OTHERS
 
-Route::get('/getmaterials/{softtoken}', 'APIController@getMaterials')->name('api.getmaterials');
-Route::get('/getmaterials/single/{softtoken}/{id}', 'APIController@getSingleMaterial')->name('api.getsinglematerial');
+// Route::post('/message/store', 'APIController@storeMessage')->name('api.storemessage');
 
-Route::post('/addexamresult', 'APIController@addExamResult')->name('api.addexamresult');
-Route::get('/meritlist/{softtoken}/{course_id}/{exam_id}', 'APIController@getMeritList')->name('api.getmeritlist');
-Route::post('/reportquestion', 'APIController@reportQuestion')->name('api.reportquestion');
-Route::get('/getexamcategories/{softtoken}', 'APIController@getExamCategories')->name('api.getexamcategories');
-Route::get('/getquestionbank/exams/{softtoken}/{getexamcategory}', 'APIController@getQBCatWise')->name('api.getquestionbank.exams');
+// Route::get('/getpaymenthistory/{softtoken}/{phonenumber}', 'APIController@getPaymentHistory')->name('api.getpaymenthistory');
 
-// Ambassador Code
-Route::get('/ambassador/profile/{softtoken}/{mobile}', 'APIController@getAmbassadorProfile');
-Route::post('/ambassador/payout-request', 'APIController@requestAmbassadorPayout');
-Route::post('/check-promo', 'APIController@checkPromoCode');
+// Route::get('/getmaterials/{softtoken}', 'APIController@getMaterials')->name('api.getmaterials');
+// Route::get('/getmaterials/single/{softtoken}/{id}', 'APIController@getSingleMaterial')->name('api.getsinglematerial');
 
-// for dashboard
-Route::get('/search/topics/{softtoken}', 'APIController@searchTopics')->name('api.search.topics');
-Route::get('/gettopics/parentwise/{softtoken}/{parent_id}', 'APIController@getParentWiseTopics')->name('api.parentwise.topics');
-Route::get('/gettopicwise/questions/{softtoken}/{topic_id}', 'APIController@getTopicWiseQuestions')->name('api.topicwise.questions');
+// Route::post('/addexamresult', 'APIController@addExamResult')->name('api.addexamresult');
+// Route::get('/meritlist/{softtoken}/{course_id}/{exam_id}', 'APIController@getMeritList')->name('api.getmeritlist');
+// Route::post('/reportquestion', 'APIController@reportQuestion')->name('api.reportquestion');
+// Route::get('/getexamcategories/{softtoken}', 'APIController@getExamCategories')->name('api.getexamcategories');
+// Route::get('/getquestionbank/exams/{softtoken}/{getexamcategory}', 'APIController@getQBCatWise')->name('api.getquestionbank.exams');
+
+// // Ambassador Code
+// Route::get('/ambassador/profile/{softtoken}/{mobile}', 'APIController@getAmbassadorProfile');
+// Route::post('/ambassador/payout-request', 'APIController@requestAmbassadorPayout');
+// Route::post('/check-promo', 'APIController@checkPromoCode');
+
+// // for dashboard
+// Route::get('/search/topics/{softtoken}', 'APIController@searchTopics')->name('api.search.topics');
+// Route::get('/gettopics/parentwise/{softtoken}/{parent_id}', 'APIController@getParentWiseTopics')->name('api.parentwise.topics');
+// Route::get('/gettopicwise/questions/{softtoken}/{topic_id}', 'APIController@getTopicWiseQuestions')->name('api.topicwise.questions');
