@@ -228,6 +228,6 @@ class AuthController extends Controller
         $response = curl_exec($ch);
         curl_close($ch);
 
-        return response()->json(['success' => true, 'message' => 'OTP পাঠানো হয়েছে!']);
+        return true;
     }
 }
