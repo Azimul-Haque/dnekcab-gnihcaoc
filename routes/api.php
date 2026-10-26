@@ -34,6 +34,9 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/category/{id}/courses', [CourseController::class, 'getCategoryCourses']);
     });
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/course/{id}/exams', [HomeController::class, 'getCourseExams']);
+    });
 });
 
 
