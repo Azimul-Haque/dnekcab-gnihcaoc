@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="icon">
-                        <span style="font-size: 42px; opacity: 0.3;">{{ $category->thumbnail ?? '📚' }}</span>
+                        <span style="">{{ $category->thumbnail ?? '📚' }}</span>
                     </div>
                     
                     {{-- ওয়াটারমার্ক আইকন সেকশন --}}
