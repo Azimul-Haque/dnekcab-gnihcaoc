@@ -152,10 +152,10 @@ class AuthController extends Controller
             $isNewUser = true;
             $user = User::create([
                 'mobile' => $mobile,
-                'name'   => null, // নতুন ইউজারের নাম ফাঁকা থাকবে
+                'name'   => 'No Name', // নতুন ইউজারের নাম ফাঁকা থাকবে
                 'is_approved' => 0
             ]);
-        } elseif (empty($user->name) || $user->name == ''No Name';') {
+        } elseif (empty($user->name) || $user->name == 'No Name') {
             $isNewUser = true; // আগে একাউন্ট থাকলেও যদি নাম না থাকে
         }
 
