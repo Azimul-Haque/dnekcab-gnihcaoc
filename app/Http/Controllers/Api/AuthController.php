@@ -186,7 +186,7 @@ class AuthController extends Controller
         $data = [
             "api_key" => $api_key,
             "senderid" => $senderid,
-            "number" => $number,
+            "number" => $phone,
             "message" => $message,
         ];
         $ch = curl_init();
