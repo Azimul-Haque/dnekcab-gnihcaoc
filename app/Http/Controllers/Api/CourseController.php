@@ -8,6 +8,8 @@ use App\Models\Exam;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
+use Illuminate\Support\Facades\DB;
+
 class CourseController extends Controller
 {
     /**
