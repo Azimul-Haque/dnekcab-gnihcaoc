@@ -112,9 +112,9 @@
                                         @endif
 
                                         <!-- 2. INSTANT SMS BUTTON -->
-                                        {{-- <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#smsModal{{ $message->id }}" title="SMS পাঠান">
+                                        <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#smsModal{{ $message->id }}" title="SMS পাঠান">
                                             <i class="fas fa-paper-plane"></i>
-                                        </button> --}}
+                                        </button>
 
                                         <!-- 3. MARK RESOLVED BUTTON -->
                                         @if($message->status == 0)
