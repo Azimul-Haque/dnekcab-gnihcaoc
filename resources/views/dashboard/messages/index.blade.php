@@ -131,7 +131,7 @@
                                 </tr>
 
                                 <!-- ==================== INSTANT SMS MODAL ==================== -->
-                                {{-- <div class="modal fade" id="smsModal{{ $message->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal fade" id="smsModal{{ $message->id }}" tabindex="-1" role="dialog" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content border-0 shadow">
                                             <div class="modal-header bg-primary text-white">
@@ -165,7 +165,7 @@
                                             </form>
                                         </div>
                                     </div>
-                                </div> --}}
+                                </div>
 
                                 <!-- ==================== UPDATE MODAL ==================== -->
                                 <div class="modal fade" id="updateModal{{ $message->id }}" tabindex="-1" role="dialog" aria-hidden="true">
