@@ -100,6 +100,7 @@ class CourseController extends Controller
         $course->serial = $request->serial; // priority ব্যবহৃত হবে চলমান কোর্সসমূহ বার এ, serial ব্যবহৃত হবে কোর্স্ ক্যাটাগরিতে
         $course->save();
 
+        Cache::forget('active_courses');
         Cache::forget('courses' . $request->category);
         Cache::forget('categorywisecourses' . $request->category);
         Session::flash('success', 'Course updated successfully!');
