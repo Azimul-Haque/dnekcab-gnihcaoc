@@ -166,7 +166,6 @@ class AuthController extends Controller
      */
     private function sendSmsViaGateway($phone, $message)
     {
-        // আপনার এসএমএস প্রোভাইডারের API Call এখানে হবে
-        // e.g. Http::post('https://api.sms-provider.com/send', [...]);
+        
     }
 }
