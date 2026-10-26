@@ -52,14 +52,19 @@ class CourseController extends Controller
     public function getCourseExams($courseId)
     {
         try {
-            $exams = Cache::remember('course_exams_' . $courseId, now()->addDays(10), function () use ($courseId) {
+            // ১০ দিনের ক্যাশ (10 * 24 * 60 * 60 সেকেন্ড = 864,000 সেকেন্ড)
+            $courseexams = Cache::remember('courseexams_' . $id, 864000, function () use ($id) {
                 return Exam::query()
+                    // ১. courseexams টেবিলের সাথে Direct Join
                     ->join('courseexams', 'exams.id', '=', 'courseexams.exam_id')
-                    ->where('courseexams.course_id', $courseId)
-                    ->withCount('examquestions as total_questions') // প্রশ্নের সংখ্যা গণনা
+                    ->where('courseexams.course_id', $id)
+                    
+                    // ২. SQL লেভেলেই প্রশ্ন সংখ্যা কাউন্ট (RAM ফ্রি থাকবে)
+                    ->withCount('examquestions as total_questions')
+                    
+                    // ৩. শুধুমাত্র প্রয়োজনীয় কলাম সিলেক্ট
                     ->select(
                         'exams.id',
-                        'exams.examcategory_id',
                         'exams.name',
                         'exams.duration',
                         'exams.negativepercentage',
@@ -68,15 +73,39 @@ class CourseController extends Controller
                         'exams.syllabus',
                         'exams.participation',
                         'exams.cutmark',
-                        'exams.lecture_url'
+                        'exams.lecture_url',
+                        'exams.serial'
                     )
-                    ->get();
+                    
+                    // ৪. আপনার ২-লেয়ার সর্টিং লজিক
+                    ->orderBy('exams.serial', 'desc')
+                    ->orderBy('exams.id', 'desc')
+                    ->get()
+                    
+                    // ৫. ক্লিন এবং পারফেক্ট JSON স্ট্রাকচার ম্যাপিং
+                    ->map(function ($exam) {
+                        return [
+                            'id'                 => $exam->id,
+                            'name'               => $exam->name,
+                            'duration'           => $exam->duration,
+                            'negativepercentage' => $exam->negativepercentage,
+                            'available_from'     => $exam->available_from,
+                            'start'              => $exam->available_from, // ব্যাকওয়ার্ড কম্প্যাটিবিলিটি
+                            'available_to'       => $exam->available_to,
+                            'syllabus'           => $exam->syllabus ?? 'N/A',
+                            'participation'      => $exam->participation ?? 0,
+                            'cutmark'            => $exam->cutmark ?? 0,
+                            'lecture_url'        => $exam->lecture_url,
+                            'total_questions'    => $exam->total_questions ?? 0,
+                            'questioncount'      => $exam->total_questions ?? 0, // ব্যাকওয়ার্ড কম্প্যাটিবিলিটি
+                        ];
+                    });
             });
 
             return response()->json([
                 'status'  => true,
-                'message' => 'পরীক্ষাসমূহ সফলভাবে পাওয়া গেছে।',
-                'exams'   => $exams,
+                'success' => true,
+                'exams'   => $courseexams,
             ], 200);
 
         } catch (\Exception $e) {
