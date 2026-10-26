@@ -191,16 +191,14 @@
         var id = $(this).data('id');
         var name = $(this).data('name');
         var thumbnail = $(this).data('thumbnail');
+        var updateUrl = $(this).data('update-url'); // সার্ভার থেকে জেনারেট হওয়া পারফেক্ট URL
 
         $('#edit_category_id').val(id);
         $('#edit_category_name').val(name);
         $('#edit_thumbnail_input').val(thumbnail);
-
-        // ল্যারাভেল রুটে ডাইনামিকালি ID সেট করা
-        var updateUrl = "{{ route('dashboard.exams.category.update', ['id' => ':id']) }}";
-        updateUrl = updateUrl.replace(':id', id);
         $('#editCategoryForm').attr('action', updateUrl);
 
+        // স্মুথলি মডাল ওপেন হবে
         $('#editCategoryModal').modal('show');
     });
 
