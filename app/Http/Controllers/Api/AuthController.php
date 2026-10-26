@@ -186,7 +186,7 @@ class AuthController extends Controller
         $api_key = config('sms.api_key');
         $senderid = config('sms.senderid');
         $number = $phone;
-        $message = $otp . ' is your pin for BCS Exam Aid App.';
+        $message = $otp . ' is your pin for Coaching App.';
 
         $data = [
             "api_key" => $api_key,
