@@ -196,6 +196,11 @@
         $('#edit_category_name').val(name);
         $('#edit_thumbnail_input').val(thumbnail);
 
+        // ল্যারাভেল রুটে ডাইনামিকালি ID সেট করা
+        var updateUrl = "{{ route('dashboard.exams.category.update', ['id' => ':id']) }}";
+        updateUrl = updateUrl.replace(':id', id);
+        $('#editCategoryForm').attr('action', updateUrl);
+
         $('#editCategoryModal').modal('show');
     });
 
