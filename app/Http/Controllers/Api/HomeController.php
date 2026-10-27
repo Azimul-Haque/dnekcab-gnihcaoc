@@ -54,6 +54,7 @@ class HomeController extends Controller
             return response()->json([
                 'status'         => true,
                 'message'        => 'হোম ডাটা সফলভাবে পাওয়া গেছে।',
+                'user_id'      => $user->name,
                 'user_name'      => $user->name,
                 'is_approved'    => $isApproved, // লাইভ স্ট্যাটাস (1 অথবা 0)
                 'active_courses' => $activeCourses,
