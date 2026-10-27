@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Meritlist extends Model
 {
     protected $fillable = [
+        'course_id',
         'exam_id',
-        'question_id',
+        'user_id',
+        'marks',
     ];
     
     public function exam(){
