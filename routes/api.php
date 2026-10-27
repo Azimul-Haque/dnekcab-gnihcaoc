@@ -31,7 +31,7 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/home-data', [HomeController::class, 'getHomeData']);
     });
-    
+
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/category/{id}/courses', [CourseController::class, 'getCategoryCourses']);
     });
@@ -39,7 +39,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/course/{id}/exams', [CourseController::class, 'getCourseExams']);
     });
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/user-check-approval', [CourseController::class, 'getCourseExams']);
+        Route::get('/user-check-approval/{id}', [CourseController::class, 'getCourseExams']);
     });
 });
 
