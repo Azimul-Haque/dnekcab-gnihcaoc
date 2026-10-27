@@ -32,7 +32,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/home-data', [HomeController::class, 'getHomeData']);
     });
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/user-check-approval/{id}', [HomeController::class, 'getCourseExams']);
+        Route::get('/user-check-approval/{id}', [HomeController::class, 'checkUserApprovalStatus']);
     });
 
     Route::middleware('auth:sanctum')->group(function () {
