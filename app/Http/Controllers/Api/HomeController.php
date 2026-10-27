@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\User;
 use App\Models\Course;
 use App\Models\Examcategory;
 use Illuminate\Support\Facades\Cache;
