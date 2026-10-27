@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\Request;
+
 use App\Models\Course;
 use App\Models\Examcategory;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Api\Request
 
 class HomeController extends Controller
 {
