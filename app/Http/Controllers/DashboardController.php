@@ -299,6 +299,8 @@ class DashboardController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
+        Cache::forget('user_approval_status_' . $user->id);
+
         Session::flash('success', 'User created successfully!');
         return redirect()->route('dashboard.users');
     }
