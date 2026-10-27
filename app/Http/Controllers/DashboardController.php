@@ -384,6 +384,8 @@ class DashboardController extends Controller
         $user = User::find($id);
         $user->delete();
 
+        Cache::forget('user_approval_status_' . $user->id);
+
         Session::flash('success', 'User deleted successfully!');
         return redirect()->route('dashboard.users');
     }
