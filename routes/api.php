@@ -44,8 +44,8 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/exam/{id}/questions', [ExamController::class, 'getExamQuestions']);
 
-        // ৩. পরীক্ষার উত্তরপত্র ও প্রাপ্ত নাম্বার সেভ করার রুট
-        Route::post('/exam/submit', [ExamController::class, 'submitExam']);
+    // ৩. পরীক্ষার উত্তরপত্র ও প্রাপ্ত নাম্বার সেভ করার রুট
+    Route::post('/exam/submit', [ExamController::class, 'submitExam']);
     
 });
 
