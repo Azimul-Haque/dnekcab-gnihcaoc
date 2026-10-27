@@ -15,6 +15,13 @@ class HomeController extends Controller
         try {
             $user = $request->user();
 
+            if (!$user) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'অননুমোদিত অ্যাক্সেস (User not authenticated)',
+                ], 401);
+            }
+
             // ০. ইউজারের লাইভ এপ্রুভাল স্ট্যাটাস (ক্যাশ বাইপাস)
             $isApproved = Cache::remember('user_approval_status_' . $user->id, 864000, function () use ($user) {
                 return (int) $user->is_approved;
