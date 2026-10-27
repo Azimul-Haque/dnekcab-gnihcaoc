@@ -332,6 +332,8 @@ class DashboardController extends Controller
         }
         $user->save();
 
+        Cache::forget('user_approval_status_' . $user->id);
+
         Session::flash('success', 'User updated successfully!');
         return redirect()->route('dashboard.users');
     }
