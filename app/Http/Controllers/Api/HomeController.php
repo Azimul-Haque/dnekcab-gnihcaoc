@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
-    public function getHomeData($id)
+    public function getHomeData()
     {
         try {
             $user = $request->user();
