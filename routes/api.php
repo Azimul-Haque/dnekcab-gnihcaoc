@@ -41,6 +41,11 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/course/{id}/exams', [CourseController::class, 'getCourseExams']);
     });
+
+    Route::get('/exam/{id}/questions', [ExamController::class, 'getExamQuestions']);
+
+        // ৩. পরীক্ষার উত্তরপত্র ও প্রাপ্ত নাম্বার সেভ করার রুট
+        Route::post('/exam/submit', [ExamController::class, 'submitExam']);
     
 });
 
