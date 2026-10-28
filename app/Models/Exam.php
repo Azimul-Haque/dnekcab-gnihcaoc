@@ -15,7 +15,7 @@ class Exam extends Model
     }
 
     public function course(){
-        return $this->hasOne('App\Models\Course');
+        return $this->belongsTo('App\Models\Course', 'course_id');
     }
 
     public function courseexams(){
