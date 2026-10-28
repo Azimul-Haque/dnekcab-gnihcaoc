@@ -51,9 +51,9 @@
                             <li class="list-group-item border-0">
                                 <i class="fas fa-clock text-danger mr-2"></i> <b>মেয়াদ:</b> <span class="float-right text-danger font-weight-bold">{{ bangla(date('d F, Y', strtotime($user->package_expiry_date))) }}</span>
                             </li>
-                            <li class="list-group-item border-0">
+                            {{-- <li class="list-group-item border-0">
                                 <i class="fas fa-shopping-cart text-muted mr-2"></i> <b>মোট ক্রয়:</b> <span class="float-right badge badge-primary">{{ bangla($user->payments->count()) }} বার</span>
-                            </li>
+                            </li> --}}
                         </ul>
                     </div>
                 </div>
