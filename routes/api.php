@@ -36,7 +36,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/user/check-approval', [HomeController::class, 'checkUserApprovalStatus']);
     });
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/home/exam-summary', [HomeController::class, 'checkUserApprovalStatus']);
+        Route::get('/home/exam-summary', [HomeController::class, 'getExamSummary']);
     });
 
     Route::middleware('auth:sanctum')->group(function () {
