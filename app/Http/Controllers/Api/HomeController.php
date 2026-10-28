@@ -124,6 +124,7 @@ class HomeController extends Controller
                 'upcoming_exam' => $upcomingExam,
             ]);
         } catch (\Exception $e) {
+            Log::error('Exam Summary Error: ' . $e->getMessage());
             return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
         }
     }
