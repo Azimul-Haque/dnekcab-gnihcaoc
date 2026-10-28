@@ -103,23 +103,31 @@ class HomeController extends Controller
             $now = now();
             $todayStr = $now->format('Y-m-d');
 
-            // ১. আজকের পরীক্ষা (Available From = আজ এবং Not Expired)
+            // courseexams এবং তার ভেতরে থাকা course ফেচ করা
             $todayExam = Exam::whereDate('available_from', '<=', $todayStr)
                 ->whereDate('available_to', '>=', $todayStr)
-                ->with(['course' => function ($query) {
-                    $query->select('id', 'name'); // Course টেবিল থেকে id ও name
-                }])
+                ->with('courseexams.course')
                 ->first();
 
-            // ২. যদি আজকের পরীক্ষা না থাকে, তবে পরবর্তী আসন্ন সবচেয়ে কাছের পরীক্ষা
             $upcomingExam = null;
             if (!$todayExam) {
                 $upcomingExam = Exam::whereDate('available_from', '>', $todayStr)
-                    ->with(['course' => function ($query) {
-                        $query->select('id', 'name'); // Course টেবিল থেকে id ও name
-                    }])
+                    ->with('courseexams.course')
                     ->orderBy('available_from', 'asc')
                     ->first();
+            }
+
+            // রেসপন্সে সহজপাঠ্য করার জন্য course_name ও course_id সেটিং
+            if ($todayExam && $todayExam->courseexams->isNotEmpty()) {
+                $course = $todayExam->courseexams->first()->course;
+                $todayExam->course_name = $course ? $course->name : 'সাধারণ কোর্স';
+                $todayExam->course_id = $course ? $course->id : 0;
+            }
+
+            if ($upcomingExam && $upcomingExam->courseexams->isNotEmpty()) {
+                $course = $upcomingExam->courseexams->first()->course;
+                $upcomingExam->course_name = $course ? $course->name : 'সাধারণ কোর্স';
+                $upcomingExam->course_id = $course ? $course->id : 0;
             }
 
             return response()->json([
@@ -128,8 +136,10 @@ class HomeController extends Controller
                 'upcoming_exam' => $upcomingExam,
             ]);
         } catch (\Exception $e) {
-            Log::error('Exam Summary Error: ' . $e->getMessage());
-            return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
 }
