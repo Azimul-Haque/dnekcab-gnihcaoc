@@ -131,7 +131,7 @@ class ExamController extends Controller
             $meritlist = Cache::remember($cacheKey, 3600, function () use ($courseId, $examId) {
                 return Meritlist::with([
                     'user' => function ($query) {
-                        $query->select('id', 'name', 'email', 'image');
+                        $query->select('id', 'name');
                     }
                 ])
                 ->where('course_id', $courseId)
