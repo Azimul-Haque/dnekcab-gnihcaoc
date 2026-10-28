@@ -111,7 +111,6 @@ class ExamController extends Controller
     public function getExamMeritList($examId)
     {
         try {
-            // ১. এক্সামটি বিদ্যমান কি না চেক
             $exam = Exam::find($examId);
             
             if (!$exam) {
@@ -122,18 +121,22 @@ class ExamController extends Controller
                 ], 404);
             }
 
-            // ২. মেধা তালিকা ফেচ করা (User রিলেশন সহ এবং মার্কস অনুযায়ী সর্ট)
-            // Note: DB-তে marks কলামটি string হওয়ায় CAST ব্যবহার করে ডেসিমেল/সংখ্যা হিসেবে সর্ট করা হয়েছে
-            $meritlist = Meritlist::with([
-                'user' => function ($query) {
-                    $query->select('id', 'name', 'email', 'image'); // ইউজার থেকে প্রয়োজনীয় ফিল্ড
-                }
-            ])
-            ->where('exam_id', $examId)
-            ->orderByRaw('CAST(marks AS DECIMAL(10,2)) DESC')
-            ->get();
+            // ইউনিক ক্যাশ কী
+            $cacheKey = "exam_merit_list_{$examId}";
 
-            // ৩. রেসপন্স রিটার্ন
+            // ডাটাবেজে হিট না করে ক্যাশ (Redis / File / Memcached) থেকে ফেচ করবে
+            // যদি ক্যাশে না থাকে, তবে ক্যোয়ারি চালিয়ে ডাটাবেজ থেকে নিয়ে ৩৬০০ সেকেন্ড (১ ঘণ্টা) ক্যাশ করে রাখবে
+            $meritlist = Cache::remember($cacheKey, 3600, function () use ($examId) {
+                return Meritlist::with([
+                    'user' => function ($query) {
+                        $query->select('id', 'name', 'email', 'image');
+                    }
+                ])
+                ->where('exam_id', $examId)
+                ->orderByRaw('CAST(marks AS DECIMAL(10,2)) DESC')
+                ->get();
+            });
+
             return response()->json([
                 'status' => true,
                 'message' => 'মেধা তালিকা সফলভাবে লোড হয়েছে।',
