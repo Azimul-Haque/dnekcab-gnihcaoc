@@ -149,6 +149,7 @@ class ExamController extends Controller
             ], 200);
 
         } catch (\Exception $e) {
+            Log::error('Exam Questions Load Error: ' . $e->getMessage());
             return response()->json([
                 'status' => false,
                 'message' => 'সার্ভার এরর: ' . $e->getMessage(),
