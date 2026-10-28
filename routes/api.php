@@ -47,6 +47,7 @@ Route::prefix('v1')->group(function () {
 
     // ৩. পরীক্ষার উত্তরপত্র ও প্রাপ্ত নাম্বার সেভ করার রুট
     Route::post('/exam/submit', [ExamController::class, 'submitExam']);
+    Route::get('/exam/{examId}/merit-list', [MeritlistController::class, 'getExamMeritList']);
     
 });
 
