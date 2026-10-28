@@ -108,7 +108,7 @@ class ExamController extends Controller
         }
     }
 
-    public function getExamMeritList($examId)
+    public function getExamMeritList(Request $request, $courseId, $examId)
     {
         try {
             $exam = Exam::find($examId);
@@ -121,17 +121,17 @@ class ExamController extends Controller
                 ], 404);
             }
 
-            // ইউনিক ক্যাশ কী
-            $cacheKey = "exam_merit_list_{$examId}";
+            // ⚡ কোর্স আইডি ও এক্সাম আইডি মিলিয়ে ১টি ইউনিক ক্যাশ কী
+            $cacheKey = "merit_list_course_{$courseId}_exam_{$examId}";
 
-            // ডাটাবেজে হিট না করে ক্যাশ (Redis / File / Memcached) থেকে ফেচ করবে
-            // যদি ক্যাশে না থাকে, তবে ক্যোয়ারি চালিয়ে ডাটাবেজ থেকে নিয়ে ৩৬০০ সেকেন্ড (১ ঘণ্টা) ক্যাশ করে রাখবে
-            $meritlist = Cache::remember($cacheKey, 3600, function () use ($examId) {
+            // ১ ঘণ্টার জন্য ক্যাশ করে রাখা
+            $meritlist = Cache::remember($cacheKey, 3600, function () use ($courseId, $examId) {
                 return Meritlist::with([
                     'user' => function ($query) {
                         $query->select('id', 'name', 'email', 'image');
                     }
                 ])
+                ->where('course_id', $courseId)
                 ->where('exam_id', $examId)
                 ->orderByRaw('CAST(marks AS DECIMAL(10,2)) DESC')
                 ->get();
