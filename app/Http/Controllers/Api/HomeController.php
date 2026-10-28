@@ -95,4 +95,35 @@ class HomeController extends Controller
             'is_approved' => $isApproved, // 1 অথবা 0
         ], 200);
     }
+
+    public function getExamSummary(Request $request)
+    {
+        try {
+            $now = now();
+            $todayStr = $now->format('Y-m-d');
+
+            // ১. আজকের পরীক্ষা (Available From = আজ এবং Not Expired)
+            $todayExam = Exam::whereDate('available_from', '<=', $todayStr)
+                ->whereDate('available_to', '>=', $todayStr)
+                ->with('course:id,name')
+                ->first();
+
+            // ২. যদি আজকের পরীক্ষা না থাকে, তবে পরবর্তী আসন্ন সবচেয়ে কাছের পরীক্ষা
+            $upcomingExam = null;
+            if (!$todayExam) {
+                $upcomingExam = Exam::whereDate('available_from', '>', $todayStr)
+                    ->with('course:id,name')
+                    ->orderBy('available_from', 'asc')
+                    ->first();
+            }
+
+            return response()->json([
+                'status' => true,
+                'today_exam' => $todayExam,
+                'upcoming_exam' => $upcomingExam,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['status' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
 }
