@@ -111,7 +111,7 @@ class ExamController extends Controller
         }
     }
 
-    public function getExamMeritList(Request $request, $courseId, $examId)
+    public function getExamMeritList($courseId, $examId)
     {
         try {
             $exam = Exam::find($examId);
