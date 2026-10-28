@@ -199,7 +199,6 @@ class CourseController extends Controller
             DB::commit();
 
             Cache::forget('courseexams' . $id);
-            Cache::forget("home_exam_summary_" . now()->format('Y-m-d'));
             Session::flash('success', 'কোর্সের পরীক্ষার তারিখসমূহ সফলভাবে আপডেট করা হয়েছে!');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -282,8 +281,6 @@ class CourseController extends Controller
                 ->orderBy('id', 'desc')
                 ->paginate(30); // প্রতি পেজে ৩০টি করে ডাটা
 
-        Cache::forget("home_exam_summary_" . now()->format('Y-m-d'));
-
         return view('dashboard.courses.addexams')
                                     ->withCourse($course)
                                     ->withCourseexams($courseexams)
@@ -335,8 +332,6 @@ class CourseController extends Controller
             }
 
             DB::commit();
-
-            Cache::forget("home_exam_summary_" . now()->format('Y-m-d'));
             return back()->with('success', 'সফলভাবে আপডেট করা হয়েছে!');
 
         } catch (\Exception $e) {
@@ -383,8 +378,6 @@ class CourseController extends Controller
     public function deleteCourseExams(Request $request, $id)
     {
         DB::table('courseexams')->where('course_id', $id)->delete();
-        
-        Cache::forget("home_exam_summary_" . now()->format('Y-m-d'));
         return redirect()->back()->with('success', 'পরীক্ষাসমূহ সফলভাবে মুছে দেওয়া হয়েছে।');
     }
 }
