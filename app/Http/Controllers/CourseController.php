@@ -335,6 +335,8 @@ class CourseController extends Controller
             }
 
             DB::commit();
+            
+            Cache::forget("home_exam_summary_" . now()->format('Y-m-d'));
             return back()->with('success', 'সফলভাবে আপডেট করা হয়েছে!');
 
         } catch (\Exception $e) {
