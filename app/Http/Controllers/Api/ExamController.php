@@ -95,6 +95,9 @@ class ExamController extends Controller
 
             DB::commit();
 
+            // ⚡ ২. নির্দিষ্ট কোর্সের নির্দিষ্ট পরীক্ষার ক্যাশ ইনভ্যালিডেট করা
+            Cache::forget("merit_list_course_{$courseId}_exam_{$examId}");
+
             return response()->json([
                 'status'  => true,
                 'message' => 'পরীক্ষার উত্তরপত্র সফলভাবে জমা হয়েছে।',
