@@ -96,7 +96,7 @@ class ExamController extends Controller
             DB::commit();
 
             // ⚡ ২. নির্দিষ্ট কোর্সের নির্দিষ্ট পরীক্ষার ক্যাশ ইনভ্যালিডেট করা
-            Cache::forget("merit_list_course_{$request->course_id}_exam_{$examId}");
+            Cache::forget("merit_list_course_{$request->course_id}_exam_{$request->exam_id}");
 
             return response()->json([
                 'status'  => true,
