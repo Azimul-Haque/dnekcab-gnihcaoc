@@ -35,6 +35,9 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/user/check-approval', [HomeController::class, 'checkUserApprovalStatus']);
     });
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/home/exam-summary', [HomeController::class, 'checkUserApprovalStatus']);
+    });
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/category/{id}/courses', [CourseController::class, 'getCategoryCourses']);
