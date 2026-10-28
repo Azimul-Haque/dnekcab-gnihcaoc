@@ -106,7 +106,9 @@ class HomeController extends Controller
             // ১. আজকের পরীক্ষা (Available From = আজ এবং Not Expired)
             $todayExam = Exam::whereDate('available_from', '<=', $todayStr)
                 ->whereDate('available_to', '>=', $todayStr)
-                ->with('course:id,name')
+                ->with(['course' => function ($query) {
+                    $query->select('id', 'name'); // Course টেবিল থেকে id ও name
+                }])
                 ->first();
 
             // ২. যদি আজকের পরীক্ষা না থাকে, তবে পরবর্তী আসন্ন সবচেয়ে কাছের পরীক্ষা
