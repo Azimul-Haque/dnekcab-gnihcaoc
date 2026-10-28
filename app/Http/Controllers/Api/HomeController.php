@@ -113,7 +113,9 @@ class HomeController extends Controller
             $upcomingExam = null;
             if (!$todayExam) {
                 $upcomingExam = Exam::whereDate('available_from', '>', $todayStr)
-                    ->with('course:id,name')
+                    ->with(['course' => function ($query) {
+                        $query->select('id', 'name'); // Course টেবিল থেকে id ও name
+                    }])
                     ->orderBy('available_from', 'asc')
                     ->first();
             }
