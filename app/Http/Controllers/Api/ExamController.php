@@ -109,45 +109,45 @@ class ExamController extends Controller
     }
 
     public function getExamMeritList($examId)
-        {
-            try {
-                // ১. এক্সামটি বিদ্যমান কি না চেক
-                $exam = Exam::find($examId);
-                
-                if (!$exam) {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'পরীক্ষা পাওয়া যায়নি।',
-                        'meritlist' => []
-                    ], 404);
-                }
-
-                // ২. মেধা তালিকা ফেচ করা (User রিলেশন সহ এবং মার্কস অনুযায়ী সর্ট)
-                // Note: DB-তে marks কলামটি string হওয়ায় CAST ব্যবহার করে ডেসিমেল/সংখ্যা হিসেবে সর্ট করা হয়েছে
-                $meritlist = Meritlist::with([
-                    'user' => function ($query) {
-                        $query->select('id', 'name', 'email', 'image'); // ইউজার থেকে প্রয়োজনীয় ফিল্ড
-                    }
-                ])
-                ->where('exam_id', $examId)
-                ->orderByRaw('CAST(marks AS DECIMAL(10,2)) DESC')
-                ->get();
-
-                // ৩. রেসপন্স রিটার্ন
-                return response()->json([
-                    'status' => true,
-                    'message' => 'মেধা তালিকা সফলভাবে লোড হয়েছে।',
-                    'exam_name' => $exam->name,
-                    'total_participants' => $meritlist->count(),
-                    'meritlist' => $meritlist
-                ], 200);
-
-            } catch (\Exception $e) {
+    {
+        try {
+            // ১. এক্সামটি বিদ্যমান কি না চেক
+            $exam = Exam::find($examId);
+            
+            if (!$exam) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'সার্ভার এরর: ' . $e->getMessage(),
+                    'message' => 'পরীক্ষা পাওয়া যায়নি।',
                     'meritlist' => []
-                ], 500);
+                ], 404);
             }
+
+            // ২. মেধা তালিকা ফেচ করা (User রিলেশন সহ এবং মার্কস অনুযায়ী সর্ট)
+            // Note: DB-তে marks কলামটি string হওয়ায় CAST ব্যবহার করে ডেসিমেল/সংখ্যা হিসেবে সর্ট করা হয়েছে
+            $meritlist = Meritlist::with([
+                'user' => function ($query) {
+                    $query->select('id', 'name', 'email', 'image'); // ইউজার থেকে প্রয়োজনীয় ফিল্ড
+                }
+            ])
+            ->where('exam_id', $examId)
+            ->orderByRaw('CAST(marks AS DECIMAL(10,2)) DESC')
+            ->get();
+
+            // ৩. রেসপন্স রিটার্ন
+            return response()->json([
+                'status' => true,
+                'message' => 'মেধা তালিকা সফলভাবে লোড হয়েছে।',
+                'exam_name' => $exam->name,
+                'total_participants' => $meritlist->count(),
+                'meritlist' => $meritlist
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'সার্ভার এরর: ' . $e->getMessage(),
+                'meritlist' => []
+            ], 500);
         }
+    }
 }
