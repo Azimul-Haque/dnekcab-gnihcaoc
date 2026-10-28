@@ -335,7 +335,7 @@ class CourseController extends Controller
             }
 
             DB::commit();
-            
+
             Cache::forget("home_exam_summary_" . now()->format('Y-m-d'));
             return back()->with('success', 'সফলভাবে আপডেট করা হয়েছে!');
 
@@ -383,6 +383,8 @@ class CourseController extends Controller
     public function deleteCourseExams(Request $request, $id)
     {
         DB::table('courseexams')->where('course_id', $id)->delete();
+        
+        Cache::forget("home_exam_summary_" . now()->format('Y-m-d'));
         return redirect()->back()->with('success', 'পরীক্ষাসমূহ সফলভাবে মুছে দেওয়া হয়েছে।');
     }
 }
