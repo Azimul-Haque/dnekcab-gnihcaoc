@@ -199,6 +199,7 @@ class CourseController extends Controller
             DB::commit();
 
             Cache::forget('courseexams' . $id);
+            Cache::forget("home_exam_summary_" . now()->format('Y-m-d'));
             Session::flash('success', 'কোর্সের পরীক্ষার তারিখসমূহ সফলভাবে আপডেট করা হয়েছে!');
         } catch (\Exception $e) {
             DB::rollBack();
