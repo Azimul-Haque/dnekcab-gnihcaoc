@@ -282,6 +282,8 @@ class CourseController extends Controller
                 ->orderBy('id', 'desc')
                 ->paginate(30); // প্রতি পেজে ৩০টি করে ডাটা
 
+        Cache::forget("home_exam_summary_" . now()->format('Y-m-d'));
+
         return view('dashboard.courses.addexams')
                                     ->withCourse($course)
                                     ->withCourseexams($courseexams)
