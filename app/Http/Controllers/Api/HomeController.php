@@ -11,7 +11,7 @@ use App\Models\Exam;
 use App\Models\Examcategory;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use Carbon;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
