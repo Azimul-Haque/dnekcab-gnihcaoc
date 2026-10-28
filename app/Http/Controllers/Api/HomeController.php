@@ -100,41 +100,55 @@ class HomeController extends Controller
     public function getExamSummary(Request $request)
     {
         try {
-            $now = now();
+            $now = Carbon::now();
             $todayStr = $now->format('Y-m-d');
+            
+            // ১. ক্যাশ কী
+            $cacheKey = "home_exam_summary_{$todayStr}";
 
-            // courseexams এবং তার ভেতরে থাকা course ফেচ করা
-            $todayExam = Exam::whereDate('available_from', '<=', $todayStr)
-                ->whereDate('available_to', '>=', $todayStr)
-                ->with('courseexams.course')
-                ->first();
+            // ২. আজকের দিনের শেষ সেকেন্ড (রাত ১১:৫৯:৫৯) পর্যন্ত কত সেকেন্ড বাকি আছে হিসাব করা
+            $secondsUntilEndOfDay = $now->diffInSeconds(Carbon::tomorrow()->startOfDay());
 
-            $upcomingExam = null;
-            if (!$todayExam) {
-                $upcomingExam = Exam::whereDate('available_from', '>', $todayStr)
+            // ৩. ক্যাশে রাখা (আজকের দিনের শেষ সময় পর্যন্ত)
+            $data = Cache::remember($cacheKey, $secondsUntilEndOfDay, function () use ($todayStr) {
+                
+                $todayExams = Exam::whereDate('available_from', '<=', $todayStr)
+                    ->whereDate('available_to', '>=', $todayStr)
                     ->with('courseexams.course')
-                    ->orderBy('available_from', 'asc')
-                    ->first();
-            }
+                    ->get()
+                    ->map(function ($exam) {
+                        $course = $exam->courseexams->first()?->course;
+                        $exam->course_name = $course ? $course->name : 'সাধারণ কোর্স';
+                        $exam->course_id = $course ? $course->id : 0;
+                        return $exam;
+                    });
 
-            // রেসপন্সে সহজপাঠ্য করার জন্য course_name ও course_id সেটিং
-            if ($todayExam && $todayExam->courseexams->isNotEmpty()) {
-                $course = $todayExam->courseexams->first()->course;
-                $todayExam->course_name = $course ? $course->name : 'সাধারণ কোর্স';
-                $todayExam->course_id = $course ? $course->id : 0;
-            }
+                $upcomingExam = null;
+                if ($todayExams->isEmpty()) {
+                    $upcomingExam = Exam::whereDate('available_from', '>', $todayStr)
+                        ->with('courseexams.course')
+                        ->orderBy('available_from', 'asc')
+                        ->first();
 
-            if ($upcomingExam && $upcomingExam->courseexams->isNotEmpty()) {
-                $course = $upcomingExam->courseexams->first()->course;
-                $upcomingExam->course_name = $course ? $course->name : 'সাধারণ কোর্স';
-                $upcomingExam->course_id = $course ? $course->id : 0;
-            }
+                    if ($upcomingExam) {
+                        $course = $upcomingExam->courseexams->first()?->course;
+                        $upcomingExam->course_name = $course ? $course->name : 'সাধারণ কোর্স';
+                        $upcomingExam->course_id = $course ? $course->id : 0;
+                    }
+                }
+
+                return [
+                    'today_exams' => $todayExams,
+                    'upcoming_exam' => $upcomingExam,
+                ];
+            });
 
             return response()->json([
                 'status' => true,
-                'today_exam' => $todayExam,
-                'upcoming_exam' => $upcomingExam,
+                'today_exams' => $data['today_exams'],
+                'upcoming_exam' => $data['upcoming_exam'],
             ]);
+
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
