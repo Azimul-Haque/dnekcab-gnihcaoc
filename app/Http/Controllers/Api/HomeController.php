@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Models\User;
 use App\Models\Course;
+use App\Models\Exam;
 use App\Models\Examcategory;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
